@@ -1,0 +1,30 @@
+var mysql = require('mysql');
+
+//init a connection pool
+//keep connections open for 30 secondes
+//set limit of max 10 idle clients
+var config = {
+    host: '127.0.0.1',
+    user: 'root',
+    password: '',
+    database: 'auto-car-parking',
+    // port: 8080,
+    // ssl: true,
+    max: 10,
+    idleTimeoutMillis: 30000
+};
+
+var pool = new mysql.createPool(config);
+
+exports.getConnection = function(callback) {
+    pool.getConnection(function(err, conn) {
+        if(err) {
+            return callback(err);
+        }
+        callback(err, conn);
+    });
+};
+
+exports.endConnection = function() {
+    pool.end();
+};

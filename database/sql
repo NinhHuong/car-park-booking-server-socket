@@ -1,0 +1,51 @@
+CREATE TABLE `account` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `email` varchar(50) NOT NULL,
+  `hash_password` varchar(150) NOT NULL,
+  `salt` varchar(50) NOT NULL,
+  `token` varchar(150) NOT NULL,
+  `role_number` int(11) NOT NULL DEFAULT '1',
+  `user_id` int(11) NOT NULL
+)
+
+INSERT INTO `account` (`id`, `email`, `hash_password`, `salt`, `token`, `role_number`, `user_id`) VALUES
+(1, 'ninhhuongdst@gmail.com', 'd1a7aec9908f1ac3d05d0b3fbaf3948fb1f42fbc1b91255f9ebb0f995d26e957c2e44037769c6a2a7aa5aa61597001bed8427c4b427dac8e6f879c95835df9c6', 'g1iue6zx3oa5vg5ksj1hz4mz6emgws4', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 0);
+
+CREATE TABLE `garage` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  `picture` text NOT NULL,
+  `total_slot` int(11) NOT NULL,
+  `busy_slot` int(11) NOT NULL,
+  `booking_slot` int(11) NOT NULL,
+  `location_x` text NOT NULL,
+  `location_y` text NOT NULL,
+  `location_z` text NOT NULL
+)
+
+INSERT INTO `garage` (`name`, `address`, `picture`, `total_slot`, `busy_slot`, `booking_slot`, `location_x`, `location_y`, `location_z`) VALUES
+('Hoa', 'Dong Da', 'picture', 53, 10, 7, 'x', 'y', 'z');
+
+CREATE TABLE `ticket` (
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL,
+  `garage_id` int(11) NOT NULL,
+  `booked_time` varchar(255) NOT NULL,
+  `is_expired` tinyint(1) NOT NULL,
+  `checkin_time` varchar(255) DEFAULT NULL,
+  `checkout_time` varchar(255) DEFAULT NULL,
+    CONSTRAINT FOREIGN KEY (`garage_id`) REFERENCES `garage` (`id`),
+    CONSTRAINT FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
+)
+
+INSERT INTO `ticket` (`account_id`, `garage_id`, `booked_time`, `is_expired`, `checkin_time`, `checkout_time`) VALUES
+(1, 1, '25/05/2017 03:05:15', 0, '', '');
+
+CREATE TABLE `token` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `garage_id` int(11) NOT NULL,
+  `token_number` varchar(4) NOT NULL,
+  `is_expired` tinyint(1) NOT NULL DEFAULT 0,
+    CONSTRAINT  FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`)
+)
