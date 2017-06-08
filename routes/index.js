@@ -1,8 +1,8 @@
 var express = require('express');
-var router = express.Router();var app = express();
+var router = express.Router();
+var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
-server.listen(process.env.PORT || 3000);
 
 var ticket = require('../model/ticket');
 var token = require('../model/token');
