@@ -3,22 +3,23 @@
  */
 var db = require('../database/dbConfig');
 var crypto = require('crypto');
+var ticket = require('../model/ticket');
 
 //add
-exports.add = function(ticket_id, callback) {
+exports.add = function(garage_id, callback) {
     db.getConnection(function(err, client) {
         if(err) {
             return console.error('error fetching client from pool', err);
         }
         var token = Math.floor(Math.random() * 9999);
-        var sql = "INSERT INTO token(ticket_id, token_number) VALUES ("  + ticket_id
+        var sql = "INSERT INTO token(garage_id, token_number) VALUES ("  + garage_id
             + ", '" + token + "')";
         client.query(sql, function(err) {
             // db.endConnection();
             if(err) {
                 return console.error('error running query', err);
             }
-            callback({'res': true});
+            callback({'result': true});
         });
     });
 };
@@ -29,22 +30,35 @@ exports.validate = function(ticket_id, token_input, callback) {
         if(err) {
             return console.error('error fetching client from pool', err);
         }
-        var sql = "SELECT * FROM token WHERE ticket_id = " + ticket_id + " and is_expired = 0" ;
+        var sql = "SELECT token.id, token.token_number " +
+            "FROM token, ticket, garage " +
+            "WHERE garage.id = ticket.garage_id AND garage.id = token.garage_id AND token.is_expired = 0 AND ticket.id = " + ticket_id;
+        // console.log(ticket_id);
         client.query(sql, function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }
-            if(result[0].token_number === token_input) {
-                //update db
-                sql = "UPDATE token SET is_expired = 1 WHERE id = " + result[0].id;
-                client.query(sql, function (err, result) {
-                    if(err) {
-                        return console.error('error running query', err);
-                    }
-                    callback({'res': true, 'data':{'is_valid_token': true}});
-                })
+            // console.log(result);
+            var sucess = false;
+            for(var i=0; i< result.length; i++) {
+                if(result[i].token_number === token_input) {
+					sucess = true;
+                    //update db
+                    sql = "UPDATE token SET is_expired = 1 WHERE id = " + result[i].id;
+                    client.query(sql, function (err) {
+                        if(err) {
+                            return console.error('error running query', err);
+                        }
+                    });
+                    ticket.updateSuccessCheckinTicket(ticket_id);
+
+					break;
+                }
+            }
+            if(sucess) {
+                callback({'result': true, 'data':{'is_valid_token': true}});
             } else {
-                callback({'res': true, 'data':{'is_valid_token': false}});
+                callback({'result': true, 'data':{'is_valid_token': false}});
             }
         });
     });

@@ -31,21 +31,21 @@ CREATE TABLE `ticket` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `account_id` int(11) NOT NULL,
   `garage_id` int(11) NOT NULL,
-  `booked_time` varchar(255) NOT NULL,
+  `booked_time` datetime NOT NULL,
   `is_expired` tinyint(1) NOT NULL,
-  `checkin_time` varchar(255) DEFAULT NULL,
-  `checkout_time` varchar(255) DEFAULT NULL,
+  `checkin_time` datetime DEFAULT NULL,
+  `checkout_time` datetime DEFAULT NULL,
     CONSTRAINT FOREIGN KEY (`garage_id`) REFERENCES `garage` (`id`),
     CONSTRAINT FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
 )
 
 INSERT INTO `ticket` (`account_id`, `garage_id`, `booked_time`, `is_expired`, `checkin_time`, `checkout_time`) VALUES
-(1, 1, '25/05/2017 03:05:15', 0, '', '');
+(1, 1, '2017-05-25 03:05:15', 0, '', '');
 
 CREATE TABLE `token` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `garage_id` int(11) NOT NULL,
   `token_number` varchar(4) NOT NULL,
   `is_expired` tinyint(1) NOT NULL DEFAULT 0,
-    CONSTRAINT  FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`)
+    CONSTRAINT  FOREIGN KEY (`garage_id`) REFERENCES `garage` (`id`)
 )

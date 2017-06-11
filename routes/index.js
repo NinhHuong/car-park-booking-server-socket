@@ -1,11 +1,12 @@
 var express = require('express');
-var router = express.Router();var app = express();
+var router = express.Router();
+var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
-server.listen(process.env.PORT || 3000);
 
 var ticket = require('../model/ticket');
 var account = require('../model/account');
+var token = require('../model/token');
 
 console.log("Start server");
 io.sockets.on('connection', function (socket) {
@@ -28,6 +29,21 @@ io.sockets.on('connection', function (socket) {
             socket.emit('ResultLogin', res);
         });
     })
+	
+	socket.on('request create token', function(garage_id) {
+		token.add(garage_id, function (res) {
+            console.log(res);
+            // socket.emit('response create ticket', res);
+			//send to arduino
+        })
+	});
+
+    socket.on('request validate token', function(ticket_id, token_input) {
+        token.validate(ticket_id, token_input, function (res) {
+            console.log(res);
+            socket.emit('response validate ticket', res);
+        })
+    });
 });
 
 /* GET home page. */

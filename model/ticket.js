@@ -51,5 +51,23 @@ exports.getOpenTicketByAccount = function(token, callback) {
                 callback({'result': true, 'data': {"ticketList" : result, "garageList" : result2}});
             })
         });
-    })
+    });
+};
+
+exports.updateSuccessCheckinTicket = function(ticket_id) {
+    db.getConnection(function (err, client) {
+        if(err) {
+            return console.error('error fetching client from pool', err);
+        }
+
+        var d = new Date();
+        var dateStr = d.getFullYear()  + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes();
+        var sql = "UPDATE ticket SET checkin_time = '" + dateStr + "' WHERE id = " + ticket_id;
+        client.query(sql, function(err) {
+            // db.endConnection();
+            if(err) {
+                return console.error('error running query ticket', err);
+            }
+        });
+    });
 };
