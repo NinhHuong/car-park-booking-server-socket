@@ -47,7 +47,7 @@ exports.login = function (email, password, callback) {
        if(err) {
            return console.error('error running query', err);
        }
-
+        console.log("Login with email: "+email+" password: "+password);
         var sql = "SELECT * FROM account WHERE email = '" + email + "'";
        client.query(sql, function (err, result) {
            if(err) {
