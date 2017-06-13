@@ -29,6 +29,13 @@ io.sockets.on('connection', function (socket) {
             socket.emit('ResultLogin', res);
         });
     })
+
+    socket.on('RegistNewAccount', function (account_detail) {
+        var json = JSON.parse(account_detail);
+        account.register(json["Email"],json["Password"],function (res){
+            socket.emit('ResultRegistNewAccount', res);
+        });
+    })
 	
 	socket.on('request create token', function(garage_id) {
 		token.add(garage_id, function (res) {
