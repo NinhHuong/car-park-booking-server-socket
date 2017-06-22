@@ -54,7 +54,7 @@ exports.getOpenTicketByAccount = function(token, callback) {
     });
 };
 
-exports.updateSuccessCheckinTicket = function(ticket_id) {
+exports.updateSuccessCheckinTicket = function(ticket_id, callback) {
     db.getConnection(function (err, client) {
         if(err) {
             return console.error('error fetching client from pool', err);
@@ -68,6 +68,14 @@ exports.updateSuccessCheckinTicket = function(ticket_id) {
             if(err) {
                 return console.error('error running query ticket', err);
             }
+            sql = "SELECT * FROM ticket WHERE id = " + ticket_id;
+            client.query(sql, function (err, result) {
+               if(err) {
+                   return console.log('error running query garage', err);
+               }
+
+                callback({'result': true, 'data': {'is_valid_token': true, "ticketList" : result}});
+            });
         });
     });
 };

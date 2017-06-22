@@ -50,14 +50,14 @@ exports.validate = function(ticket_id, token_input, callback) {
                             return console.error('error running query', err);
                         }
                     });
-                    ticket.updateSuccessCheckinTicket(ticket_id);
+                    ticket.updateSuccessCheckinTicket(ticket_id, function (res) {
+                        callback(res);
+                    });
 
 					break;
                 }
             }
-            if(sucess) {
-                callback({'result': true, 'data':{'is_valid_token': true}});
-            } else {
+            if(!sucess) {
                 callback({'result': true, 'data':{'is_valid_token': false}});
             }
         });
