@@ -14,7 +14,7 @@ io.sockets.on('connection', function (socket) {
     console.log("someone connected");
     //region ticket
     socket.on('request open tickets', function(account_token) {
-        console.log("server listen")
+        console.log("server listen");
         ticket.getOpenTicketByAccount(account_token, function (res) {
             console.log(res);
             socket.emit('response open tickets', res);
@@ -23,21 +23,36 @@ io.sockets.on('connection', function (socket) {
 
     //endregion
 
+    //region account
     //Login request
     socket.on('CheckEmailAndPassword', function (account_detail) {
         var json = JSON.parse(account_detail);
         account.login(json["Email"],json["Password"],function (res){
             socket.emit('ResultLogin', res);
         });
-    })
+    });
 
     socket.on('RegistNewAccount', function (account_detail) {
         var json = JSON.parse(account_detail);
         account.register(json["Email"],json["Password"],function (res){
             socket.emit('ResultRegistNewAccount', res);
         });
-    })
-	
+    });
+
+    //reset password
+    socket.on('request reset password', function (email) {
+        account.reset_pass_init(email, function (res) {
+           console.log(res);
+        });
+    });
+    socket.on('request change password', function (email, code, npass) {
+        account.reset_pass_change(email, code, npass, function (res) {
+            console.log(res);
+        });
+    });
+    //endregion
+
+    //region token
 	socket.on('request create token', function(garage_id) {
 		token.add(garage_id, function (res) {
             console.log(res);
@@ -52,10 +67,11 @@ io.sockets.on('connection', function (socket) {
             socket.emit('response validate ticket', res);
         })
     });
+    //endregion
 });
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
 });
 

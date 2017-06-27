@@ -16,6 +16,7 @@
     "socket.io": "*",
     "mysql": "^2.13.0",
     "csprng": "^0.1.2",
+    "nodemailer":"~0.6.3",
     "socketio-file-upload": "^0.4.4"
   }
 }

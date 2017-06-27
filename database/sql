@@ -5,11 +5,12 @@ CREATE TABLE `account` (
   `salt` varchar(50) NOT NULL,
   `token` varchar(150) NOT NULL,
   `role_number` int(11) NOT NULL DEFAULT '1',
-  `user_id` int(11) NOT NULL
+  `user_id` int(11) NOT NULL,
+  `reset_str` varchar(50) NOT NULL
 )
 
 INSERT INTO `account` (`id`, `email`, `hash_password`, `salt`, `token`, `role_number`, `user_id`) VALUES
-(1, 'ninhhuongdst@gmail.com', 'd1a7aec9908f1ac3d05d0b3fbaf3948fb1f42fbc1b91255f9ebb0f995d26e957c2e44037769c6a2a7aa5aa61597001bed8427c4b427dac8e6f879c95835df9c6', 'g1iue6zx3oa5vg5ksj1hz4mz6emgws4', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 0);
+(1, 'ninhhuongdst@gmail.com', 'd1a7aec9908f1ac3d05d0b3fbaf3948fb1f42fbc1b91255f9ebb0f995d26e957c2e44037769c6a2a7aa5aa61597001bed8427c4b427dac8e6f879c95835df9c6', 'g1iue6zx3oa5vg5ksj1hz4mz6emgws4', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 0, '');
 
 CREATE TABLE `garage` (
   `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
