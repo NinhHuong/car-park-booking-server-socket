@@ -99,14 +99,14 @@ exports.reset_pass_init = function(email, callback) {
 
                     smtpTransport.sendMail(mailOptions, function(error){
                         if(error){
-                            callback({'response':"Error While Resetting password. Try Again !",'res':false});
+                            callback({'result':false, 'data':{'mess':"Error While Resetting password. Try Again !"}});
                             console.log(error);
                         }else{
-                            callback({'response':"Check your Email and enter the verification code to reset your Password.",'res':true});
+                            callback({'result':true, 'data':{'mess':"Check your Email and enter the verification code to reset your Password."}});
                         }
                     });
                 } else{
-                    callback({'response':"Email Does not Exists.",'res':false});
+                    callback({'result':false, 'data':{'mess':"Email Does not Exists."}});
                 }
             });
         });
@@ -135,13 +135,13 @@ exports.reset_pass_change = function(email, code, npass, callback) {
                         if(err)
                             return console.error('error running query', err);
 
-                        callback({'response':"Password Sucessfully Changed",'res':true});
+                        callback({'result':true, 'data':{'mess':"Password Sucessfully Changed."}});
                     })
                 } else {
-                    callback({'response':"Code does not match. Try Again !",'res':false});
+                    callback({'result':false, 'data':{'mess':"Code does not match. Try Again !"}});
                 }
             } else {
-                callback({'response':"Error",'res':true});
+                callback({'result':false, 'data':{'mess':"Email is not exist"}});
             }
         })
     });
