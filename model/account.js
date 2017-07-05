@@ -33,10 +33,10 @@ exports.register = function(email, password, callback) {
                     if(err) {
                         return console.error('error running query', err);
                     }
-                    callback({'response': 'Successfully Registered', 'res': true});
+                    callback({'result':true, 'data':{'mess':"Successfully Registered"}});
                 });
             } else {
-                callback({'response': "Email already Registered", 'res': false});
+                callback({'result':false, 'data':{'mess':"Email already Registered"}});
             }
         });
     });

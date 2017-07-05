@@ -32,22 +32,23 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    socket.on('RegistNewAccount', function (account_detail) {
-        var json = JSON.parse(account_detail);
-        account.register(json["Email"],json["Password"],function (res){
-            socket.emit('ResultRegistNewAccount', res);
+    socket.on('request create account', function (email, pass) {
+        account.register(email, pass, function (res) {
+            socket.emit('response create account', res);
         });
     });
 
     //reset password
     socket.on('request reset password', function (email) {
         account.reset_pass_init(email, function (res) {
-           console.log(res);
+            console.log(res);
+            socket.emit('response reset password', res);
         });
     });
     socket.on('request change password', function (email, code, npass) {
         account.reset_pass_change(email, code, npass, function (res) {
             console.log(res);
+            socket.emit('response change password', res);
         });
     });
     //endregion
