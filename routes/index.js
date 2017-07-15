@@ -7,37 +7,39 @@ server.listen(process.env.port||5000);
 
 var account = require('../model/account');
 var garage = require('../model/garage');
+var constant = require('../other/constant');
 
 console.log("Start server");
+
 io.sockets.on('connection', function (socket) {
     console.log("someone connected");
-
     //region ACCOUNT
     //Login request
-    socket.on('CheckEmailAndPassword', function (account_detail) {
+    socket.on('check_email_and_password', function (account_detail) {
         var json = JSON.parse(account_detail);
         account.login(json["Email"],json["Password"],function (res){
             socket.emit('ResultLogin', res);
         });
     });
 
-    socket.on('request create account', function (email, pass) {
+    //Request create new account
+    socket.on('request_create_account', function (email, pass) {
         account.register(email, pass, function (res) {
-            socket.emit('response create account', res);
+            socket.emit('response_create_account', res);
         });
     });
 
     //reset password
-    socket.on('request reset password', function (email) {
+    socket.on('request_reset_password', function (email) {
         account.reset_pass_init(email, function (res) {
             console.log(res);
-            socket.emit('response reset password', res);
+            socket.emit('response_reset_password', res);
         });
     });
-    socket.on('request change password', function (email, code, npass) {
+    socket.on('request_change_password', function (email, code, npass) {
         account.reset_pass_change(email, code, npass, function (res) {
             console.log(res);
-            socket.emit('response change password', res);
+            socket.emit('response_change_password', res);
         });
     });
     //endregion
