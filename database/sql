@@ -1,52 +1,142 @@
-CREATE TABLE `account` (
-  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
-  `hash_password` varchar(150) NOT NULL,
-  `salt` varchar(50) NOT NULL,
-  `token` varchar(150) NOT NULL,
-  `role_number` int(11) NOT NULL DEFAULT '1',
-  `user_id` int(11) NOT NULL,
-  `reset_str` varchar(50) NOT NULL
-)
+CREATE TABLE `Garage` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`name` varchar(100) NOT NULL,
+	`address` varchar(100) NOT NULL,
+	`totalSlot` int NOT NULL,
+	`busySlot` int NOT NULL,
+	`locationX` double NOT NULL,
+	`locationY` double NOT NULL,
+	`accountID` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
 
-INSERT INTO `account` (`id`, `email`, `hash_password`, `salt`, `token`, `role_number`, `user_id`) VALUES
-(1, 'ninhhuongdst@gmail.com', 'd1a7aec9908f1ac3d05d0b3fbaf3948fb1f42fbc1b91255f9ebb0f995d26e957c2e44037769c6a2a7aa5aa61597001bed8427c4b427dac8e6f879c95835df9c6', 'g1iue6zx3oa5vg5ksj1hz4mz6emgws4', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 0, '');
+CREATE TABLE `Account` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+ 	`email` varchar(50) NOT NULL,
+  	`hash_password` varchar(150) NOT NULL,
+  	`salt` varchar(50) NOT NULL,
+  	`token` varchar(150) NOT NULL,
+	`userID` int DEFAULT NULL,
+	`roleID` int NOT NULL DEFAULT '4',
+	`isVerify` boolean NOT NULL,
+	PRIMARY KEY (`id`)
+);
 
-CREATE TABLE `garage` (
-  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `picture` text NOT NULL,
-  `total_slot` int(11) NOT NULL,
-  `busy_slot` int(11) NOT NULL,
-  `booking_slot` int(11) NOT NULL,
-  `location_x` text NOT NULL,
-  `location_y` text NOT NULL,
-  `location_z` text NOT NULL
-)
+CREATE TABLE `Role` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`name` varchar(50) NOT NULL,
+	PRIMARY KEY (`id`)
+);
 
-INSERT INTO `garage` (`name`, `address`, `picture`, `total_slot`, `busy_slot`, `booking_slot`, `location_x`, `location_y`, `location_z`) VALUES
-('Hoa', 'Dong Da', 'picture', 53, 10, 7, 'x', 'y', 'z');
+CREATE TABLE `User` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`firstName` varchar(100),
+	`lastName` varchar(100),
+	`phone` varchar(100),
+	`dateOfBirth` varchar(100),
+	`address` varchar(100),
+	PRIMARY KEY (`id`)
+);
 
-CREATE TABLE `ticket` (
-  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
-  `garage_id` int(11) NOT NULL,
-  `booked_time` datetime NOT NULL,
-  `is_expired` tinyint(1) NOT NULL,
-  `checkin_time` datetime DEFAULT NULL,
-  `checkout_time` datetime DEFAULT NULL,
-    CONSTRAINT FOREIGN KEY (`garage_id`) REFERENCES `garage` (`id`),
-    CONSTRAINT FOREIGN KEY (`account_id`) REFERENCES `account` (`id`)
-)
+CREATE TABLE `Booking` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`carID` int NOT NULL,
+	`garageID` int NOT NULL,
+	`timeBooked` DATETIME NOT NULL,
+	`timeGoIn` DATETIME,
+	`timeGoOut` DATETIME,
+	`bookStatus` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
 
-INSERT INTO `ticket` (`account_id`, `garage_id`, `booked_time`, `is_expired`, `checkin_time`, `checkout_time`) VALUES
-(1, 1, '2017-05-25 03:05:15', 0, '', '');
+CREATE TABLE `Car` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`accountID` int NOT NULL,
+	`vehicleNumber` varchar(50) NOT NULL,
+	PRIMARY KEY (`id`)
+);
 
-CREATE TABLE `token` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `garage_id` int(11) NOT NULL,
-  `token_number` varchar(4) NOT NULL,
-  `is_expired` tinyint(1) NOT NULL DEFAULT 0,
-    CONSTRAINT  FOREIGN KEY (`garage_id`) REFERENCES `garage` (`id`)
-)
+CREATE TABLE `Security` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`accountID` int NOT NULL,
+	`garageID` int NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
+ALTER TABLE `Garage` ADD CONSTRAINT `Garage_fk0` FOREIGN KEY (`accountID`) REFERENCES `Account`(`id`);
+
+ALTER TABLE `Account` ADD CONSTRAINT `Account_fk0` FOREIGN KEY (`userID`) REFERENCES `User`(`id`);
+
+ALTER TABLE `Account` ADD CONSTRAINT `Account_fk1` FOREIGN KEY (`roleID`) REFERENCES `Role`(`id`);
+
+ALTER TABLE `Booking` ADD CONSTRAINT `Booking_fk0` FOREIGN KEY (`carID`) REFERENCES `Car`(`id`);
+
+ALTER TABLE `Booking` ADD CONSTRAINT `Booking_fk1` FOREIGN KEY (`garageID`) REFERENCES `Garage`(`id`);
+
+ALTER TABLE `Car` ADD CONSTRAINT `Car_fk0` FOREIGN KEY (`accountID`) REFERENCES `Account`(`id`);
+
+ALTER TABLE `Security` ADD CONSTRAINT `Security_fk0` FOREIGN KEY (`accountID`) REFERENCES `Account`(`id`);
+
+ALTER TABLE `Security` ADD CONSTRAINT `Security_fk1` FOREIGN KEY (`garageID`) REFERENCES `Garage`(`id`);
+
+
+INSERT INTO `user`(`firstName`, `lastName`, `phone`, `dateOfBirth`, `address`)
+VALUES ('Ninh','Huong','0123456789','20/12/1994',''),
+ ("Colton","Waters","2209-584-801","21/06/2018","P.O. Box 979, 2348 Risus. Rd."),
+("Walter","Kelley","1018-990-132","28/03/2017","1602 Vehicula. St."),
+("Sade","Figueroa","7596-935-851","15/09/2017","3576 Purus. Avenue"),
+("Cleo","Allen","8256-163-742","13/09/2016","7838 Pellentesque Road"),
+("Maile","Prince","2864-246-798","10/06/2017","Ap #790-9230 Bibendum St."),
+("Kelly","Pugh","3611-876-394","25/08/2017","182-2992 Nullam Rd."),
+("Nyssa","Sosa","4740-578-135","07/09/2017","Ap #466-3030 Magnis Rd."),
+("Griffith","Blair","0912-188-498","07/11/2017","945-7748 Arcu Street"),
+("Shafira","Lynn","9277-560-504","25/11/2017","331-3709 Quisque Ave"),
+("Felix","Moss","6296-111-746","25/04/2018","461-4379 Elementum Rd.");
+
+INSERT INTO `role`(`name`)
+VALUES ('Super Admin'), ('Admin'), ('Security'), ('User');
+
+INSERT INTO `account`(`email`, `hash_password`, `salt`, `token`, `userID`, `roleID`, `isVerify`)
+VALUES ( 'ninhhuongdst@gmail.com', 'd1a7aec9908f1ac3d05d0b3fbaf3948fb1f42fbc1b91255f9ebb0f995d26e957c2e44037769c6a2a7aa5aa61597001bed8427c4b427dac8e6f879c95835df9c6', 'g1iue6zx3oa5vg5ksj1hz4mz6emgws4', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 1, true),
+('sidq@gmail.com','cf2b97dd8da3cc20868fe8f5d0739c7ca4e94ed99ed2ffeb92aedebf90af351120ec98fa5edbfe958c7ae5117718272e5e53ccc1a6f2f7bcdc40d1b963c1a3e4','uklli9fmf5rc1hwzp1r8qrev2vo16b8','f64a74704282f9a1d9f8de3e807b20edd75744271a35584bc0367d7e0d8d3bf18382fed6e7a8f292644ef28d65814629c036dea29b2399fb72ab32eea6f9280b',2,2,true),
+('tuanna@gmail.com','489a0d37215d557e99e4be85cd1122bfe4c9fef0c97fa5e8248e1f8192f36fc12870469c6ac45e463bf19f743878c6cf9c9d6453df9fc804dfc84d3cff323566','qhen4x6gyio1r5qcmx89rp2d46m8t5q','b22336f265bf8514658b68f6e611e57a26ba179443defa0a5b25eaf5b963be8178b7c3e97f8912721897968356224a7251b5b481c4e01540629382dc347fcc80',3,3,true),
+('longhd@gmail.com','4a6740d8745a4ac28a38e5a5661b6e8030034520959d08975b822eb7132ab175bdc9ff25ee875efade3b810d66a308178e27f3d20916887c1f2f42e01ca7f3ba','gh5uldtkgu10djh1ygo6f514p3ckv2i','7bdb75a32d2dce0050eda35d9141acd67c153c51b62805c5537f65289554d2c89c542bf8836bf7b60c25e89b8b2effbe4bdf082ae6bd784b477b51b2838b3179',4,4,true),
+('longhd1@gmail.com','a02eb17c189f8f7a418859f70f220042146824d1acc00469f7554c61dd96be9c6d573e2d20f4346b441468212218cc2c112024b1d9f3fc9e20709c640a826896','6hsxinrqxxz8xzbncd5mu6k1htmobhc','e7d35e8b8f17ff3b63949a9cba3fc6825f7349a47dc6e4833c93d2bd002cd5889ebdf761e7fecec90e4b9c209f9efe7a0e10731b4ec7daae3ae19b873af84e6f',5,4,true),
+('longhd2@gmail.com','7ff5bec31b91afe88de754b7bdf05cdd39e278d544c562326ddc83e6cdbe1d2e6cb9ef79fba8dc45d2fb17068d2e5393e62598a69bba39079639a0233798bc45','d5fo6z29vxdcyncy9m7is0dwo87tb4g','263f01bdba5d9003d7cd7a528f11418486c5643332f5774d8bb8e98dc3afaa652d0117586dd4700d314b6c15467abf4fe6fa12e9fd5b1bb06d1ecac31eee95f5',4,4,true),
+('longhd3@gmail.com','b2c6131e1d48be11fef13633d45cf06ed00fd91f688afae30e029ce3eea33629869dc9c3db4c294f45e222c430a05e4df03dbe89f44df000324f82fe991cd7bf','dyzmdxtipyf8jz9zel1fl4uwlay592m','178a331f38c89808a9fa6249ac26568e5b1ffb78adb09b5573eac8ec87cb7c779fe0ee8a24142bf2414122ccc90be83896373c8161762e7e192602782e556ef4',4,4,true);
+
+INSERT INTO car (accountID,vehicleNumber) VALUES (7,"717179"),(7,"50337"),(5,"4011LQ"),(7,"679142"),(6,"79494"),(7,"13154"),(5,"639674"),(7,"1370"),(7,"44194"),(7,"67450");
+INSERT INTO car (accountID,vehicleNumber) VALUES (7,"7494"),(5,"2704PE"),(6,"2763"),(7,"10170"),(7,"345704"),(7,"59509"),(7,"9644"),(5,"364217"),(7,"145917"),(5,"959474");
+INSERT INTO car (accountID,vehicleNumber) VALUES (6,"96379"),(7,"1260"),(5,"39570"),(7,"22023"),(5,"20713"),(7,"344093"),(6,"33037"),(6,"79307"),(7,"07363"),(7,"79716");
+INSERT INTO car (accountID,vehicleNumber) VALUES (6,"44425"),(7,"17-909"),(5,"73317"),(5,"142777"),(5,"67-651"),(6,"R7 5JP"),(7,"2036"),(5,"3777"),(7,"15-137"),(5,"6747");
+
+
+INSERT INTO Garage (name,address,totalSlot,busySlot,locationX,locationY,accountID)
+VALUES ("Ac Feugiat Non Institute","969-1424 Primis Rd.",80,18,21.027629, 105.778612,2),
+("Tempus PC","3661 Enim Ave",62,29,21.013842, 105.528602,2),
+("Tristique Ac Inc.","Ap #858-1988 Nec, Road",65,27,21.011989, 105.527508,2),
+("Sagittis Company","Ap #413-218 Dolor, St.",64,9,21.011108, 105.523056,2),
+("Orci Ut Limited","Ap #522-315 Montes, Avenue",62,21,21.010295, 105.525819,2),
+("Nulla Consulting","439-874 Phasellus St.",79,29,21.021959, 105.549691,2),
+("Sed Inc.","Ap #600-4392 Orci. Avenue",72,7,21.021328, 105.551054,2),
+("Egestas Fusce Inc.","Ap #964-9822 Eu Rd.",72,12,21.019966, 105.550850,2),
+("Eu Associates","Ap #158-1260 Erat, Avenue",68,32,21.019325, 105.552073,2),
+("Adipiscing Lobortis Risus Consulting","976-4303 Magnis Rd.",50,4,0,0,2);
+
+INSERT INTO Security (garageID,accountID) VALUES (8,3),(6,3),(3,4),(8,5),(10,4),(5,3),(8,3),(1,3),(1,4),(2,3);
+INSERT INTO Security (garageID,accountID) VALUES (4,6),(9,5),(10,4),(10,3),(2,3),(10,3),(7,3),(2,5),(7,3);
+
+
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (2,9,"01/10/2015","30/10/2016","05/07/2017",1),(9,5,"27/10/2013","30/04/2017","05/01/2018",1),(6,1,"04/08/2014","22/10/2016","04/09/2016",1),(1,1,"04/08/2013","30/08/2017","28/05/2018",2),(10,3,"13/05/2014","21/06/2018","25/03/2018",1),(4,5,"10/04/2014","03/12/2017","27/01/2018",0),(9,3,"27/02/2016","16/09/2016","22/02/2018",1),(6,10,"09/12/2015","06/06/2018","29/04/2018",1),(3,1,"23/08/2015","01/06/2018","23/06/2018",1),(1,4,"15/10/2015","29/01/2018","20/04/2018",1);
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (5,4,"15/04/2015","25/03/2017","07/07/2017",2),(8,5,"17/09/2013","08/01/2018","15/10/2017",0),(4,8,"20/11/2014","03/12/2016","05/08/2017",1),(10,10,"24/04/2014","02/07/2017","26/10/2016",1),(3,8,"25/06/2014","10/01/2017","24/05/2018",1),(3,7,"07/09/2013","27/05/2017","01/04/2017",2),(1,6,"05/08/2015","27/09/2017","28/11/2016",2),(1,1,"04/02/2016","30/11/2016","12/04/2018",1),(9,10,"26/07/2015","12/11/2017","10/08/2017",2),(8,9,"11/12/2013","27/02/2017","31/12/2016",1);
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (4,2,"16/03/2015","23/10/2016","15/03/2018",2),(1,7,"14/12/2013","13/08/2016","21/06/2018",0),(2,2,"04/02/2015","20/02/2017","22/09/2016",1),(5,8,"08/09/2014","18/06/2018","21/11/2017",2),(3,8,"18/11/2015","19/11/2016","27/06/2018",2),(2,4,"05/08/2014","17/12/2017","24/02/2018",0),(9,7,"06/04/2016","09/10/2017","06/07/2018",1),(8,4,"12/07/2016","31/08/2017","04/09/2016",0),(7,3,"21/07/2013","05/03/2018","18/02/2018",2),(8,4,"29/04/2014","02/12/2016","04/11/2017",0);
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (5,6,"04/02/2016","08/10/2016","03/02/2018",2),(8,3,"07/11/2013","21/06/2018","02/01/2017",0),(7,10,"13/02/2016","31/01/2018","15/05/2017",1),(2,2,"27/03/2014","26/08/2016","10/09/2017",2),(8,1,"16/04/2016","27/02/2018","28/05/2018",1),(2,10,"03/06/2014","04/08/2017","02/07/2017",0),(1,7,"11/05/2016","19/10/2016","13/08/2016",1),(1,8,"18/12/2015","18/02/2017","14/10/2016",1),(4,2,"19/12/2013","12/07/2018","01/05/2017",1),(5,6,"08/02/2015","13/02/2017","11/01/2018",0);
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (8,10,"10/08/2014","19/10/2017","04/03/2018",2),(8,6,"04/09/2013","11/03/2017","25/03/2018",2),(3,6,"23/10/2015","30/10/2017","25/06/2017",1),(2,1,"01/07/2016","04/02/2017","30/01/2018",0),(8,8,"14/02/2016","03/09/2016","12/07/2017",1),(10,1,"05/02/2016","21/05/2018","29/12/2017",2),(9,7,"14/11/2013","01/03/2018","22/03/2017",0),(10,3,"29/06/2015","27/03/2018","06/03/2017",1),(9,7,"01/03/2016","20/08/2016","30/10/2017",0),(10,9,"03/12/2014","01/09/2016","18/10/2017",2);
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (2,8,"03/10/2014","25/08/2017","08/01/2017",2),(4,1,"16/06/2015","28/10/2017","04/07/2018",1),(8,1,"29/03/2016","10/02/2018","01/01/2018",1),(2,9,"25/11/2015","17/02/2017","20/06/2017",1),(4,3,"03/06/2015","03/08/2017","09/12/2016",0),(5,1,"05/08/2013","21/09/2017","08/11/2016",0),(9,9,"19/05/2015","21/07/2016","26/11/2017",1),(1,1,"15/12/2015","15/10/2017","21/01/2017",0),(6,5,"13/10/2013","10/04/2018","04/09/2017",1),(4,9,"30/10/2014","06/07/2017","20/05/2017",2);
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (6,5,"10/05/2014","29/05/2017","19/07/2016",1),(4,3,"26/04/2016","27/04/2017","05/06/2018",2),(9,2,"11/05/2014","17/08/2017","18/05/2018",1),(9,7,"25/10/2013","04/03/2017","15/04/2017",0),(2,9,"28/09/2014","06/07/2018","23/05/2018",1),(3,4,"19/05/2015","09/03/2018","07/12/2016",1),(1,7,"14/11/2015","21/11/2016","02/12/2016",2),(3,10,"22/01/2015","03/03/2017","03/06/2017",0),(6,1,"29/02/2016","03/02/2018","01/03/2017",1),(7,3,"06/10/2014","29/06/2017","23/05/2017",2);
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (2,7,"30/01/2016","16/03/2017","09/10/2016",1),(2,7,"23/05/2016","13/05/2018","06/03/2017",0),(9,3,"15/07/2014","23/03/2017","10/07/2018",1),(4,7,"10/04/2016","20/05/2018","25/08/2016",1),(7,1,"22/06/2016","07/02/2018","04/06/2018",2),(5,3,"24/10/2014","08/07/2017","29/01/2017",0),(10,4,"09/11/2015","23/09/2017","27/04/2017",1),(3,2,"03/05/2014","05/03/2018","06/01/2018",2),(2,4,"27/04/2015","14/11/2017","13/07/2017",1),(6,8,"15/05/2015","03/03/2018","03/09/2016",1);
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (4,3,"22/07/2013","27/03/2018","13/08/2016",1),(8,7,"31/01/2014","04/10/2016","13/01/2017",0),(7,4,"07/03/2016","16/03/2018","06/05/2017",2),(2,4,"29/03/2016","30/09/2017","22/01/2018",2),(7,4,"20/07/2013","31/07/2016","26/08/2017",2),(8,1,"22/09/2015","14/01/2018","15/12/2016",2),(4,5,"25/05/2015","29/08/2017","22/01/2017",1),(3,8,"05/02/2014","09/06/2017","21/01/2017",2),(6,6,"29/09/2015","19/10/2017","13/07/2018",1),(5,3,"16/03/2016","21/11/2016","21/07/2016",2);
+INSERT INTO Booking (carID,garageID,timeBooked,timeGoIn,timeGoOut,bookStatus) VALUES (2,5,"31/10/2015","17/04/2018","04/10/2017",0),(8,1,"18/02/2016","16/08/2017","29/10/2017",0),(10,8,"30/04/2016","22/05/2017","26/06/2018",0),(6,9,"25/10/2013","18/01/2018","12/01/2017",0),(4,3,"04/04/2014","14/06/2017","07/10/2016",0),(6,10,"15/11/2014","22/05/2018","05/10/2017",2),(4,2,"18/12/2014","22/02/2018","15/11/2016",0),(3,3,"05/08/2014","28/07/2017","27/11/2017",0),(2,3,"20/10/2013","14/02/2018","02/08/2017",0),(7,6,"09/12/2014","20/03/2017","27/09/2016",0);
+
+
+
