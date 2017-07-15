@@ -7,51 +7,209 @@ server.listen(process.env.port||5000);
 
 var account = require('../model/account');
 var garage = require('../model/garage');
-var constant = require('../other/constant');
+var car = require('../model/car');
+var xuser = require('../model/user');
+var booking = require('../model/booking');
+var security = require('../model/security');
 
+var constant = require('../other/constant');
 console.log("Start server");
 
 io.sockets.on('connection', function (socket) {
     console.log("someone connected");
+    socket.on('just_for_test', function (account_detail) {
+        console.log('test_emit_func');
+    });
+
     //region ACCOUNT
     //Login request
-    socket.on('check_email_and_password', function (account_detail) {
+    socket.on(constant.CONST.REQUEST_LOGIN_WITH_EMAIL_AND_PASS, function (account_detail) {
         var json = JSON.parse(account_detail);
         account.login(json["Email"],json["Password"],function (res){
-            socket.emit('result_login', res);
+            socket.emit(constant.CONST.RESPONSE_LOGIN_WITH_EMAIL_AND_PASS, res);
         });
     });
 
     //Request create new account
-    socket.on('request_create_account', function (email, pass) {
+    socket.on(constant.CONST.REQUEST_CREATE_NEW_ACCOUNT, function (email, pass) {
         account.register(email, pass, function (res) {
-            socket.emit('response_create_account', res);
+            socket.emit(constant.CONST.RESPONSE_CREATE_NEW_ACCOUNT, res);
         });
     });
 
     //reset password
-    socket.on('request_reset_password', function (email) {
+    socket.on(constant.CONST.REQUEST_RESET_PASSWORD, function (email) {
         account.reset_pass_init(email, function (res) {
             console.log(res);
-            socket.emit('response_reset_password', res);
+            socket.emit(constant.CONST.RESPONSE_RESET_PASSWORD, res);
         });
     });
-    socket.on('request_change_password', function (email, code, npass) {
+
+    socket.on(constant.CONST.REQUEST_CHANGE_PASSWORD, function (email, code, npass) {
         account.reset_pass_change(email, code, npass, function (res) {
             console.log(res);
-            socket.emit('response_change_password', res);
+            socket.emit(constant.CONST.RESPONSE_CHANGE_PASSWORD, res);
         });
     });
     //endregion
 
-
     //region GARAGES
-    socket.on('request_all_garages', function() {
+    socket.on(constant.CONST.REQUEST_GET_ALL_GARAGES, function() {
         garage.getAllGarages(function (res) {
-            socket.emit('response_all_garages', res);
+            socket.emit(constant.CONST.RESPONSE_GET_ALL_GARAGE, res);
         })
     });
     //endregion
+
+    //region CAR
+    socket.on(constant.CONST.REQUEST_ADD_NEW_CAR, function (accountID, vehicleNumber) {
+        car.add(accountID, vehicleNumber, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_CAR, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_REMOVE_CAR, function (vehicleNumber) {
+        car.remove(vehicleNumber, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_REMOVE_CAR, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_CAR_BY_ACCOUNT_ID, function (accountID) {
+        car.findByAccountID(accountID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_CAR_BY_ACCOUNT_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_EDIT_VEHICLE_BY_NUMBER, function (accountID, oldVehicle, newVehicle) {
+        car.updateByVehicle(accountID, oldVehicle, newVehicle, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_EDIT_VEHICLE_BY_NUMBER, res);
+        });
+    });
+    //endregion
+
+    //region USER
+    socket.on(constant.CONST.REQUEST_ADD_NEW_USER, function (firstName, lastName, dob, phone, address) {
+        xuser.add(firstName, lastName, dob, phone, address, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_USER, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_REMOVE_USER_BY_ID, function (id) {
+        xuser.remove(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_REMOVE_USER_BY_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_USER_BY_ID, function (id) {
+        xuser.findByUserID(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_USER_BY_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_EDIT_USER_BY_ID, function (id,firstName, lastName, dob, phone, address) {
+        xuser.updateByID(id,firstName, lastName, dob, phone, address, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_EDIT_USER_BY_ID, res);
+        });
+    });
+    //endregion
+
+    //region BOOKING
+    socket.on(constant.CONST.REQUEST_ADD_NEW_BOOKING, function (carID, garageID, timeBooked) {
+        booking.add(carID, garageID, timeBooked, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_BOOKING, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_REMOVE_BOOKING_BY_ID, function (id) {
+        booking.removeByID(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_REMOVE_BOOKING_BY_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_BOOKING_BY_ID, function (id) {
+        booking.findByID(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_BOOKING_BY_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_BOOKING_BY_CAR_ID, function (id) {
+        booking.findByCarID(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_BOOKING_BY_CAR_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_BOOKING_BY_GARAGE_ID, function (id) {
+        booking.findByGagareID(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_BOOKING_BY_GARAGE_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_EDIT_BOOKING_TIME_GO_IN_BY_ID, function (id, timeGoIn) {
+        booking.updateByIDTimeGoIn(id, timeGoIn, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_EDIT_BOOKING_TIME_GO_IN_BY_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_EDIT_BOOKING_TIME_GO_OUT_BY_ID, function (id, timeGoOut) {
+        booking.updateByIDTimeGoOut(id, timeGoOut, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_EDIT_BOOKING_TIME_GO_OUT_BY_ID, res);
+        });
+    });
+    //endregion
+
+    //region SECURITY
+    socket.on(constant.CONST.REQUEST_ADD_NEW_SECURITY, function (accountID, garageID) {
+        security.add(accountID, garageID,  function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_SECURITY, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_REMOVE_SECURITY, function (accountID, garageID) {
+        security.remove(accountID, garageID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_SECURITY_BY_ACCOUNT_ID, function (accountID) {
+        security.findByAccountID(accountID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_SECURITY_BY_ACCOUNT_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_SECURITY_BY_GARAGE_ID, function (garageID) {
+        security.findByGagareID(garageID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_SECURITY_BY_GARAGE_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_EDIT_SECURITY_BY_ID, function (id, newAccountID,newGarageID) {
+        security.updateByID(id, newAccountID,newGarageID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_EDIT_SECURITY_BY_ID, res);
+        });
+    });
+
+    //endregion
+
 });
 
 /* GET home page. */

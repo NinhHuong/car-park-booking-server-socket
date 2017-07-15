@@ -46,3 +46,25 @@ exports.getAllGarages = function (callback) {
         });
     });
 };
+
+exports.getGaragesByID = function (id, callback) {
+    db.getConnection(function (err, client) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+
+        var sql = "SELECT * FROM GARAGE WHERE id = '" + id + "'";
+        if (err) {
+            return console.error('error running query ticket', err);
+        }
+        client.query(sql, function (err, result) {
+            if (err) {
+                return console.log('error running query garage', err);
+            }
+
+            console.log(result);
+            callback({'result': true, "Garage": result});
+        });
+    });
+};
+
