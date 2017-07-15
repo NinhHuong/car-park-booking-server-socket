@@ -18,7 +18,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('check_email_and_password', function (account_detail) {
         var json = JSON.parse(account_detail);
         account.login(json["Email"],json["Password"],function (res){
-            socket.emit('ResultLogin', res);
+            socket.emit('result_login', res);
         });
     });
 
