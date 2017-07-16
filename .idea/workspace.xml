@@ -4,11 +4,6 @@
     <list default="true" id="a76e9af1-7c5a-4158-814b-b7867bc0847c" name="Default" comment="- account: forgot password">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/database/sql" afterPath="$PROJECT_DIR$/database/sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/account.js" afterPath="$PROJECT_DIR$/model/account.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/garage.js" afterPath="$PROJECT_DIR$/model/garage.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/role.js" afterPath="$PROJECT_DIR$/model/role.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/other/constant.js" afterPath="$PROJECT_DIR$/other/constant.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/routes/index.js" afterPath="$PROJECT_DIR$/routes/index.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -36,7 +31,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="418">
@@ -115,11 +110,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sql" pinned="false" current-in-tab="false">
+      <file leaf-file-name="sql" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/database/sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="123" column="53" lean-forward="false" selection-start-line="123" selection-start-column="53" selection-end-line="123" selection-end-column="53" />
+            <state relative-caret-position="323">
+              <caret line="19" column="26" lean-forward="false" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -190,11 +185,11 @@
         <option value="$PROJECT_DIR$/model/booking.js" />
         <option value="$PROJECT_DIR$/model/security.js" />
         <option value="$PROJECT_DIR$/other/constant.js" />
-        <option value="$PROJECT_DIR$/database/sql" />
         <option value="$PROJECT_DIR$/model/garage.js" />
         <option value="$PROJECT_DIR$/model/role.js" />
         <option value="$PROJECT_DIR$/model/account.js" />
         <option value="$PROJECT_DIR$/routes/index.js" />
+        <option value="$PROJECT_DIR$/database/sql" />
       </list>
     </option>
   </component>
@@ -429,7 +424,7 @@
       <workItem from="1497370932277" duration="871000" />
       <workItem from="1498538288115" duration="11397000" />
       <workItem from="1500143296631" duration="205000" />
-      <workItem from="1500172075668" duration="12736000" />
+      <workItem from="1500172075668" duration="13047000" />
     </task>
     <task id="LOCAL-00001" summary="- update sql file">
       <created>1500110267961</created>
@@ -442,7 +437,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80064000" />
+    <option name="totallyTimeSpent" value="80375000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -768,14 +763,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="123" column="53" lean-forward="false" selection-start-line="123" selection-start-column="53" selection-end-line="123" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/garage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="310">
@@ -790,20 +777,6 @@
           <caret line="29" column="13" lean-forward="true" selection-start-line="29" selection-start-column="13" selection-end-line="29" selection-end-column="13" />
           <folding>
             <element signature="e#0#43#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/other/constant.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="10" column="34" lean-forward="false" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#43#0" expanded="false" />
-            <element signature="e#1391#1403#0" expanded="false" />
-            <element signature="e#1944#1957#0" expanded="false" />
-            <element signature="e#2434#2450#0" expanded="false" />
-            <element signature="e#3489#3506#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -830,6 +803,28 @@
             <element signature="e#7883#7900#0" expanded="false" />
             <element signature="e#9329#9342#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/other/constant.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="10" column="34" lean-forward="false" selection-start-line="10" selection-start-column="34" selection-end-line="10" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#43#0" expanded="false" />
+            <element signature="e#1391#1403#0" expanded="false" />
+            <element signature="e#1944#1957#0" expanded="false" />
+            <element signature="e#2434#2450#0" expanded="false" />
+            <element signature="e#3489#3506#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="26" lean-forward="false" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>

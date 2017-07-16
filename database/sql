@@ -17,8 +17,9 @@ CREATE TABLE `Account` (
   	`salt` varchar(50) NOT NULL,
   	`token` varchar(150) NOT NULL,
 	`userID` int DEFAULT NULL,
-	`roleID` int NOT NULL DEFAULT '4',
+	`roleID` int NOT NULL,
 	`isVerify` boolean NOT NULL,
+	'reset_str' varchar(6) DEFAULT NULL,
 	PRIMARY KEY (`id`)
 );
 
