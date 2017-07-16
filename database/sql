@@ -7,19 +7,22 @@ CREATE TABLE `Garage` (
 	`locationX` double NOT NULL,
 	`locationY` double NOT NULL,
 	`accountID` int NOT NULL,
+	`timeStart` DATETIME NOT NULL,
+	`timeEnd` DATETIME NOT NULL,
+	`xStatus` int NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `Account` (
-	`id` int(11) NOT NULL AUTO_INCREMENT,
- 	`email` varchar(50) NOT NULL,
-  	`hash_password` varchar(150) NOT NULL,
-  	`salt` varchar(50) NOT NULL,
-  	`token` varchar(150) NOT NULL,
-	`userID` int DEFAULT NULL,
+	`id` int NOT NULL AUTO_INCREMENT,
+	`email` varchar(100) NOT NULL,
+	`hash_password` varchar(100) NOT NULL,
+	`salt` varchar(100) NOT NULL,
+	`token` varchar(100) NOT NULL,
+	`userID` int,
 	`roleID` int NOT NULL,
-	`isVerify` boolean NOT NULL,
-	'reset_str' varchar(6) DEFAULT NULL,
+	`isVerify` bool NOT NULL,
+	`reset_str` varchar(6),
 	PRIMARY KEY (`id`)
 );
 
@@ -79,6 +82,8 @@ ALTER TABLE `Car` ADD CONSTRAINT `Car_fk0` FOREIGN KEY (`accountID`) REFERENCES 
 ALTER TABLE `Security` ADD CONSTRAINT `Security_fk0` FOREIGN KEY (`accountID`) REFERENCES `Account`(`id`);
 
 ALTER TABLE `Security` ADD CONSTRAINT `Security_fk1` FOREIGN KEY (`garageID`) REFERENCES `Garage`(`id`);
+
+
 
 
 INSERT INTO `user`(`firstName`, `lastName`, `phone`, `dateOfBirth`, `address`)
