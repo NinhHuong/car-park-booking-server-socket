@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var ip = require('ip');
 var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
@@ -14,10 +15,10 @@ var security = require('../model/security');
 var role = require('../model/role');
 
 var constant = require('../other/constant');
-console.log("Start server");
+console.log("Start server: "+ ip.address()+":5000");
 
 io.sockets.on('connection', function (socket) {
-    console.log("someone connected");
+    console.log("ID connection: "+ socket.id);
     socket.on('just_for_test', function (account_detail) {
         console.log('test_emit_func');
     });
@@ -266,6 +267,10 @@ io.sockets.on('connection', function (socket) {
     });
 
     //endregion
+
+    socket.on('disconnect', function() {
+        console.log("ID disconnect: " + socket.id);
+    });
 });
 
 /* GET home page. */
