@@ -17,14 +17,22 @@ io.sockets.on('connection', function (socket) {
     //Login request
     socket.on('check_email_and_password', function (account_detail) {
         var json = JSON.parse(account_detail);
-        account.login(json["Email"],json["Password"],function (res){
+        account.login(json["email"],json["password"],function (res){
             socket.emit('result_login', res);
+        });
+    });
+	
+	//Request salt string
+    socket.on('request_get_salt', function (email) {
+        account.login_request(email, function (res) {
+            socket.emit('response_get_salt', res);
         });
     });
 
     //Request create new account
-    socket.on('request_create_account', function (email, pass) {
-        account.register(email, pass, function (res) {
+    socket.on('request_create_account', function (rigister_detail) {
+		var json = JSON.parse(rigister_detail);
+        account.register(json["email"], json["password"], json["salt"], json["roleID"], function (res) {
             socket.emit('response_create_account', res);
         });
     });
