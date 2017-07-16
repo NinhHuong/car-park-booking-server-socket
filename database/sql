@@ -111,17 +111,17 @@ INSERT INTO car (accountID,vehicleNumber) VALUES (6,"96379"),(7,"1260"),(5,"3957
 INSERT INTO car (accountID,vehicleNumber) VALUES (6,"44425"),(7,"17-909"),(5,"73317"),(5,"142777"),(5,"67-651"),(6,"R7 5JP"),(7,"2036"),(5,"3777"),(7,"15-137"),(5,"6747");
 
 
-INSERT INTO Garage (name,address,totalSlot,busySlot,locationX,locationY,accountID)
-VALUES ("Ac Feugiat Non Institute","969-1424 Primis Rd.",80,18,21.027629, 105.778612,2),
-("Tempus PC","3661 Enim Ave",62,29,21.013842, 105.528602,2),
-("Tristique Ac Inc.","Ap #858-1988 Nec, Road",65,27,21.011989, 105.527508,2),
-("Sagittis Company","Ap #413-218 Dolor, St.",64,9,21.011108, 105.523056,2),
-("Orci Ut Limited","Ap #522-315 Montes, Avenue",62,21,21.010295, 105.525819,2),
-("Nulla Consulting","439-874 Phasellus St.",79,29,21.021959, 105.549691,2),
-("Sed Inc.","Ap #600-4392 Orci. Avenue",72,7,21.021328, 105.551054,2),
-("Egestas Fusce Inc.","Ap #964-9822 Eu Rd.",72,12,21.019966, 105.550850,2),
-("Eu Associates","Ap #158-1260 Erat, Avenue",68,32,21.019325, 105.552073,2),
-("Adipiscing Lobortis Risus Consulting","976-4303 Magnis Rd.",50,4,0,0,2);
+INSERT INTO garage (name,address,totalSlot,busySlot,locationX,locationY,accountId,timeStart,timeEnd,xStatus)
+VALUES ("Elit Etiam Laoreet Industries","P.O. Box 521, 2035 Integer Road",48,30,21.027629, 105.778612,1,"2018-02-13 22:12:57","2018-06-18 08:32:26",3),
+("Risus Duis A Consulting","971-8579 Metus Av.",48,19,21.013842, 105.528602,1,"2016-10-10 13:32:06","2017-11-02 22:02:01",3),
+("Pede Nunc Sed Company","572-5408 Consequat Street",48,22,21.011989, 105.527508,1,"2017-01-17 13:49:12","2016-07-31 00:44:35",1),
+("Rhoncus Foundation","P.O. Box 397, 545 Auctor. Road",43,15,21.011108, 105.523056,2,"2018-02-22 07:07:24","2017-11-14 03:39:15",2),
+("Odio A PC","5938 Enim. Street",49,30,21.010295, 105.525819,3,"2018-04-01 15:14:21","2018-03-13 12:55:44",2),
+("Dictum Cursus Ltd","P.O. Box 553, 8708 Arcu. Rd.",50,27,21.021959, 105.549691,3,"2017-12-24 22:04:47","2017-05-19 01:10:24",3),
+("Laoreet Foundation","Ap #323-870 Malesuada Ave",49,20,21.021328, 105.551054,2,"2018-01-13 00:24:12","2018-05-03 19:36:37",1),
+("Ante Industries","Ap #188-5840 Augue Avenue",33,29,21.019966, 105.550850,1,"2018-02-26 07:11:56","2017-11-09 19:32:18",1),
+("Ut Company","Ap #402-1609 Eget Rd.",32,23,21.019325, 105.552073,1,"2017-12-19 04:54:43","2017-06-21 03:19:53",1)
+("Ut Company","Ap #402-1609 Eget Rd.",32,23,21.019327, 105.552075,1,"2017-12-19 04:54:43","2017-06-21 03:19:53",1);
 
 INSERT INTO Security (garageID,accountID) VALUES (8,3),(6,3),(3,4),(8,5),(10,4),(5,3),(8,3),(1,3),(1,4),(2,3);
 INSERT INTO Security (garageID,accountID) VALUES (4,6),(9,5),(10,4),(10,3),(2,3),(10,3),(7,3),(2,5),(7,3);

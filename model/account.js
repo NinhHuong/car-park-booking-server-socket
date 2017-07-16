@@ -79,8 +79,8 @@ exports.reset_pass_init = function(email, callback) {
         if(err) {
             return console.error('error connecting', err);
         }
-
         var temp = rand(24, 24);
+
         client.query("UPDATE account SET reset_str = '" + temp + "' WHERE email = '" + email +"'", function (err) {
             if(err)
                 return console.error('error running query', err);
@@ -90,11 +90,12 @@ exports.reset_pass_init = function(email, callback) {
                     return console.error('error running query', err);
                 }
                 if(result.length > 0) {
+
                     var mailOptions = {
-                        from: "Ninh Huong <huongntmse03077@fpt.edu.vn>",
+                        from: "Auto Car Park",
                         to: email,
                         subject: "Reset Password ",
-                        text: "Hello " + email + ".\nCode to reset your Password is " + temp + ".\n\nRegards,\nHuongntmse03077,\nAuto Car-Park Team."
+                        text: "Hello " + email + ".\nCode to reset your password is " + temp + ".\n\nRegards,\nAuto Car-Park Team."
                     };
 
                     smtpTransport.sendMail(mailOptions, function(error){
@@ -154,3 +155,4 @@ var smtpTransport = nodemailer.createTransport("SMTP",{
         pass: "quocngay"
     }
 });
+

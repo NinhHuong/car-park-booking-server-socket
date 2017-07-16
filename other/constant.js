@@ -18,9 +18,19 @@ exports.CONST = {
     //endregion
 
     //region GARAGE
+    REQUEST_ADD_NEW_GARAGE : 'request_add_new_garage',
     REQUEST_GET_ALL_GARAGES: 'request_all_garages',
+    REQUEST_GET_GARAGE_BY_ID: 'request_get_garage_by_id',
+    REQUEST_GET_GARAGE_BY_ACCOUNT_ID : 'request_get_garage_by_account_id',
+    REQUEST_EDIT_GARAGE_BY_ID: 'request_edit_garage_by_id',
+    REQUEST_EDIT_STATUS_GARAGE_BY_ID: 'request_edit_status_garage_by_id',
 
+    RESPONSE_ADD_NEW_GARAGE : 'response_add_new_garage',
     RESPONSE_GET_ALL_GARAGE: 'response_all_garages',
+    RESPONSE_GET_GARAGE_BY_ID: 'response_get_garage_by_id',
+    RESPONSE_GET_GARAGE_BY_ACCOUNT_ID : 'response_get_garage_by_account_id',
+    RESPONSE_EDIT_GARAGE_BY_ID: 'response_edit_garage_by_id',
+    RESPONSE_EDIT_STATUS_GARAGE_BY_ID: 'response_edit_staus_garage_by_id',
     //endregion
 
     //region CAR
@@ -80,6 +90,12 @@ exports.CONST = {
     //endregion
 
     //region ROLE
+    REQUEST_ADD_NEW_ROLE: 'request_add_new_role',
+    REQUEST_FIND_ROLE_BY_ID: 'request_find_role_by_id',
+    REQUEST_EDIT_ROLE_BY_ID: 'request_edit_role_by_id',
 
+    RESPONSE_ADD_NEW_ROLE : 'response_add_new_security',
+    RESPONSE_FIND_ROLE_BY_ID: 'response_remove_security',
+    RESPONSE_FIND_ROLE_BY_GARAGE_ID: 'response_find_role_by_id',
     //endregion
 }

@@ -3,7 +3,7 @@ var router = express.Router();
 var app = express();
 var server = require("http").createServer(app);
 var io = require("socket.io").listen(server);
-server.listen(process.env.port||5000);
+server.listen(process.env.port || 5000);
 
 var account = require('../model/account');
 var garage = require('../model/garage');
@@ -11,6 +11,7 @@ var car = require('../model/car');
 var xuser = require('../model/user');
 var booking = require('../model/booking');
 var security = require('../model/security');
+var role = require('../model/role');
 
 var constant = require('../other/constant');
 console.log("Start server");
@@ -25,7 +26,7 @@ io.sockets.on('connection', function (socket) {
     //Login request
     socket.on(constant.CONST.REQUEST_LOGIN_WITH_EMAIL_AND_PASS, function (account_detail) {
         var json = JSON.parse(account_detail);
-        account.login(json["Email"],json["Password"],function (res){
+        account.login(json["Email"], json["Password"], function (res) {
             socket.emit(constant.CONST.RESPONSE_LOGIN_WITH_EMAIL_AND_PASS, res);
         });
     });
@@ -54,11 +55,43 @@ io.sockets.on('connection', function (socket) {
     //endregion
 
     //region GARAGES
-    socket.on(constant.CONST.REQUEST_GET_ALL_GARAGES, function() {
+    socket.on(constant.CONST.REQUEST_ADD_NEW_GARAGE, function (name, address, totalSlot, busySlot, locationX, locationY,accountID, timeStart, timeEnd, statux) {
+        garage.add(name, address, totalSlot, busySlot, locationX, locationY,accountID, timeStart, timeEnd, statux, function (res) {
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_GARAGE, res);
+        })
+    });
+
+    socket.on(constant.CONST.REQUEST_GET_ALL_GARAGES, function () {
         garage.getAllGarages(function (res) {
             socket.emit(constant.CONST.RESPONSE_GET_ALL_GARAGE, res);
         })
     });
+
+    socket.on(constant.CONST.REQUEST_GET_GARAGE_BY_ID, function (id) {
+        garage.getGaragesByID(id, function (res) {
+            socket.emit(constant.CONST.RESPONSE_GET_GARAGE_BY_ID, res);
+        })
+    });
+
+    socket.on(constant.CONST.REQUEST_GET_GARAGE_BY_ACCOUNT_ID, function (id) {
+        garage.getGaragesByAccountID(id, function (res) {
+            socket.emit(constant.CONST.RESPONSE_GET_GARAGE_BY_ACCOUNT_ID, res);
+        })
+    });
+
+    socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id,status) {
+        garage.changeStatusByID(id,status, function (res) {
+            socket.emit(constant.CONST.RESPONSE_EDIT_STATUS_GARAGE_BY_ID, res);
+        })
+    });
+
+
+    socket.on(constant.CONST.REQUEST_EDIT_GARAGE_BY_ID, function (id, name, address, totalSlot, busySlot, locationX, locationY, accountID,timeStart, timeEnd, xstatus) {
+        garage.updateByID(id, name, address, totalSlot, busySlot, locationX, locationY,accountID, timeStart, timeEnd, xstatus, function (res) {
+            socket.emit(constant.CONST.RESPONSE_EDIT_GARAGE_BY_ID, res);
+        })
+    });
+
     //endregion
 
     //region CAR
@@ -113,8 +146,8 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    socket.on(constant.CONST.REQUEST_EDIT_USER_BY_ID, function (id,firstName, lastName, dob, phone, address) {
-        xuser.updateByID(id,firstName, lastName, dob, phone, address, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_USER_BY_ID, function (id, firstName, lastName, dob, phone, address) {
+        xuser.updateByID(id, firstName, lastName, dob, phone, address, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_EDIT_USER_BY_ID, res);
         });
@@ -174,7 +207,7 @@ io.sockets.on('connection', function (socket) {
 
     //region SECURITY
     socket.on(constant.CONST.REQUEST_ADD_NEW_SECURITY, function (accountID, garageID) {
-        security.add(accountID, garageID,  function (res) {
+        security.add(accountID, garageID, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_ADD_NEW_SECURITY, res);
         });
@@ -201,8 +234,8 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    socket.on(constant.CONST.REQUEST_EDIT_SECURITY_BY_ID, function (id, newAccountID,newGarageID) {
-        security.updateByID(id, newAccountID,newGarageID, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_SECURITY_BY_ID, function (id, newAccountID, newGarageID) {
+        security.updateByID(id, newAccountID, newGarageID, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_EDIT_SECURITY_BY_ID, res);
         });
@@ -210,11 +243,34 @@ io.sockets.on('connection', function (socket) {
 
     //endregion
 
+    //region ROLE
+    socket.on(constant.CONST.REQUEST_ADD_NEW_ROLE, function ( name) {
+        role.add( name, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_ROLE, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_ROLE_BY_ID, function (id) {
+        role.findByID(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_ROLE_BY_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_EDIT_ROLE_BY_ID, function (id,name) {
+        role.edit(id,name, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_ROLE_BY_GARAGE_ID, res);
+        });
+    });
+
+    //endregion
 });
 
 /* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express' });
+router.get('/', function (req, res) {
+    res.render('index', {title: 'Express'});
 });
 
 module.exports = router;

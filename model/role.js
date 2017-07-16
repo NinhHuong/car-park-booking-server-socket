@@ -11,13 +11,14 @@ exports.add = function (name, callback) {
         }
 
         var sql = "SELECT * FROM " + table_name + " WHERE name = '" + name + "'";
+        console.log(sql);
         client.query(sql, function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }
 
             if (result.length === 0) {
-                sql = "INSERT INTO " + table_name + " (name) VALUES (" + name + ")";
+                sql = "INSERT INTO " + table_name + " (name) VALUES ('" + name + "')";
                 client.query(sql, function (err) {
                     if (err) {
                         return console.error('error running query', err);
@@ -31,13 +32,13 @@ exports.add = function (name, callback) {
     });
 };
 
-exports.remove = function (name, callback) {
+exports.remove = function (id, callback) {
     db.getConnection(function (err, client) {
         if (err) {
             return console.error('error fetching client from pool', err);
         }
 
-        var sql = "SELECT * FROM " + table_name + " name = '" + name + "'";
+        var sql = "SELECT * FROM " + table_name + " WHERE id = '" + id + "'";
         client.query(sql, function (err, result) {
             if (err) {
                 return console.error('error running query', err);
@@ -58,6 +59,35 @@ exports.remove = function (name, callback) {
         });
     });
 };
+
+exports.edit = function (id,name, callback) {
+    db.getConnection(function (err, client) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+
+        var sql = "SELECT * FROM " + table_name + " WHERE id = '" + id + "'";
+        client.query(sql, function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+
+            if (!(result.length === 0)) {
+                sql = "UPDATE " + table_name + " SET name = '"+name+"' WHERE id = '" + id + "'";
+                console.log(sql);
+                client.query(sql, function (err) {
+                    if (err) {
+                        return console.error('error running query', err);
+                    }
+                    callback({'result': true, 'data': {'mess': "Successfully UPDATE " + table_name}});
+                });
+            } else {
+                callback({'result': false, 'data': {'mess': "this " + table_name + " name was register"}});
+            }
+        });
+    });
+};
+
 
 exports.findByID = function (id, callback) {
     db.getConnection(function (err, client) {
