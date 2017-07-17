@@ -8,7 +8,7 @@ var nodemailer = require('nodemailer');
 var db = require('../database/dbConfig');
 
 //register
-exports.register = function (email, password, salt, roleID, callback) {
+exports.register = function (email, password, roleID, callback) {
     var token = crypto.createHash('sha512').update(email + rand).digest("hex");
 
     db.getConnection(function (err, client) {
@@ -23,8 +23,8 @@ exports.register = function (email, password, salt, roleID, callback) {
             }
 
             if (result.length === 0) {
-                sql = "INSERT INTO account(email, hash_password, token, salt, roleID) VALUES ('" +
-                    email + "', '" + password + "', '" + token + "', '" + salt + "', '" + roleID + "')";
+                sql = "INSERT INTO account(email, hash_password, token, roleID) VALUES ('" +
+                    email + "', '" + password + "', '" + token + "', '" + roleID + "')";
                 client.query(sql, function (err) {
                     // db.endConnection();
                     if (err) {
@@ -72,30 +72,6 @@ exports.login = function (email, password, callback) {
     });
 };
 
-exports.login_request = function (email, callback) {
-    db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error running query', err);
-        }
-        console.log("Login request from: " + email);
-        var sql = "SELECT * FROM account WHERE email = '" + email + "'";
-        client.query(sql, function (err, result) {
-            if (err) {
-                return console.error('error running query', err);
-            }
-
-            if (result.length > 0) {
-                var salt = result[0].salt;
-                console.log("Response salt: " + salt);
-                callback(salt);
-            } else {
-                console.log("User not exist");
-                callback({'response': "User not exist"});
-            }
-        });
-    });
-};
-
 //reset password
 exports.reset_pass_init = function (email, callback) {
     console.log("reseting password");
@@ -124,13 +100,13 @@ exports.reset_pass_init = function (email, callback) {
                             if (error) {
                                 callback({
                                     'result': false,
-                                    'data': {'mess': "Error While Resetting password. Try Again !"}
+                                    'data': {'mess': "Error"}
                                 });
                                 console.log(error);
                             } else {
                                 callback({
                                     'result': true,
-                                    'data': {'mess': "Check your Email and enter the verification code to reset your Password."}
+                                    'data': {'mess': "Successfull."}
                                 });
                             }
                         });

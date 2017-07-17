@@ -27,24 +27,15 @@ io.sockets.on('connection', function (socket) {
 
     //region ACCOUNT
     //Login request
-    socket.on(constant.CONST.REQUEST_LOGIN_WITH_EMAIL_AND_PASS, function (account_detail) {
-        var json = JSON.parse(account_detail);
-        account.login(json["email"], json["password"], function (res) {
+    socket.on(constant.CONST.REQUEST_LOGIN_WITH_EMAIL_AND_PASS, function (email, password) {
+        account.login(email, password, function (res) {
             socket.emit(constant.CONST.RESPONSE_LOGIN_WITH_EMAIL_AND_PASS, res);
         });
     });
 
-    //Request salt string
-    socket.on(constant.CONST.REQUEST_GET_SALT, function (email) {
-        account.login_request(email, function (res) {
-            socket.emit(constant.CONST.RESPONSE_GET_SALT, res);
-        });
-    });
-
     //Request create new account
-    socket.on(constant.CONST.REQUEST_CREATE_NEW_ACCOUNT, function (rigister_detail) {
-        var json = JSON.parse(rigister_detail);
-        account.register(json["email"], json["password"], json["salt"], json["roleID"], function (res) {
+    socket.on(constant.CONST.REQUEST_CREATE_NEW_ACCOUNT, function (email, password, roleID) {
+        account.register(email, password, roleID, function (res) {
             socket.emit(constant.CONST.RESPONSE_CREATE_NEW_ACCOUNT, res);
         });
     });
