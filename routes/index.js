@@ -66,37 +66,42 @@ io.sockets.on('connection', function (socket) {
     //endregion
 
     //region GARAGES
+    //ADD NEW GARAGE
     socket.on(constant.CONST.REQUEST_ADD_NEW_GARAGE, function (name, address, totalSlot, busySlot, locationX, locationY,accountID, timeStart, timeEnd, statux) {
         garage.add(name, address, totalSlot, busySlot, locationX, locationY,accountID, timeStart, timeEnd, statux, function (res) {
             socket.emit(constant.CONST.RESPONSE_ADD_NEW_GARAGE, res);
         })
     });
 
+    //GET ALL GARAGE
     socket.on(constant.CONST.REQUEST_GET_ALL_GARAGES, function () {
         garage.getAllGarages(function (res) {
             socket.emit(constant.CONST.RESPONSE_GET_ALL_GARAGE, res);
         })
     });
 
+    //GET GARAGE FOLLOW GARAGE ID
     socket.on(constant.CONST.REQUEST_GET_GARAGE_BY_ID, function (id) {
         garage.getGaragesByID(id, function (res) {
             socket.emit(constant.CONST.RESPONSE_GET_GARAGE_BY_ID, res);
         })
     });
 
+    //GET GARAGE FOLLOW ADMIN ID
     socket.on(constant.CONST.REQUEST_GET_GARAGE_BY_ACCOUNT_ID, function (id) {
         garage.getGaragesByAccountID(id, function (res) {
             socket.emit(constant.CONST.RESPONSE_GET_GARAGE_BY_ACCOUNT_ID, res);
         })
     });
 
+    //EDIT STATUS OF GARAGE BY GARAGE ID
     socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id,status) {
         garage.changeStatusByID(id,status, function (res) {
             socket.emit(constant.CONST.RESPONSE_EDIT_STATUS_GARAGE_BY_ID, res);
         })
     });
 
-
+    //EDIT GARAGE BY GARAGE ID
     socket.on(constant.CONST.REQUEST_EDIT_GARAGE_BY_ID, function (id, name, address, totalSlot, busySlot, locationX, locationY, accountID,timeStart, timeEnd, xstatus) {
         garage.updateByID(id, name, address, totalSlot, busySlot, locationX, locationY,accountID, timeStart, timeEnd, xstatus, function (res) {
             socket.emit(constant.CONST.RESPONSE_EDIT_GARAGE_BY_ID, res);
