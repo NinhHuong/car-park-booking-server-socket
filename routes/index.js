@@ -18,7 +18,9 @@ var constant = require('../other/constant');
 console.log("Start server: "+ ip.address()+":5000");
 
 io.sockets.on('connection', function (socket) {
-    console.log("ID connection: "+ socket.id);
+    var client_ip = socket.request.connection.remoteAddress;
+    console.log('CLIENT CONNECTED: ' + client_ip);
+
     socket.on('just_for_test', function (account_detail) {
         console.log('test_emit_func');
     });
@@ -32,9 +34,17 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    //Request salt string
+    socket.on('request_get_salt', function (email) {
+        account.login_request(email, function (res) {
+            socket.emit('response_get_salt', res);
+        });
+    });
+
     //Request create new account
-    socket.on(constant.CONST.REQUEST_CREATE_NEW_ACCOUNT, function (email, pass) {
-        account.register(email, pass, function (res) {
+    socket.on(constant.CONST.REQUEST_CREATE_NEW_ACCOUNT, function (rigister_detail) {
+        var json = JSON.parse(rigister_detail);
+        account.register(json["email"], json["password"], json["salt"], json["roleID"], function (res) {
             socket.emit(constant.CONST.RESPONSE_CREATE_NEW_ACCOUNT, res);
         });
     });
@@ -269,7 +279,7 @@ io.sockets.on('connection', function (socket) {
     //endregion
 
     socket.on('disconnect', function() {
-        console.log("ID disconnect: " + socket.id);
+        console.log('CLIENT DISCONNECT: ' + client_ip);
     });
 });
 
