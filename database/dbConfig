@@ -18,12 +18,33 @@ var pool = new mysql.createPool(config);
 
 exports.getConnection = function(callback) {
     pool.getConnection(function(err, conn) {
-        if(err) {
+        conn.release();
+        if (err) {
             return callback(err);
         }
         callback(err, conn);
     });
 };
+
+exports.executeQuery=function(query,callback){
+    pool.getConnection(function(err,connection){
+        if (err) {
+          connection.release();
+          throw err;
+        }
+        connection.query(query,function(err,rows){
+            connection.release();
+            if(!err) {
+                callback(null, {rows: rows});
+            }
+        });
+        connection.on('error', function(err) {
+              throw err;
+              return;
+        });
+    });
+}
+
 
 exports.endConnection = function() {
     pool.end();
