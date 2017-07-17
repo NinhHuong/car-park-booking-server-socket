@@ -10,6 +10,8 @@ exports.CONST = {
     REQUEST_CREATE_NEW_ACCOUNT: 'request_create_account',
     REQUEST_RESET_PASSWORD: 'request_reset_password',
     REQUEST_CHANGE_PASSWORD: 'request_change_password',
+    REQUEST_GET_SALT: 'request_get_salt',
+    RESPONSE_GET_SALT: 'response_get_salt',
 
     RESPONSE_LOGIN_WITH_EMAIL_AND_PASS :'result_login',
     RESPONSE_CREATE_NEW_ACCOUNT : 'response_create_account',
