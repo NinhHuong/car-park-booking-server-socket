@@ -10,9 +10,12 @@ var garage = require('../model/garage');
 var constant = require('../other/constant');
 
 console.log("Start server");
-
+var clientsList = [];
 io.sockets.on('connection', function (socket) {
-    console.log("someone connected");
+    var client_ip = socket.request.connection.remoteAddress;
+    clientsList.push(client_ip);
+    console.log('CLIENT CONNECTED: ' + client_ip);
+
     //region ACCOUNT
     //Login request
     socket.on('check_email_and_password', function (account_detail) {
