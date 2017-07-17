@@ -15,26 +15,51 @@ var role = require('../model/role');
 
 var constant = require('../other/constant');
 console.log("Start server");
-
+var clientsList = [];
 io.sockets.on('connection', function (socket) {
+<<<<<<< HEAD
     console.log("someone connected");
     socket.on('just_for_test', function (account_detail) {
         console.log('test_emit_func');
     });
+=======
+    var client_ip = socket.request.connection.remoteAddress;
+    clientsList.push(client_ip);
+    console.log('CLIENT CONNECTED: ' + client_ip);
+>>>>>>> sidq
 
     //region ACCOUNT
     //Login request
     socket.on(constant.CONST.REQUEST_LOGIN_WITH_EMAIL_AND_PASS, function (account_detail) {
         var json = JSON.parse(account_detail);
+<<<<<<< HEAD
         account.login(json["Email"], json["Password"], function (res) {
             socket.emit(constant.CONST.RESPONSE_LOGIN_WITH_EMAIL_AND_PASS, res);
+=======
+        account.login(json["email"],json["password"],function (res){
+            socket.emit('result_login', res);
+>>>>>>> sidq
+        });
+    });
+	
+	//Request salt string
+    socket.on('request_get_salt', function (email) {
+        account.login_request(email, function (res) {
+            socket.emit('response_get_salt', res);
         });
     });
 
     //Request create new account
+<<<<<<< HEAD
     socket.on(constant.CONST.REQUEST_CREATE_NEW_ACCOUNT, function (email, pass) {
         account.register(email, pass, function (res) {
             socket.emit(constant.CONST.RESPONSE_CREATE_NEW_ACCOUNT, res);
+=======
+    socket.on('request_create_account', function (rigister_detail) {
+		var json = JSON.parse(rigister_detail);
+        account.register(json["email"], json["password"], json["salt"], json["roleID"], function (res) {
+            socket.emit('response_create_account', res);
+>>>>>>> sidq
         });
     });
 
