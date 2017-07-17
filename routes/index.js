@@ -48,8 +48,17 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    socket.on(constant.CONST.REQUEST_CHANGE_PASSWORD, function (email, code, npass) {
-        account.reset_pass_change(email, code, npass, function (res) {
+    //compare code
+    socket.on(constant.CONST.REQUEST_COMPARE_CODE, function (email, code) {
+        account.compare_code(email, code, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_COMPARE_CODE, res);
+        });
+    });
+
+    //change password
+    socket.on(constant.CONST.REQUEST_CHANGE_PASSWORD, function (email, pass) {
+        account.reset_pass_change(email, pass, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_CHANGE_PASSWORD, res);
         });

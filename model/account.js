@@ -12,7 +12,7 @@ exports.register = function (email, password, roleID, callback) {
     var token = crypto.createHash('sha512').update(email + rand).digest("hex");
 
     db.getConnection(function (err, client) {
-        if (err) {
+        if (err) {                                                                                                                                                                                                               
             return console.error('error fetching client from pool', err);
         }
 
@@ -74,12 +74,12 @@ exports.login = function (email, password, callback) {
 
 //reset password
 exports.reset_pass_init = function (email, callback) {
-    console.log("reseting password");
+    console.log(">> Calling reset pass");
     db.getConnection(function (err, client) {
         if (err) {
             return console.error('error connecting', err);
         }
-        var temp = rand(24, 24);
+        var temp = rand(16, 16);
         client.query("SELECT * FROM account WHERE email = '" + email + "'", function (err, result) {
                 if (err) {
                     return console.error('error running query', err);
@@ -120,8 +120,34 @@ exports.reset_pass_init = function (email, callback) {
     });
 }
 
+//compare password
+exports.compare_code = function (email, code, callback) {
+    console.log(">> Calling compare pass");
+    db.getConnection(function (err, client) {
+        if (err) {
+            return console.error('error connecting', err);
+        }
+        console.log('client reset_str: ' + code);
+        client.query("SELECT * FROM account WHERE email = '" + email + "'", function (err, result) {
+            if (result.length > 0) {
+                var temp = result[0].reset_str;
+                if (temp === code) {
+                    console.log("Client code match")
+                    callback({'result': true, 'data': {'mess': "code match"}});
+                } else {
+                    console.log("Client code NOT match")
+                    callback({'result': false, 'data': {'mess': "code not match"}});
+                }
+            } else {
+                callback({'result': false, 'data': {'mess': "email error"}});
+            }
+        })
+    })
+}
+
 //change password
-exports.reset_pass_change = function (email, code, npass, callback) {
+exports.reset_pass_change = function (email, pass, callback) {
+    console.log(">> Calling change pass");
     db.getConnection(function (err, client) {
         if (err) {
             return console.error('error connecting', err);
@@ -129,26 +155,15 @@ exports.reset_pass_change = function (email, code, npass, callback) {
         console.log(email);
         client.query("SELECT * FROM account WHERE email = '" + email + "'", function (err, result) {
             if (result.length > 0) {
-                var temp = result[0].reset_str;
-                var salt = rand(160, 36);
-                var newpass1 = salt + npass;
-                var hashed_password = crypto.createHash('sha512').update(newpass1).digest("hex");
-
-                if (temp === code) {
-                    // npass.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) && npass.length > 4 && npass.match(/[0-9]/) && npass.match(/.[!,@,#,$,%,^,&,*,?,_,~]/)
-                    var sql = "UPDATE account SET hash_password = '" + hashed_password + "', salt = '" + salt + "', reset_str = ''" +
-                        "WHERE email = '" + email + "'";
-                    client.query(sql, function (err) {
-                        if (err)
-                            return console.error('error running query', err);
-
-                        callback({'result': true, 'data': {'mess': "Password Sucessfully Changed."}});
-                    })
-                } else {
-                    callback({'result': false, 'data': {'mess': "Code does not match. Try Again !"}});
-                }
+                var sql = "UPDATE account SET hash_password = '" + pass + "', reset_str = ''" +
+                    "WHERE email = '" + email + "'";
+                client.query(sql, function (err) {
+                    if (err)
+                        return console.error('error running query', err);
+                    callback({'result': true, 'data': {'mess': "successfull."}});
+                })
             } else {
-                callback({'result': false, 'data': {'mess': "Email is not exist"}});
+                callback({'result': false, 'data': {'mess': "email not exist"}});
             }
         })
     });

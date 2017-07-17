@@ -12,6 +12,8 @@ exports.CONST = {
     REQUEST_CHANGE_PASSWORD: 'request_change_password',
     REQUEST_GET_SALT: 'request_get_salt',
     RESPONSE_GET_SALT: 'response_get_salt',
+    REQUEST_COMPARE_CODE: 'request_compare_code',
+    RESPONSE_COMPARE_CODE: 'response_compare_code',
 
     RESPONSE_LOGIN_WITH_EMAIL_AND_PASS :'result_login',
     RESPONSE_CREATE_NEW_ACCOUNT : 'response_create_account',
