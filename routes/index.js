@@ -29,15 +29,15 @@ io.sockets.on('connection', function (socket) {
     //Login request
     socket.on(constant.CONST.REQUEST_LOGIN_WITH_EMAIL_AND_PASS, function (account_detail) {
         var json = JSON.parse(account_detail);
-        account.login(json["Email"], json["Password"], function (res) {
+        account.login(json["email"], json["password"], function (res) {
             socket.emit(constant.CONST.RESPONSE_LOGIN_WITH_EMAIL_AND_PASS, res);
         });
     });
 
     //Request salt string
-    socket.on('request_get_salt', function (email) {
+    socket.on(constant.CONST.REQUEST_GET_SALT, function (email) {
         account.login_request(email, function (res) {
-            socket.emit('response_get_salt', res);
+            socket.emit(constant.CONST.RESPONSE_GET_SALT, res);
         });
     });
 
