@@ -92,7 +92,7 @@ exports.login = function (email, password, callback) {
                         });
                     } else {
                         console.log("Login fail");
-                        callback({'response': "Invalid Password", 'email': true, 'password': false, 'res': false});
+                        callback({'response': "Invalid Password", 'email': true, 'password': false, 'is_verify': verify, 'token': token, 'res': false});
                     }
 
                 }
