@@ -7,6 +7,8 @@ exports.CONST = {
 
     //region ACCOUNT
     REQUEST_LOGIN_WITH_EMAIL_AND_PASS : 'check_email_and_password',
+    REQUEST_CHECK_TOKEN : 'request_check_token',
+    RESPONSE_CHECK_TOKEN : 'response_check_token',
     REQUEST_CREATE_NEW_ACCOUNT: 'request_create_account',
     REQUEST_RESET_PASSWORD: 'request_reset_password',
     REQUEST_CHANGE_PASSWORD: 'request_change_password',

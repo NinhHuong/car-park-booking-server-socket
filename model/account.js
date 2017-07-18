@@ -71,7 +71,7 @@ exports.login = function (email, password, callback) {
                 return console.error('error running query', err);
             }
             console.log("Login with email: " + email);
-            var sql = "SELECT * FROM account WHERE email = '" + email;
+            var sql = "SELECT * FROM account WHERE email = '" + email +"'";
             client.query(sql, function (err, result) {
                 if (err) {
                     return console.error('error running query', err);
@@ -87,10 +87,9 @@ exports.login = function (email, password, callback) {
                             'response': "Login Success",
                             'email': true,
                             'password': true,
-                            'verify': verify,
+                            'is_verify': verify,
                             'token': token
                         });
-                        return;
                     } else {
                         console.log("Login fail");
                         callback({'response': "Invalid Password", 'email': true, 'password': false, 'res': false});
@@ -100,6 +99,43 @@ exports.login = function (email, password, callback) {
                 else {
                     console.log("User not exist");
                     callback({'response': "User not exist", 'email': false, 'password': false, 'res': false});
+                }
+            });
+        }
+    )
+    ;
+};
+
+//check_token
+exports.check_token = function (token, callback) {
+    db.getConnection(function (err, client) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+            console.log("Login with remember token");
+            var sql = "SELECT * FROM account WHERE token = '" + token +"'";
+            client.query(sql, function (err, result) {
+                if (err) {
+                    return console.error('error running query', err);
+                }
+
+                if (result.length > 0) {
+                    var token_db = result[0].token;
+                    if (token_db === token) {
+                        console.log("Remember me successfull");
+                        callback({
+                            'response': "Remember Success",
+                            'result': true,
+                        });
+                    } else {
+                        console.log("Remember fail");
+                        callback({'response': "Invalid Password", 'result': false, 'res': false});
+                    }
+
+                }
+                else {
+                    console.log("User not exist");
+                    callback({'response': "User not exist", 'result': false, 'res': false});
                 }
             });
         }
@@ -167,8 +203,12 @@ exports.compare_code = function (email, code, callback) {
             if (result.length > 0) {
                 var temp = result[0].reset_str;
                 if (temp === code) {
-                    console.log("Client code match")
-                    callback({'result': true, 'data': {'mess': "code match"}});
+                    client.query("UPDATE account SET isVerify = '" + 1 + "' WHERE email = '" + email + "'", function (err) {
+                        if (err)
+                            return console.error('error running query', err);
+                        console.log("Client code match")
+                        callback({'result': true, 'data': {'mess': "code match"}});
+                    });
                 } else {
                     console.log("Client code NOT match")
                     callback({'result': false, 'data': {'mess': "code not match"}});

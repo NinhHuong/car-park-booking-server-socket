@@ -33,6 +33,13 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    //Remember request
+    socket.on(constant.CONST.REQUEST_CHECK_TOKEN, function (token) {
+        account.check_token(token, function (res) {
+            socket.emit(constant.CONST.RESPONSE_CHECK_TOKEN, res);
+        });
+    });
+
     //Request create new account
     socket.on(constant.CONST.REQUEST_CREATE_NEW_ACCOUNT, function (email, password, roleID) {
         account.register(email, password, roleID, function (res) {
