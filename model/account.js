@@ -23,14 +23,37 @@ exports.register = function (email, password, roleID, callback) {
             }
 
             if (result.length === 0) {
-                sql = "INSERT INTO account(email, hash_password, token, roleID) VALUES ('" +
-                    email + "', '" + password + "', '" + token + "', '" + roleID + "')";
+                var temp = rand(16, 16);
+                sql = "INSERT INTO account(email, hash_password, token, roleID,reset_str) VALUES ('" +
+                    email + "', '" + password + "', '" + token + "', '" + roleID + "', '"+temp+"')";
                 client.query(sql, function (err) {
                     // db.endConnection();
                     if (err) {
                         return console.error('error running query', err);
                     }
-                    console.log("Register successful")
+                    console.log("Register successful");
+                    var mailOptions = {
+                        from: "Auto Car Park",
+                        to: email,
+                        subject: "Reset Password ",
+                        text: "Hello " + email + ".\nCode to validate account is " + temp + ".\n\nRegards,\nAuto Car-Park Team."
+                    };
+
+                    smtpTransport.sendMail(mailOptions, function (error) {
+                        if (error) {
+                            callback({
+                                'result': false,
+                                'data': {'mess': "Error"}
+                            });
+                            console.log(error);
+                        } else {
+                            callback({
+                                'result': true,
+                                'data': {'mess': "Successfull."}
+                            });
+                        }
+                    });
+
                     callback({'result': true, 'data': {'mess': "Successfully Registered"}});
                 });
             } else {
