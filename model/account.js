@@ -12,7 +12,7 @@ exports.register = function (email, password, roleID, callback) {
     var token = crypto.createHash('sha512').update(email + rand).digest("hex");
 
     db.getConnection(function (err, client) {
-        if (err) {                                                                                                                                                                                                               
+        if (err) {
             return console.error('error fetching client from pool', err);
         }
 
@@ -44,32 +44,44 @@ exports.register = function (email, password, roleID, callback) {
 //login
 exports.login = function (email, password, callback) {
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error running query', err);
-        }
-        console.log("Login with email: " + email);
-        var sql = "SELECT * FROM account WHERE email = '" + email + "' and isVerify = 1";
-        client.query(sql, function (err, result) {
             if (err) {
                 return console.error('error running query', err);
             }
-
-            if (result.length > 0) {
-                var password_db = result[0].hash_password;
-                var token = result[0].token;
-                if (password_db === password) {
-                    console.log("Login successfull");
-                    callback({'response': "Login Success", 'email': true, 'password': true, 'token': token});
-                } else {
-                    console.log("Login fail");
-                    callback({'response': "Invalid Password", 'email': true, 'password': false, 'res': false});
+            console.log("Login with email: " + email);
+            var sql = "SELECT * FROM account WHERE email = '" + email;
+            client.query(sql, function (err, result) {
+                if (err) {
+                    return console.error('error running query', err);
                 }
-            } else {
-                console.log("User not exist");
-                callback({'response': "User not exist", 'email': false, 'password': false, 'res': false});
-            }
-        });
-    });
+
+                if (result.length > 0) {
+                    var password_db = result[0].hash_password;
+                    var token = result[0].token;
+                    var verify = result[0].isVerify;
+                    if (password_db === password) {
+                        console.log("Login successfull");
+                        callback({
+                            'response': "Login Success",
+                            'email': true,
+                            'password': true,
+                            'verify': verify,
+                            'token': token
+                        });
+                        return;
+                    } else {
+                        console.log("Login fail");
+                        callback({'response': "Invalid Password", 'email': true, 'password': false, 'res': false});
+                    }
+
+                }
+                else {
+                    console.log("User not exist");
+                    callback({'response': "User not exist", 'email': false, 'password': false, 'res': false});
+                }
+            });
+        }
+    )
+    ;
 };
 
 //reset password
@@ -118,7 +130,7 @@ exports.reset_pass_init = function (email, callback) {
             }
         );
     });
-}
+};
 
 //compare password
 exports.compare_code = function (email, code, callback) {
@@ -143,7 +155,7 @@ exports.compare_code = function (email, code, callback) {
             }
         })
     })
-}
+};
 
 //change password
 exports.reset_pass_change = function (email, pass, callback) {
