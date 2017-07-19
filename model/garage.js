@@ -42,7 +42,7 @@ exports.getAllGarages = function (callback) {
                     return console.log('error running query garage', err);
                 }
 
-                console.log(result);
+                console.log("Getting all garages");
                 callback({'result': true, "Garages": result});
             });
         });
