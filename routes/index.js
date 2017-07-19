@@ -33,7 +33,7 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    //Remember request
+    //check_token request
     socket.on(constant.CONST.REQUEST_CHECK_TOKEN, function (token) {
         account.check_token(token, function (res) {
             socket.emit(constant.CONST.RESPONSE_CHECK_TOKEN, res);
