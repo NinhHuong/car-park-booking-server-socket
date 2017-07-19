@@ -186,4 +186,76 @@ exports.findByGagareID = function (garageID, callback) {
     });
 };
 
+exports.findByGagareIDAndStatus = function (garageID, status, callback) {
+    db.getConnection(function (err, client) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+        var partEndsql = "garageID = '" + garageID + "' AND bookStatus = '" + status + "'";
+        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err) {
+                return console.error('error running query ' + table_name, err);
+            }
+
+            if (result.length === 0) {
+                callback({'result': false, 'data': {'mess': "Dont have any record " + partEndsql}});
+            } else {
+                callback({'result': true, 'data': result});
+            }
+        });
+    });
+};
+
+exports.findByGagareIDStatusAndTime = function (garageID, status, timeStart, timeEnd, callback) {
+    db.getConnection(function (err, client) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+        var partEndsql = "garageID = '" + garageID + "' AND bookStatus = '" + status
+            + "' AND timeBooked BETWEEN  '" + timeStart + "' AND '" + timeEnd + "'";
+        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err) {
+                return console.error('error running query ' + table_name, err);
+            }
+
+            if (result.length === 0) {
+                callback({'result': false, 'data': {'mess': "Dont have any record " + partEndsql}});
+            } else {
+                callback({'result': true, 'data': result});
+            }
+        });
+    });
+};
+
+exports.findByGagareIDAndTime = function (garageID, typeTime, timeStart, timeEnd, callback) {
+    if (typeTime != 'timeBooked' || typeTime != 'timeGoIn' || typeTime != 'timeGoOut') {
+        callback({'retult': false, 'data': {'mess': "Dont have any field " + typeTime}})
+        return;
+    }
+
+    db.getConnection(function (err, client) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+        var partEndsql = "garageID = '" + garageID + "' AND timeBooked BETWEEN  '" + timeStart + "' AND '" + timeEnd + "'";
+        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err) {
+                return console.error('error running query ' + table_name, err);
+            }
+
+            if (result.length === 0) {
+                callback({'result': false, 'data': {'mess': "Dont have any record " + partEndsql}});
+            } else {
+                callback({'result': true, 'data': result});
+            }
+        });
+    });
+};
+
 
