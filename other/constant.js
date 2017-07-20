@@ -8,15 +8,15 @@ exports.CONST = {
     //region ACCOUNT
     REQUEST_LOGIN_WITH_EMAIL_AND_PASS : 'check_email_and_password',
     REQUEST_CHECK_TOKEN : 'request_check_token',
-    RESPONSE_CHECK_TOKEN : 'response_check_token',
     REQUEST_CREATE_NEW_ACCOUNT: 'request_create_account',
     REQUEST_RESET_PASSWORD: 'request_reset_password',
     REQUEST_CHANGE_PASSWORD: 'request_change_password',
     REQUEST_GET_SALT: 'request_get_salt',
     RESPONSE_GET_SALT: 'response_get_salt',
     REQUEST_COMPARE_CODE: 'request_compare_code',
-    RESPONSE_COMPARE_CODE: 'response_compare_code',
 
+    RESPONSE_CHECK_TOKEN : 'response_check_token',
+    RESPONSE_COMPARE_CODE: 'response_compare_code',
     RESPONSE_LOGIN_WITH_EMAIL_AND_PASS :'result_login',
     RESPONSE_CREATE_NEW_ACCOUNT : 'response_create_account',
     RESPONSE_RESET_PASSWORD: 'response_reset_password',
