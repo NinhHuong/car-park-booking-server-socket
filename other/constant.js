@@ -83,24 +83,24 @@ exports.CONST = {
     RESPONSE_BOOKING_BY_ACCOUNT_ID: 'response_booking_account_id',
     //endregion
 
-    //region PARK INFO
-    REQUEST_ADD_NEW_PARK_INFO: 'request_add_new_booking',
-    REQUEST_REMOVE_PARK_INFO_BY_ID: 'request_remove_booking_by_id',
-    REQUEST_FIND_PARK_INFO_BY_ID: 'request_find_booking_by_id',
-    REQUEST_FIND_PARK_INFO_BY_CAR_ID: 'request_find_booking_by_car_id',
-    REQUEST_FIND_PARK_INFO_BY_GARAGE_ID: 'request_find_booking_by_garage_id',
-    REQUEST_EDIT_PARK_INFO_TIME_GO_IN_BY_ID: 'request_edit_booking_time_go_in_by_id',
-    REQUEST_EDIT_PARK_INFO_TIME_GO_OUT_BY_ID: 'request_edit_booking_time_go_out_by_id',
-    REQUEST_PARK_INFO_BY_ACCOUNT_ID: 'request_booking_account_id',
+    //region PARKING INFO
+    REQUEST_ADD_NEW_PARKING_INFO: 'request_add_new_booking',
+    REQUEST_REMOVE_PARKING_INFO_BY_ID: 'request_remove_booking_by_id',
+    REQUEST_FIND_PARKING_INFO_BY_ID: 'request_find_booking_by_id',
+    REQUEST_FIND_PARKING_INFO_BY_CAR_ID: 'request_find_booking_by_car_id',
+    REQUEST_FIND_PARKING_INFO_BY_GARAGE_ID: 'request_find_booking_by_garage_id',
+    REQUEST_EDIT_PARKING_INFO_TIME_GO_IN_BY_ID: 'request_edit_booking_time_go_in_by_id',
+    REQUEST_EDIT_PARKING_INFO_TIME_GO_OUT_BY_ID: 'request_edit_booking_time_go_out_by_id',
+    REQUEST_PARKING_INFO_BY_ACCOUNT_ID: 'request_booking_account_id',
 
-    RESPONSE_ADD_NEW_PARK_INFO: 'response_add_new_booking',
-    RESPONSE_REMOVE_PARK_INFO_BY_ID: 'response_remove_booking_by_id',
-    RESPONSE_FIND_PARK_INFO_BY_ID: 'response_find_booking_by_id',
-    RESPONSE_FIND_PARK_INFO_BY_CAR_ID: 'response_find_booking_by_car_id',
-    RESPONSE_FIND_PARK_INFO_BY_GARAGE_ID: 'response_find_booking_by_garage_id',
-    RESPONSE_EDIT_PARK_INFO_TIME_GO_IN_BY_ID: 'response_edit_booking_time_go_in_by_id',
-    RESPONSE_EDIT_PARK_INFO_TIME_GO_OUT_BY_ID: 'response_edit_booking_time_go_out_by_id',
-    RESPONSE_PARK_INFO_BY_ACCOUNT_ID: 'response_booking_account_id',
+    RESPONSE_ADD_NEW_PARKING_INFO: 'response_add_new_booking',
+    RESPONSE_REMOVE_PARKING_INFO_BY_ID: 'response_remove_booking_by_id',
+    RESPONSE_FIND_PARKING_INFO_BY_ID: 'response_find_booking_by_id',
+    RESPONSE_FIND_PARKING_INFO_BY_CAR_ID: 'response_find_booking_by_car_id',
+    RESPONSE_FIND_PARKING_INFO_BY_GARAGE_ID: 'response_find_booking_by_garage_id',
+    RESPONSE_EDIT_PARKING_INFO_TIME_GO_IN_BY_ID: 'response_edit_booking_time_go_in_by_id',
+    RESPONSE_EDIT_PARKING_INFO_TIME_GO_OUT_BY_ID: 'response_edit_booking_time_go_out_by_id',
+    RESPONSE_PARKING_INFO_BY_ACCOUNT_ID: 'response_booking_account_id',
 
     //endregion
 

@@ -10,8 +10,7 @@ var account = require('../model/account');
 var garage = require('../model/garage');
 var car = require('../model/car');
 var xuser = require('../model/user');
-var booking = require('../model/booking');
-var parkInfo = require('../model/parkInfo');
+var parkingInfo = require('../model/parkingInfo');
 var security = require('../model/security');
 var role = require('../model/role');
 
@@ -178,60 +177,60 @@ io.sockets.on('connection', function (socket) {
     });
     //endregion
 
-    //region PARKINFO
-    socket.on(constant.CONST.REQUEST_ADD_NEW_PARK_INFO, function (carID, garageID, timeBooked) {
-        parkInfo.add(carID, garageID, timeBooked, function (res) {
+    //region PARKING INFO
+    socket.on(constant.CONST.REQUEST_ADD_NEW_PARKING_INFO, function (carID, garageID, timeBooked) {
+        parkingInfo.add(carID, garageID, timeBooked, function (res) {
             console.log(res);
-            socket.emit(constant.CONST.RESPONSE_ADD_NEW_PARK_INFO, res);
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_PARKING_INFO, res);
         });
     });
 
-    socket.on(constant.CONST.REQUEST_REMOVE_PARK_INFO_BY_ID, function (id) {
-        parkInfo.removeByID(id, function (res) {
+    socket.on(constant.CONST.REQUEST_REMOVE_PARKING_INFO_BY_ID, function (id) {
+        parkingInfo.removeByID(id, function (res) {
             console.log(res);
-            socket.emit(constant.CONST.RESPONSE_REMOVE_PARK_INFO_BY_ID, res);
+            socket.emit(constant.CONST.RESPONSE_REMOVE_PARKING_INFO_BY_ID, res);
         });
     });
 
-    socket.on(constant.CONST.REQUEST_FIND_PARK_INFO_BY_ID, function (id) {
-        parkInfo.findByID(id, function (res) {
+    socket.on(constant.CONST.REQUEST_FIND_PARKING_INFO_BY_ID, function (id) {
+        parkingInfo.findByID(id, function (res) {
             console.log(res);
-            socket.emit(constant.CONST.RESPONSE_FIND_PARK_INFO_BY_ID, res);
+            socket.emit(constant.CONST.RESPONSE_FIND_PARKING_INFO_BY_ID, res);
         });
     });
 
-    socket.on(constant.CONST.REQUEST_FIND_PARK_INFO_BY_CAR_ID, function (id) {
-        parkInfo.findByCarID(id, function (res) {
+    socket.on(constant.CONST.REQUEST_FIND_PARKING_INFO_BY_CAR_ID, function (id) {
+        parkingInfo.findByCarID(id, function (res) {
             console.log(res);
-            socket.emit(constant.CONST.RESPONSE_FIND_PARK_INFO_BY_CAR_ID, res);
+            socket.emit(constant.CONST.RESPONSE_FIND_PARKING_INFO_BY_CAR_ID, res);
         });
     });
 
-    socket.on(constant.CONST.REQUEST_FIND_PARK_INFO_BY_GARAGE_ID, function (id) {
-        parkInfo.findByGagareID(id, function (res) {
+    socket.on(constant.CONST.REQUEST_FIND_PARKING_INFO_BY_GARAGE_ID, function (id) {
+        parkingInfo.findByGagareID(id, function (res) {
             console.log(res);
-            socket.emit(constant.CONST.RESPONSE_FIND_PARK_INFO_BY_GARAGE_ID, res);
+            socket.emit(constant.CONST.RESPONSE_FIND_PARKING_INFO_BY_GARAGE_ID, res);
         });
     });
 
-    socket.on(constant.CONST.REQUEST_EDIT_PARK_INFO_TIME_GO_IN_BY_ID, function (id, timeGoIn) {
-        parkInfo.updateByIDTimeGoIn(id, timeGoIn, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_PARKING_INFO_TIME_GO_IN_BY_ID, function (id, timeGoIn) {
+        parkingInfo.updateByIDTimeGoIn(id, timeGoIn, function (res) {
             console.log(res);
-            socket.emit(constant.CONST.RESPONSE_EDIT_PARK_INFO_TIME_GO_IN_BY_ID, res);
+            socket.emit(constant.CONST.RESPONSE_EDIT_PARKING_INFO_TIME_GO_IN_BY_ID, res);
         });
     });
 
-    socket.on(constant.CONST.REQUEST_EDIT_PARK_INFO_TIME_GO_OUT_BY_ID, function (id, timeGoOut) {
-        parkInfo.updateByIDTimeGoOut(id, timeGoOut, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_PARKING_INFO_TIME_GO_OUT_BY_ID, function (id, timeGoOut) {
+        parkingInfo.updateByIDTimeGoOut(id, timeGoOut, function (res) {
             console.log(res);
-            socket.emit(constant.CONST.RESPONSE_EDIT_PARK_INFO_TIME_GO_OUT_BY_ID, res);
+            socket.emit(constant.CONST.RESPONSE_EDIT_PARKING_INFO_TIME_GO_OUT_BY_ID, res);
         });
     });
 
-    socket.on(constant.CONST.REQUEST_PARK_INFO_BY_ACCOUNT_ID, function (accountID) {
-        parkInfo.findByAccountID(accountID, function (res) {
+    socket.on(constant.CONST.REQUEST_PARKING_INFO_BY_ACCOUNT_ID, function (accountID) {
+        parkingInfo.findByAccountID(accountID, function (res) {
             console.log(res);
-            socket.emit(constant.CONST.RESPONSE_PARK_INFO_BY_ACCOUNT_ID, res);
+            socket.emit(constant.CONST.RESPONSE_PARKING_INFO_BY_ACCOUNT_ID, res);
         });
     });
     //endregion
