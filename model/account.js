@@ -79,12 +79,14 @@ exports.login = function (email, password, callback) {
 
                 if (result.length > 0) {
                     var password_db = result[0].hash_password;
+                    var id = result[0].id;
                     var token = result[0].token;
                     var verify = result[0].isVerify;
                     if (password_db === password) {
                         console.log("Login successfull");
                         callback({
                             'response': "Login Success",
+                            'id': id,
                             'email': true,
                             'password': true,
                             'is_verify': verify,
@@ -92,13 +94,13 @@ exports.login = function (email, password, callback) {
                         });
                     } else {
                         console.log("Login fail");
-                        callback({'response': "Invalid Password", 'email': true, 'password': false, 'is_verify': verify, 'token': token, 'res': false});
+                        callback({'response': "Invalid Password", 'id': id, 'email': true, 'password': false, 'is_verify': verify, 'token': token, 'res': false});
                     }
 
                 }
                 else {
                     console.log("User not exist");
-                    callback({'response': "User not exist", 'email': false, 'password': false, 'res': false});
+                    callback({'response': "User not exist", 'id': "", 'email': false, 'password': false, 'is_verify': "", 'token': "", 'res': false});
                 }
             });
         }
