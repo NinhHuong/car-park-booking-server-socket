@@ -43,22 +43,22 @@ exports.register = function (email, password, roleID, callback) {
                         if (error) {
                             callback({
                                 'result': false,
-                                'data': {'mess': "Error"}
+                                'mess': "Error"
                             });
                             console.log(error);
                         } else {
                             callback({
                                 'result': true,
-                                'data': {'mess': "Successfull."}
+                                'mess': "Successfull."
                             });
                         }
                     });
 
-                    callback({'result': true, 'data': {'mess': "Successfully Registered"}});
+                    callback({'result': true, 'data': "Successfully Registered"});
                 });
             } else {
                 console.log("Register fail")
-                callback({'result': false, 'data': {'mess': "Email already Registered"}});
+                callback({'result': false, 'mess': "Email already Registered"});
             }
         });
     });
