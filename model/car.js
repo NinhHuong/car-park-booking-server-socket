@@ -24,10 +24,10 @@ exports.add = function (accountID, vehicleNumber, callback) {
                     if (err)
                         return db_error.errorSQL(sql, callback, err);
 
-                    callback({'result': true, 'mess': "Successfully register new " + table_name});
+                    callback({'result': true, 'data': '','mess': "Successfully register new " + table_name, });
                 });
             } else {
-                callback({'result': false, 'mess': "this " + table_name + " was registered"});
+                callback({'result': false,'data': '', 'mess': "this " + table_name + " was registered"});
             }
         });
     });
@@ -50,10 +50,10 @@ exports.remove = function (vehicleNumber, callback) {
                 client.query(sql, function (err) {
                     if (err)  return db_error.errorSQL(sql, callback, err);
 
-                    callback({'result': true, 'mess': "Successfully delete " + table_name});
+                    callback({'result': true, 'data': '','mess': "Successfully delete " + table_name});
                 });
             } else {
-                callback({'result': false, 'data': {'mess': "this " + table_name + " was not in database"}});
+                callback({'result': false, 'data': '','mess': "this " + table_name + " was not in database"});
             }
         });
     });
@@ -72,9 +72,9 @@ exports.findByAccountID = function (accountid, callback) {
                 if (err)  return db_error.errorSQL(sql, callback, err);
 
                 if (result.length === 0) {
-                    callback({'result': false, 'mess': "Dont have any car"});
+                    callback({'result': false,'data': '', 'mess': "Dont have any car"});
                 } else {
-                    callback({'result': true, 'data': result});
+                    callback({'result': true, 'data': result , 'mess':''});
                 }
             });
         });
@@ -99,10 +99,10 @@ exports.updateByVehicle = function (accountID, oldVehicle, newVehicle, callback)
                 // console.log(sql);
                 client.query(sql, function (err) {
                     if (err)  return db_error.errorSQL(sql,callback,err);
-                    callback({'result': true, 'mess': "Successfully updated " + table_name});
+                    callback({'result': true,'data': '', 'mess': "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false, 'mess': "this " + table_name + " was not in Database"});
+                callback({'result': false,'data': '', 'mess': "this " + table_name + " was not in Database"});
             }
         });
     });

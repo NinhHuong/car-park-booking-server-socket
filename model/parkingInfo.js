@@ -16,7 +16,7 @@ exports.add = function (carID, garageID, timeBooked, callback) {
             " VALUES ('" + carID + "', '" + garageID + "', '" + timeBooked + "', " + 0 + ");";
         client.query(sql, function (err) {
             if (err)  return db_error.errorSQL(sql, callback, err);
-            callback({'result': true, 'mess': "Successfully register new " + table_name});
+            callback({'result': true, 'data': '', 'mess': "Successfully register new " + table_name});
         });
 
     });
@@ -38,10 +38,10 @@ exports.updateByIDTimeGoIn = function (id, timeGoIn, callback) {
                 // console.log(sql);
                 client.query(sql, function (err) {
                     if (err) return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'mess': "Successfully updated " + table_name});
+                    callback({'result': true, 'data': '', 'mess': "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false, 'mess': "this " + table_name + " was not in Database"});
+                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in Database"});
             }
         });
     });
@@ -63,10 +63,10 @@ exports.updateByIDTimeGoOut = function (id, timeGoOut, callback) {
                 // console.log(sql);
                 client.query(sql, function (err) {
                     if (err)  return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'mess': "Successfully updated " + table_name});
+                    callback({'result': true, 'data': '', 'mess': "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false,'mess': "this " + table_name + " was not in Database"});
+                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in Database"});
             }
         });
     });
@@ -87,10 +87,10 @@ exports.removeByID = function (id, callback) {
                 sql = "DELETE FROM " + table_name + " WHERE id = '" + id + "'";
                 client.query(sql, function (err) {
                     if (err)  return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true,'mess': "Successfully delete " + table_name});
+                    callback({'result': true, 'data': '', 'mess': "Successfully delete " + table_name});
                 });
             } else {
-                callback({'result': false, 'mess': "this " + table_name + " was not in database"});
+                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in database"});
             }
         });
     });
@@ -107,9 +107,9 @@ exports.findByID = function (ID, callback) {
             if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'mess': "Dont have any record id =" + ID});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record id =" + ID});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -126,9 +126,9 @@ exports.findByCarID = function (carID, callback) {
             if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false,'mess': "Dont have any record carID =" + carID});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record carID =" + carID});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -146,9 +146,9 @@ exports.findByAccountID = function (accountID, callback) {
             if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'mess': "Dont have any record accountID =" + accountID});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record accountID =" + accountID});
             } else {
-                callback({'result': true, 'ParkingInfo': result});
+                callback({'result': true, 'ParkingInfo': result, 'mess': ''});
             }
         });
     });
@@ -165,9 +165,9 @@ exports.findByGagareID = function (garageID, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'mess': "Dont have any record garageID =" + garageID});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record garageID =" + garageID});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -183,9 +183,9 @@ exports.findByGagareIDAndStatus = function (garageID, status, callback) {
             if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'mess': "Dont have any record " + partEndsql});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record " + partEndsql});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -202,9 +202,9 @@ exports.findByGagareIDStatusAndTime = function (garageID, status, timeStart, tim
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'mess': "Dont have any record " + partEndsql});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record " + partEndsql});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -225,9 +225,9 @@ exports.findByGagareIDAndTime = function (garageID, typeTime, timeStart, timeEnd
             if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'mess': "Dont have any record " + partEndsql});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record " + partEndsql});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });

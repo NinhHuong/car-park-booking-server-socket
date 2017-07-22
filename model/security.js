@@ -17,10 +17,10 @@ exports.add = function (accountID, garageID, callback) {
                 sql = "INSERT INTO " + table_name + " (accountID,garageID) VALUES (" + accountID + "," + garageID + ")";
                 client.query(sql, function (err) {
                     if (err) return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'mess': "Successfully regist new " + table_name});
+                    callback({'result': true, 'data': '','mess': "Successfully regist new " + table_name});
                 });
             } else {
-                callback({'result': false, 'mess': "this " + table_name + " name was register"});
+                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was register"});
             }
         });
     });
@@ -39,10 +39,10 @@ exports.remove = function (accountID, garageID, callback) {
                 sql = "DELETE FROM " + table_name + " WHERE id ='" + id + "'";
                 client.query(sql, function (err) {
                     if (err)return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'mess': "Successfully delete " + table_name});
+                    callback({'result': true,'data': '', 'mess': "Successfully delete " + table_name});
                 });
             } else {
-                callback({'result': false, 'mess': "this " + table_name + " name was register"});
+                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was register"});
             }
         });
     });
@@ -60,7 +60,7 @@ exports.findByAccountID = function (accountID, callback) {
                 if (err)return db_error.errorSQL(sql, callback, err);
 
                 console.log(result);
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result,'mess':''});
             });
         });
     });
@@ -78,7 +78,7 @@ exports.findByGagareID = function (garageID, callback) {
                 if (err) return db_error.errorSQL(sql, callback, err);
 
                 console.log(result);
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result,'mess':''});
             });
         });
     });
