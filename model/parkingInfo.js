@@ -8,17 +8,32 @@ const table_name = 'ParkingInfo';
 
 exports.add = function (carID, garageID, timeBooked, callback) {
     console.log("add new " + table_name);
+    console.log(carID+", "+ garageID +", "+ timeBooked);
 
     db.getConnection(function (err, client) {
-        if (err) return db_error.errorDBConnection(err, callback);
-
-        sql = "INSERT INTO " + table_name + " (carID, garageID, timeBooked, parkingStatus)" +
-            " VALUES ('" + carID + "', '" + garageID + "', '" + timeBooked + "', " + 0 + ");";
-        client.query(sql, function (err) {
-            if (err)  return db_error.errorSQL(sql, callback, err);
-            callback({'result': true, 'data': '', 'mess': "Successfully register new " + table_name});
+        var sql = "SELECT * FROM " + table_name + " WHERE carID = " + carID;
+        client.query(sql, function (err, result) {
+            if (err) {
+                console.error('error running query' + table_name, err);
+                return callback({'result': false, 'mess': "db_error "});
+            }
+            if (result.length > 0) {
+                for (var i = 0; i < result.length; i++) {
+                    if(result[i].parkingStatus === 0 || result[i].parkingStatus === 1){
+                        return callback({'result': false, 'mess': "car_busy"});
+                    }
+                }
+            }
+            sql = "INSERT INTO " + table_name + " (carID, garageID, timeBooked, parkingStatus)" +
+                " VALUES ('" + carID + "', '" + garageID + "', '" + timeBooked + "', " + 0 + ");";
+            client.query(sql, function (err) {
+                if (err) {
+                    console.error('error running query 2:' + table_name, err);
+                    return callback({'result': false, 'mess': "db_error"});
+                }
+                callback({'result': true,'data':'', 'mess': "book_successfull"});
+            });
         });
-
     });
 };
 
