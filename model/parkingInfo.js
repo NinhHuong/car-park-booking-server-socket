@@ -8,7 +8,7 @@ const table_name = 'ParkingInfo';
 
 exports.add = function (carID, garageID, timeBooked, callback) {
     console.log("add new " + table_name);
-    console.log(carID+", "+ garageID +", "+ timeBooked);
+    console.log(carID + ", " + garageID + ", " + timeBooked);
 
     db.getConnection(function (err, client) {
 
@@ -25,7 +25,7 @@ exports.add = function (carID, garageID, timeBooked, callback) {
             }
             if (result.length > 0) {
                 for (var i = 0; i < result.length; i++) {
-                    if(result[i].parkingStatus === 0 || result[i].parkingStatus === 1){
+                    if (result[i].parkingStatus === 0 || result[i].parkingStatus === 1) {
                         return callback({'result': false, 'mess': "car_busy"});
                     }
                 }
@@ -37,7 +37,7 @@ exports.add = function (carID, garageID, timeBooked, callback) {
                     console.error('error running query 2:' + table_name, err);
                     return callback({'result': false, 'mess': "db_error"});
                 }
-                callback({'result': true,'data':'', 'mess': "book_successfull"});
+                callback({'result': true, 'data': '', 'mess': "book_successfull"});
             });
         });
     });
@@ -232,7 +232,7 @@ exports.findByGagareIDStatusAndTime = function (garageID, status, timeStart, tim
 };
 
 exports.findByGagareIDAndTime = function (garageID, typeTime, timeStart, timeEnd, callback) {
-    if (typeTime != 'timeBooked' || typeTime != 'timeGoIn' || typeTime != 'timeGoOut') {
+    if (!(typeTime === 'timeBooked' || typeTime === 'timeGoIn' || typeTime === 'timeGoOut')) {
         callback({'retult': false, 'data': {'mess': "Dont have any field " + typeTime}})
         return;
     }
