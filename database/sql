@@ -1,3 +1,5 @@
+CREATE DATABASE `auto-car-parking`;
+
 CREATE TABLE `Garage` (
 	`id` int NOT NULL AUTO_INCREMENT,
 	`name` varchar(100) NOT NULL,
