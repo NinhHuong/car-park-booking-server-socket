@@ -12,7 +12,7 @@ exports.add = function (carID, garageID, timeBooked, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
 
-        sql = "INSERT INTO " + table_name + " (carID, garageID, timeBooked, parkStatus)" +
+        sql = "INSERT INTO " + table_name + " (carID, garageID, timeBooked, parkingStatus)" +
             " VALUES ('" + carID + "', '" + garageID + "', '" + timeBooked + "', " + 0 + ");";
         client.query(sql, function (err) {
             if (err)  return db_error.errorSQL(sql, callback, err);
@@ -33,7 +33,7 @@ exports.updateByIDTimeGoIn = function (id, timeGoIn, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
-                sql = "UPDATE " + table_name + " SET timeGoIn = '" + timeGoIn + "' , parkStatus = " + 1 + " WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET timeGoIn = '" + timeGoIn + "' , parkingStatus = " + 1 + " WHERE id = " + id;
 
                 // console.log(sql);
                 client.query(sql, function (err) {
@@ -58,7 +58,7 @@ exports.updateByIDTimeGoOut = function (id, timeGoOut, callback) {
             if (err) return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
-                sql = "UPDATE " + table_name + " SET timeGoOut = '" + timeGoOut + "' , parkStatus = " + 2 + " WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET timeGoOut = '" + timeGoOut + "' , parkingStatus = " + 2 + " WHERE id = " + id;
 
                 // console.log(sql);
                 client.query(sql, function (err) {
@@ -176,7 +176,7 @@ exports.findByGagareID = function (garageID, callback) {
 exports.findByGagareIDAndStatus = function (garageID, status, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
-        var partEndsql = "garageID = '" + garageID + "' AND parkStatus = '" + status + "'";
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status + "'";
         var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
         client.query(sql, function (err, result) {
             // db.endConnection();
@@ -194,7 +194,7 @@ exports.findByGagareIDAndStatus = function (garageID, status, callback) {
 exports.findByGagareIDStatusAndTime = function (garageID, status, timeStart, timeEnd, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
-        var partEndsql = "garageID = '" + garageID + "' AND parkStatus = '" + status
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status
             + "' AND timeBooked BETWEEN  '" + timeStart + "' AND '" + timeEnd + "'";
         var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
         client.query(sql, function (err, result) {
@@ -212,7 +212,7 @@ exports.findByGagareIDStatusAndTime = function (garageID, status, timeStart, tim
 
 exports.findByGagareIDAndTime = function (garageID, typeTime, timeStart, timeEnd, callback) {
     if (typeTime != 'timeBooked' || typeTime != 'timeGoIn' || typeTime != 'timeGoOut') {
-        callback({'retult': false, 'data': {'mess': "Dont have any field " + typeTime}})
+        callback({'retult': false, 'data':'','mess': "Dont have any field " + typeTime})
         return;
     }
 
