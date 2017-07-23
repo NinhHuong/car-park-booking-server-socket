@@ -3,6 +3,7 @@
  */
 
 var db = require('../database/dbConfig');
+var db_error = require('../database/db_error');
 const table_name = 'ParkingInfo';
 
 exports.add = function (carID, garageID, timeBooked, callback) {
@@ -10,6 +11,7 @@ exports.add = function (carID, garageID, timeBooked, callback) {
     console.log(carID+", "+ garageID +", "+ timeBooked);
 
     db.getConnection(function (err, client) {
+
         if (err) {
             console.error('error fetching client from pool', err);
             return callback({'result': false, 'mess': "db_error "});
@@ -35,7 +37,7 @@ exports.add = function (carID, garageID, timeBooked, callback) {
                     console.error('error running query 2:' + table_name, err);
                     return callback({'result': false, 'mess': "db_error"});
                 }
-                callback({'result': true, 'mess': "book_successfull"});
+                callback({'result': true,'data':'', 'mess': "book_successfull"});
             });
         });
     });
@@ -45,28 +47,22 @@ exports.updateByIDTimeGoIn = function (id, timeGoIn, callback) {
     console.log("change " + table_name);
 
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
 
         var sql = "SELECT * FROM " + table_name + " WHERE id = " + id;
         client.query(sql, function (err, result) {
-            if (err) {
-                return console.error('error running query' + table_name, err);
-            }
+            if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
                 sql = "UPDATE " + table_name + " SET timeGoIn = '" + timeGoIn + "' , parkStatus = " + 1 + " WHERE id = " + id;
 
                 // console.log(sql);
                 client.query(sql, function (err) {
-                    if (err) {
-                        return console.error('error running query' + table_name, err);
-                    }
-                    callback({'result': true, 'data': {'mess': "Successfully updated " + table_name}});
+                    if (err) return db_error.errorSQL(sql, callback, err);
+                    callback({'result': true, 'data': '', 'mess': "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false, 'data': {'mess': "this " + table_name + " was not in Database"}});
+                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in Database"});
             }
         });
     });
@@ -76,28 +72,22 @@ exports.updateByIDTimeGoOut = function (id, timeGoOut, callback) {
     console.log("change " + table_name);
 
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
 
         var sql = "SELECT * FROM " + table_name + " WHERE id = " + id;
         client.query(sql, function (err, result) {
-            if (err) {
-                return console.error('error running query' + table_name, err);
-            }
+            if (err) return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
                 sql = "UPDATE " + table_name + " SET timeGoOut = '" + timeGoOut + "' , parkStatus = " + 2 + " WHERE id = " + id;
 
                 // console.log(sql);
                 client.query(sql, function (err) {
-                    if (err) {
-                        return console.error('error running query' + table_name, err);
-                    }
-                    callback({'result': true, 'data': {'mess': "Successfully updated " + table_name}});
+                    if (err)  return db_error.errorSQL(sql, callback, err);
+                    callback({'result': true, 'data': '', 'mess': "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false, 'data': {'mess': "this " + table_name + " was not in Database"}});
+                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in Database"});
             }
         });
     });
@@ -108,26 +98,20 @@ exports.removeByID = function (id, callback) {
     console.log("remove " + table_name + " id: " + id);
 
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
 
         var sql = "SELECT * FROM " + table_name + " WHERE id = '" + id + "'";
         client.query(sql, function (err, result) {
-            if (err) {
-                return console.error('error running query remove', err);
-            }
+            if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
                 sql = "DELETE FROM " + table_name + " WHERE id = '" + id + "'";
                 client.query(sql, function (err) {
-                    if (err) {
-                        return console.error('error running query' + table_name, err);
-                    }
-                    callback({'result': true, 'data': {'mess': "Successfully delete " + table_name}});
+                    if (err)  return db_error.errorSQL(sql, callback, err);
+                    callback({'result': true, 'data': '', 'mess': "Successfully delete " + table_name});
                 });
             } else {
-                callback({'result': false, 'data': {'mess': "this " + table_name + " was not in database"}});
+                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in database"});
             }
         });
     });
@@ -136,21 +120,17 @@ exports.removeByID = function (id, callback) {
 exports.findByID = function (ID, callback) {
     console.log("find " + table_name + " ID:" + ID);
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
 
         var sql = "SELECT * FROM " + table_name + " WHERE id = '" + ID + "'";
         client.query(sql, function (err, result) {
             // db.endConnection();
-            if (err) {
-                return console.error('error running query ' + table_name, err);
-            }
+            if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'data': {'mess': "Dont have any record id =" + ID}});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record id =" + ID});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -159,21 +139,17 @@ exports.findByID = function (ID, callback) {
 exports.findByCarID = function (carID, callback) {
     console.log("find " + table_name + " carID:" + carID);
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
 
         var sql = "SELECT * FROM " + table_name + " WHERE carID = '" + carID + "'";
         client.query(sql, function (err, result) {
             // db.endConnection();
-            if (err) {
-                return console.error('error running query ' + table_name, err);
-            }
+            if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'data': {'mess': "Dont have any record carID =" + carID}});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record carID =" + carID});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -182,22 +158,18 @@ exports.findByCarID = function (carID, callback) {
 exports.findByAccountID = function (accountID, callback) {
     console.log("find " + table_name + " account ID:" + accountID);
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
 
         var sql = "SELECT p.*, g.name FROM " + table_name + " p JOIN car c ON p.carID = c.id " +
             "JOIN account a ON c.accountID = a.id JOIN garage g ON g.id = p.garageID WHERE a.id = '" + accountID + "'";
         client.query(sql, function (err, result) {
             // db.endConnection();
-            if (err) {
-                return console.error('error running query ' + table_name, err);
-            }
+            if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'data': {'mess': "Dont have any record accountID =" + accountID}});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record accountID =" + accountID});
             } else {
-                callback({'result': true, 'ParkingInfo': result});
+                callback({'result': true, 'ParkingInfo': result, 'mess': ''});
             }
         });
     });
@@ -206,21 +178,17 @@ exports.findByAccountID = function (accountID, callback) {
 exports.findByGagareID = function (garageID, callback) {
     console.log("find " + table_name + " garageID:" + garageID);
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
 
         var sql = "SELECT * FROM " + table_name + " WHERE garageID = '" + garageID + "'";
         client.query(sql, function (err, result) {
             // db.endConnection();
-            if (err) {
-                return console.error('error running query ' + table_name, err);
-            }
+            if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'data': {'mess': "Dont have any record garageID =" + garageID}});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record garageID =" + garageID});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -228,21 +196,17 @@ exports.findByGagareID = function (garageID, callback) {
 
 exports.findByGagareIDAndStatus = function (garageID, status, callback) {
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
         var partEndsql = "garageID = '" + garageID + "' AND parkStatus = '" + status + "'";
         var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
         client.query(sql, function (err, result) {
             // db.endConnection();
-            if (err) {
-                return console.error('error running query ' + table_name, err);
-            }
+            if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'data': {'mess': "Dont have any record " + partEndsql}});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record " + partEndsql});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -250,22 +214,18 @@ exports.findByGagareIDAndStatus = function (garageID, status, callback) {
 
 exports.findByGagareIDStatusAndTime = function (garageID, status, timeStart, timeEnd, callback) {
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
         var partEndsql = "garageID = '" + garageID + "' AND parkStatus = '" + status
             + "' AND timeBooked BETWEEN  '" + timeStart + "' AND '" + timeEnd + "'";
         var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
         client.query(sql, function (err, result) {
             // db.endConnection();
-            if (err) {
-                return console.error('error running query ' + table_name, err);
-            }
+            if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'data': {'mess': "Dont have any record " + partEndsql}});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record " + partEndsql});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });
@@ -278,21 +238,17 @@ exports.findByGagareIDAndTime = function (garageID, typeTime, timeStart, timeEnd
     }
 
     db.getConnection(function (err, client) {
-        if (err) {
-            return console.error('error fetching client from pool', err);
-        }
+        if (err) return db_error.errorDBConnection(err, callback);
         var partEndsql = "garageID = '" + garageID + "' AND timeBooked BETWEEN  '" + timeStart + "' AND '" + timeEnd + "'";
         var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
         client.query(sql, function (err, result) {
             // db.endConnection();
-            if (err) {
-                return console.error('error running query ' + table_name, err);
-            }
+            if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length === 0) {
-                callback({'result': false, 'data': {'mess': "Dont have any record " + partEndsql}});
+                callback({'result': false, 'data': '', 'mess': "Dont have any record " + partEndsql});
             } else {
-                callback({'result': true, 'data': result});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
         });
     });

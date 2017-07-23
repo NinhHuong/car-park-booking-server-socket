@@ -29,3 +29,4 @@ exports.getConnection = function(callback) {
 exports.endConnection = function() {
     pool.end();
 };
+
