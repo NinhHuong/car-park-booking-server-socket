@@ -11,16 +11,9 @@ exports.add = function (carID, garageID, timeBooked, callback) {
     console.log(carID + ", " + garageID + ", " + timeBooked);
 
     db.getConnection(function (err, client) {
-<<<<<<< HEAD
 
-        if (err) {
-            console.error('error fetching client from pool', err);
-            return callback({'result': false, 'data': '', 'mess': "db_error "});
-        }
-=======
         if(err)
             db_error.errorDBConnection(err,callback);
->>>>>>> ba697451ded957ef1702abc2037ce96873a47f20
 
         var sql = "SELECT * FROM " + table_name + " WHERE carID = " + carID;
         client.query(sql, function (err, result) {
@@ -31,11 +24,8 @@ exports.add = function (carID, garageID, timeBooked, callback) {
             if (result.length > 0) {
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].parkingStatus === 0 || result[i].parkingStatus === 1) {
-<<<<<<< HEAD
                         return callback({'result': false, 'data': '', 'mess': "car_busy"});
-=======
-                        return callback({'result': false, 'mess': "car_busy"});
->>>>>>> ba697451ded957ef1702abc2037ce96873a47f20
+
                     }
                 }
             }
