@@ -42,23 +42,23 @@ exports.Register = function (email, password, roleID, callback) {
                     smtpTransport.sendMail(mailOptions, function (error) {
                         if (error) {
                             callback({
-                                'result': false,
-                                'mess': "Error"
+                                "result": false,
+                                "mess": "Error"
                             });
                             console.log(error);
                         } else {
                             callback({
-                                'result': true,
-                                'mess': "Successfull."
+                                "result": true,
+                                "mess": "Successfull."
                             });
                         }
                     });
 
-                    callback({'result': true, 'data': "Successfully Registered"});
+                    callback({"result": true, "data": "Successfully Registered"});
                 });
             } else {
                 console.log("Register fail");
-                callback({'result': false, 'mess': "Email already Registered"});
+                callback({"result": false, "mess": "Email already Registered"});
             }
         });
     });
@@ -85,22 +85,22 @@ exports.Login = function (email, password, callback) {
                     if (password_db === password) {
                         console.log("Login successfull");
                         callback({
-                            'response': "Login Success",
-                            'id': id,
-                            'email': true,
-                            'password': true,
-                            'is_verify': verify,
-                            'token': token
+                            "response": "Login Success",
+                            "id": id,
+                            "email": true,
+                            "password": true,
+                            "is_verify": verify,
+                            "token": token
                         });
                     } else {
-                        console.log("Login fail");
-                        callback({'response': "Invalid Password", 'id': id, 'email': true, 'password': false, 'is_verify': verify, 'token': token, 'res': false});
+                        console.log('Login fail');
+                        callback({"response": "Invalid Password", "id": id, "email": true, "password": false, "is_verify": verify, "token": token, "res": false});
                     }
 
                 }
                 else {
-                    console.log("User not exist");
-                    callback({'response': "User not exist", 'id': "", 'email': false, 'password': false, 'is_verify': "", 'token': "", 'res': false});
+                    console.log('User not exist');
+                    callback({"response": "User not exist", "id": "", "email": false, "password": false, "is_verify": "", "token": "", "res": false});
                 }
             });
         }
@@ -114,7 +114,7 @@ exports.CheckToken = function (token, callback) {
             if (err) {
                 return console.error('error running query', err);
             }
-            console.log("Login with remember token");
+            console.log('Login with remember token');
             var sql = "SELECT * FROM account WHERE token = '" + token +"'";
             client.query(sql, function (err, result) {
                 if (err) {
@@ -124,20 +124,20 @@ exports.CheckToken = function (token, callback) {
                 if (result.length > 0) {
                     var tokenDb = result[0].token;
                     if (tokenDb === token) {
-                        console.log("Remember me successfull");
+                        console.log('Remember me successfull');
                         callback({
-                            'response': "Remember Success",
-                            'result': true
+                            "response": "Remember Success",
+                            "result": true
                         });
                     } else {
-                        console.log("Remember fail");
-                        callback({'response': "Invalid Password", 'result': false, 'res': false});
+                        console.log('Remember fail');
+                        callback({"response": "Invalid Password", "result": false, "res": false});
                     }
 
                 }
                 else {
-                    console.log("User not exist");
-                    callback({'response': "User not exist", 'result': false, 'res': false});
+                    console.log('User not exist');
+                    callback({"response": "User not exist", "result": false, "res": false});
                 }
             });
         }
@@ -147,7 +147,7 @@ exports.CheckToken = function (token, callback) {
 
 //reset password
 exports.ResetPassInit = function (email, callback) {
-    console.log(">> Calling reset pass");
+    console.log('>> Calling reset pass');
     db.getConnection(function (err, client) {
         if (err) {
             return console.error('error connecting', err);
@@ -172,21 +172,21 @@ exports.ResetPassInit = function (email, callback) {
                         smtpTransport.sendMail(mailOptions, function (error) {
                             if (error) {
                                 callback({
-                                    'result': false,
-                                    'data': {'mess': "Error"}
+                                    "result": false,
+                                    "data": {"mess": "Error"}
                                 });
                                 console.log(error);
                             } else {
                                 callback({
-                                    'result': true,
-                                    'data': {'mess': "Successfull."}
+                                    "result": true,
+                                    "data": {"mess": "Successfull."}
                                 });
                             }
                         });
                     });
                 }
                 else {
-                    callback({'result': false, 'data': {'mess': "Email Does not Exists."}});
+                    callback({"result": false, "data": {"mess": "Email Does not Exists."}});
                 }
             }
         );
@@ -195,7 +195,7 @@ exports.ResetPassInit = function (email, callback) {
 
 //compare password
 exports.CompareCode = function (email, code, callback) {
-    console.log(">> Calling compare pass");
+    console.log('>> Calling compare pass');
     db.getConnection(function (err, client) {
         if (err) {
             return console.error('error connecting', err);
@@ -209,14 +209,14 @@ exports.CompareCode = function (email, code, callback) {
                         if (err)
                             return console.error('error running query', err);
                         console.log("Client code match");
-                        callback({'result': true, 'data': {'mess': "code match"}});
+                        callback({"result": true, "data": {"mess": "code match"}});
                     });
                 } else {
                     console.log("Client code NOT match");
-                    callback({'result': false, 'data': {'mess': "code not match"}});
+                    callback({"result": false, "data": {"mess": "code not match"}});
                 }
             } else {
-                callback({'result': false, 'data': {'mess': "email error"}});
+                callback({"result": false, "data": {"mess": "email error"}});
             }
         })
     })
@@ -224,7 +224,7 @@ exports.CompareCode = function (email, code, callback) {
 
 //change password
 exports.ResetPassChange = function (email, pass, callback) {
-    console.log(">> Calling change pass");
+    console.log('>> Calling change pass');
     db.getConnection(function (err, client) {
         if (err) {
             return console.error('error connecting', err);
@@ -237,10 +237,10 @@ exports.ResetPassChange = function (email, pass, callback) {
                 client.query(sql, function (err) {
                     if (err)
                         return console.error('error running query', err);
-                    callback({'result': true, 'data': {'mess': "successfull."}});
+                    callback({"result": true, "data": {"mess": "successfull."}});
                 })
             } else {
-                callback({'result': false, 'data': {'mess': "email not exist"}});
+                callback({"result": false, "data": {"mess": "email not exist"}});
             }
         })
     });

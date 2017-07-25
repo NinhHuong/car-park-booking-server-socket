@@ -186,7 +186,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on(constant.CONST.REQUEST_REMOVE_PARKING_INFO_BY_ID, function (id) {
-        parkingInfo.RemoveByID(id, function (res) {
+        parkingInfo.RemoveById(id, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_REMOVE_PARKING_INFO_BY_ID, res);
         });
@@ -207,21 +207,21 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on(constant.CONST.REQUEST_FIND_PARKING_INFO_BY_GARAGE_ID, function (id) {
-        parkingInfo.findByGagareID(id, function (res) {
+        parkingInfo.FindByGagareId(id, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_FIND_PARKING_INFO_BY_GARAGE_ID, res);
         });
     });
 
     socket.on(constant.CONST.REQUEST_EDIT_PARKING_INFO_TIME_GO_IN_BY_ID, function (id, timeGoIn) {
-        parkingInfo.UpdateByIDTimeGoIn(id, timeGoIn, function (res) {
+        parkingInfo.UpdateByIdTimeGoIn(id, timeGoIn, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_EDIT_PARKING_INFO_TIME_GO_IN_BY_ID, res);
         });
     });
 
     socket.on(constant.CONST.REQUEST_EDIT_PARKING_INFO_TIME_GO_OUT_BY_ID, function (id, timeGoOut) {
-        parkingInfo.UpdateByIDTimeGoOut(id, timeGoOut, function (res) {
+        parkingInfo.UpdateByIdTimeGoOut(id, timeGoOut, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_EDIT_PARKING_INFO_TIME_GO_OUT_BY_ID, res);
         });
@@ -235,14 +235,14 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on(constant.CONST.REQUEST_PARKING_INFO_BY_ACCOUNT_ID, function (accountID) {
-        parkingInfo.findStatusByAccountID(accountID, function (res) {
+        parkingInfo.FindStatusByAccountId(accountID, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_PARKING_INFO_BY_ACCOUNT_ID, res);
         });
     });
 
     socket.on(constant.CONST.REQUEST_EDIT_PARKING_INFO_BY_ID_STATUS, function (id, parkingStatus) {
-        parkingInfo.UpdateByIDAndStatus(id, parkingStatus, function (res) {
+        parkingInfo.UpdateByIdAndStatus(id, parkingStatus, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_EDIT_PARKING_INFO_BY_ID_STATUS, res);
         });

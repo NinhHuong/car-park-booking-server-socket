@@ -17,7 +17,7 @@ exports.Add = function (name, address, totalSlot, busySlot, locationX, locationY
         client.query(sql, function (err) {
             // db.endConnection();
             if (err)  return db_error.errorSQL(sql, callback, err);
-            callback({'result': true, 'data': '', 'mess': 'Successfully Add'});
+            callback({"result": true, "data": "", "mess": "Successfully Add"});
         });
     });
 };
@@ -34,7 +34,7 @@ exports.GetAllGarages = function (callback) {
                 if (err)  return db_error.errorSQL(sql, callback, err);
 
                 console.log("Getting all garages");
-                callback({'result': true, "Garages": result, 'mess': ''});
+                callback({"result": true, "Garages": result, "mess": ""});
             });
         });
     });
@@ -50,7 +50,7 @@ exports.GetGaragesByID = function (id, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             console.log(result);
-            callback({'result': true, "Garage": result, 'mess': ''});
+            callback({"result": true, "Garage": result, "mess": ""});
         });
     });
 };
@@ -65,7 +65,7 @@ exports.GetGaragesByAccountID = function (accountID, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             console.log(result);
-            callback({'result': true, "Garage": result, 'mess': ''});
+            callback({"result": true, "Garage": result, "mess": ""});
         });
     });
 };
@@ -86,10 +86,10 @@ exports.UpdateByID = function (id, name, address, totalSlot, busySlot, locationX
                 console.log(sql);
                 client.query(sql, function (err) {
                     if (err)  return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'data': '', 'mess': "Successfully updated " + table_name});
+                    callback({"result": true, "data": "", "mess": "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in Database"});
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was not in Database"});
             }
         });
     });
@@ -109,10 +109,10 @@ exports.ChangeStatusByID = function (id, xstatus, callback) {
                 // console.log(sql);
                 client.query(sql, function (err) {
                     if (err) return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'data': '', 'mess': "Successfully updated " + table_name});
+                    callback({"result": true, "data": "", "mess": "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in Database"});
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was not in Database"});
             }
         });
     });

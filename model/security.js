@@ -17,10 +17,10 @@ exports.Add = function (accountID, garageID, callback) {
                 sql = "INSERT INTO " + table_name + " (accountID,garageID) VALUES (" + accountID + "," + garageID + ")";
                 client.query(sql, function (err) {
                     if (err) return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'data': '','mess': "Successfully regist new " + table_name});
+                    callback({"result": true, "data": "","mess": "Successfully regist new " + table_name});
                 });
             } else {
-                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was Register"});
+                callback({"result": false,"data": "", "mess": "this " + table_name + " name was Register"});
             }
         });
     });
@@ -39,10 +39,10 @@ exports.Remove = function (accountID, garageID, callback) {
                 sql = "DELETE FROM " + table_name + " WHERE id ='" + id + "'";
                 client.query(sql, function (err) {
                     if (err)return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true,'data': '', 'mess': "Successfully delete " + table_name});
+                    callback({"result": true,"data": "", "mess": "Successfully delete " + table_name});
                 });
             } else {
-                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was Register"});
+                callback({"result": false,"data": "", "mess": "this " + table_name + " name was Register"});
             }
         });
     });
@@ -60,7 +60,7 @@ exports.FindByAccountId = function (accountID, callback) {
                 if (err)return db_error.errorSQL(sql, callback, err);
 
                 console.log(result);
-                callback({'result': true, 'data': result,'mess':''});
+                callback({"result": true, "data": result,"mess":""});
             });
         });
     });
@@ -78,14 +78,14 @@ exports.FindByGagareId = function (garageID, callback) {
                 if (err) return db_error.errorSQL(sql, callback, err);
 
                 console.log(result);
-                callback({'result': true, 'data': result,'mess':''});
+                callback({"result": true, "data": result,"mess":""});
             });
         });
     });
 };
 
 exports.UpdateById = function (id, newAccountID, newGarageID, callback) {
-    console.log("change " + table_name);
+    console.log('change ' + table_name);
 
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
@@ -102,10 +102,10 @@ exports.UpdateById = function (id, newAccountID, newGarageID, callback) {
                     if (err) {
                         return console.error('error running query' + table_name, err);
                     }
-                    callback({'result': true, 'mess': "Successfully updated " + table_name});
+                    callback({"result": true, "mess": "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false,'mess': "this " + table_name + " was not in Database"});
+                callback({"result": false,"mess": "this " + table_name + " was not in Database"});
             }
         });
     });
