@@ -11,11 +11,16 @@ exports.add = function (carID, garageID, timeBooked, callback) {
     console.log(carID + ", " + garageID + ", " + timeBooked);
 
     db.getConnection(function (err, client) {
+<<<<<<< HEAD
 
         if (err) {
             console.error('error fetching client from pool', err);
             return callback({'result': false, 'data': '', 'mess': "db_error "});
         }
+=======
+        if(err)
+            db_error.errorDBConnection(err,callback);
+>>>>>>> ba697451ded957ef1702abc2037ce96873a47f20
 
         var sql = "SELECT * FROM " + table_name + " WHERE carID = " + carID;
         client.query(sql, function (err, result) {
@@ -26,7 +31,11 @@ exports.add = function (carID, garageID, timeBooked, callback) {
             if (result.length > 0) {
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].parkingStatus === 0 || result[i].parkingStatus === 1) {
+<<<<<<< HEAD
                         return callback({'result': false, 'data': '', 'mess': "car_busy"});
+=======
+                        return callback({'result': false, 'mess': "car_busy"});
+>>>>>>> ba697451ded957ef1702abc2037ce96873a47f20
                     }
                 }
             }
@@ -54,7 +63,7 @@ exports.updateByIDTimeGoIn = function (id, timeGoIn, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
-                sql = "UPDATE " + table_name + " SET timeGoIn = '" + timeGoIn + "' , parkStatus = " + 1 + " WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET timeGoIn = '" + timeGoIn + "' , parkingStatus = " + 1 + " WHERE id = " + id;
 
                 // console.log(sql);
                 client.query(sql, function (err) {
@@ -103,7 +112,7 @@ exports.updateByIDTimeGoOut = function (id, timeGoOut, callback) {
             if (err) return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
-                sql = "UPDATE " + table_name + " SET timeGoOut = '" + timeGoOut + "' , parkStatus = " + 2 + " WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET timeGoOut = '" + timeGoOut + "' , parkingStatus = " + 2 + " WHERE id = " + id;
 
                 // console.log(sql);
                 client.query(sql, function (err) {
@@ -263,7 +272,7 @@ exports.findByGagareID = function (garageID, callback) {
 exports.findByGagareIDAndStatus = function (garageID, status, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
-        var partEndsql = "garageID = '" + garageID + "' AND parkStatus = '" + status + "'";
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status + "'";
         var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
         client.query(sql, function (err, result) {
             // db.endConnection();
@@ -281,7 +290,7 @@ exports.findByGagareIDAndStatus = function (garageID, status, callback) {
 exports.findByGagareIDStatusAndTime = function (garageID, status, timeStart, timeEnd, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
-        var partEndsql = "garageID = '" + garageID + "' AND parkStatus = '" + status
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status
             + "' AND timeBooked BETWEEN  '" + timeStart + "' AND '" + timeEnd + "'";
         var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
         client.query(sql, function (err, result) {
@@ -298,7 +307,7 @@ exports.findByGagareIDStatusAndTime = function (garageID, status, timeStart, tim
 };
 
 exports.findByGagareIDAndTime = function (garageID, typeTime, timeStart, timeEnd, callback) {
-    if (typeTime != 'timeBooked' || typeTime != 'timeGoIn' || typeTime != 'timeGoOut') {
+    if (!(typeTime === 'timeBooked' || typeTime === 'timeGoIn' || typeTime === 'timeGoOut')) {
         callback({'retult': false, 'data': {'mess': "Dont have any field " + typeTime}})
         return;
     }
