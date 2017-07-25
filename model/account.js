@@ -251,4 +251,3 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
         pass: "quocngay"
     }
 });
-
