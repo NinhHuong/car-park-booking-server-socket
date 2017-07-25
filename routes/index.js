@@ -15,7 +15,7 @@ var security = require('../model/security');
 var role = require('../model/role');
 
 var constant = require('../other/constant');
-console.log("Start server: "+ ip.address()+":5000");
+console.log("Start server: " + ip.address() + ":5000");
 
 io.sockets.on('connection', function (socket) {
     var client_ip = socket.request.connection.remoteAddress;
@@ -74,8 +74,8 @@ io.sockets.on('connection', function (socket) {
 
     //region GARAGES
     //ADD NEW GARAGE
-    socket.on(constant.CONST.REQUEST_ADD_NEW_GARAGE, function (name, address, totalSlot, busySlot, locationX, locationY,accountID, timeStart, timeEnd, statux) {
-        garage.add(name, address, totalSlot, busySlot, locationX, locationY,accountID, timeStart, timeEnd, statux, function (res) {
+    socket.on(constant.CONST.REQUEST_ADD_NEW_GARAGE, function (name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, statux) {
+        garage.add(name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, statux, function (res) {
             socket.emit(constant.CONST.RESPONSE_ADD_NEW_GARAGE, res);
         })
     });
@@ -102,15 +102,15 @@ io.sockets.on('connection', function (socket) {
     });
 
     //EDIT STATUS OF GARAGE BY GARAGE ID
-    socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id,status) {
-        garage.changeStatusByID(id,status, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id, status) {
+        garage.changeStatusByID(id, status, function (res) {
             socket.emit(constant.CONST.RESPONSE_EDIT_STATUS_GARAGE_BY_ID, res);
         })
     });
 
     //EDIT GARAGE BY GARAGE ID
-    socket.on(constant.CONST.REQUEST_EDIT_GARAGE_BY_ID, function (id, name, address, totalSlot, busySlot, locationX, locationY, accountID,timeStart, timeEnd, xstatus) {
-        garage.updateByID(id, name, address, totalSlot, busySlot, locationX, locationY,accountID, timeStart, timeEnd, xstatus, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_GARAGE_BY_ID, function (id, name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, xstatus) {
+        garage.updateByID(id, name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, xstatus, function (res) {
             socket.emit(constant.CONST.RESPONSE_EDIT_GARAGE_BY_ID, res);
         })
     });
@@ -227,10 +227,24 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    socket.on(constant.CONST.REQUEST_PARKING_INFO_HISTORY_BY_ACCOUNT_ID, function (accountID) {
+        parkingInfo.findHistoryByAccountID(accountID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_PARKING_INFO_HISTORY_BY_ACCOUNT_ID, res);
+        });
+    });
+
     socket.on(constant.CONST.REQUEST_PARKING_INFO_BY_ACCOUNT_ID, function (accountID) {
-        parkingInfo.findByAccountID(accountID, function (res) {
+        parkingInfo.findStatusByAccountID(accountID, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_PARKING_INFO_BY_ACCOUNT_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_EDIT_PARKING_INFO_BY_ID_STATUS, function (id, parkingStatus) {
+        parkingInfo.updateByIDAndStatus(id, parkingStatus, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_EDIT_PARKING_INFO_BY_ID_STATUS, res);
         });
     });
     //endregion
@@ -274,8 +288,8 @@ io.sockets.on('connection', function (socket) {
     //endregion
 
     //region ROLE
-    socket.on(constant.CONST.REQUEST_ADD_NEW_ROLE, function ( name) {
-        role.add( name, function (res) {
+    socket.on(constant.CONST.REQUEST_ADD_NEW_ROLE, function (name) {
+        role.add(name, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_ADD_NEW_ROLE, res);
         });
@@ -288,8 +302,8 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    socket.on(constant.CONST.REQUEST_EDIT_ROLE_BY_ID, function (id,name) {
-        role.edit(id,name, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_ROLE_BY_ID, function (id, name) {
+        role.edit(id, name, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_FIND_ROLE_BY_GARAGE_ID, res);
         });
@@ -297,7 +311,7 @@ io.sockets.on('connection', function (socket) {
 
     //endregion
 
-    socket.on('disconnect', function() {
+    socket.on('disconnect', function () {
         console.log('CLIENT DISCONNECT: ' + client_ip);
     });
 });

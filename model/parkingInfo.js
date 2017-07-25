@@ -4,29 +4,29 @@
 
 var db = require('../database/dbConfig');
 var db_error = require('../database/db_error');
-const table_name = 'ParkingInfo';
+const table_name = 'parkinginfo';
 
 exports.add = function (carID, garageID, timeBooked, callback) {
     console.log("add new " + table_name);
-    console.log(carID+", "+ garageID +", "+ timeBooked);
+    console.log(carID + ", " + garageID + ", " + timeBooked);
 
     db.getConnection(function (err, client) {
 
         if (err) {
             console.error('error fetching client from pool', err);
-            return callback({'result': false, 'mess': "db_error "});
+            return callback({'result': false, 'data': '', 'mess': "db_error "});
         }
 
         var sql = "SELECT * FROM " + table_name + " WHERE carID = " + carID;
         client.query(sql, function (err, result) {
             if (err) {
                 console.error('error running query' + table_name, err);
-                return callback({'result': false, 'mess': "db_error "});
+                return callback({'result': false, 'data': '', 'mess': "db_error "});
             }
             if (result.length > 0) {
                 for (var i = 0; i < result.length; i++) {
-                    if(result[i].parkingStatus === 0 || result[i].parkingStatus === 1){
-                        return callback({'result': false, 'mess': "car_busy"});
+                    if (result[i].parkingStatus === 0 || result[i].parkingStatus === 1) {
+                        return callback({'result': false, 'data': '', 'mess': "car_busy"});
                     }
                 }
             }
@@ -35,9 +35,9 @@ exports.add = function (carID, garageID, timeBooked, callback) {
             client.query(sql, function (err) {
                 if (err) {
                     console.error('error running query 2:' + table_name, err);
-                    return callback({'result': false, 'mess': "db_error"});
+                    return callback({'result': false, 'data': '', 'mess': "db_error"});
                 }
-                callback({'result': true,'data':'', 'mess': "book_successfull"});
+                callback({'result': true, 'data': '', 'mess': "book_successfull"});
             });
         });
     });
@@ -67,6 +67,30 @@ exports.updateByIDTimeGoIn = function (id, timeGoIn, callback) {
         });
     });
 };
+
+exports.updateByIDAndStatus = function (id, status, callback) {
+    console.log("change " + table_name);
+
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+        var sql = "SELECT * FROM " + table_name + " WHERE id = " + id;
+        client.query(sql, function (err, result) {
+            if (err)  return db_error.errorSQL(sql, callback, err);
+            if (result.length > 0) {
+                sql = "UPDATE " + table_name + " SET parkingStatus = " + status + " WHERE id = " + id;
+
+                console.log(sql);
+                client.query(sql, function (err) {
+                    if (err) return db_error.errorSQL(sql, callback, err);
+                    callback({'result': true, 'data': '', 'mess': "Successfully updated " + table_name});
+                });
+            } else {
+                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in Database"});
+            }
+        });
+    });
+};
+
 
 exports.updateByIDTimeGoOut = function (id, timeGoOut, callback) {
     console.log("change " + table_name);
@@ -155,7 +179,7 @@ exports.findByCarID = function (carID, callback) {
     });
 };
 
-exports.findByAccountID = function (accountID, callback) {
+exports.findHistoryByAccountID = function (accountID, callback) {
     console.log("find " + table_name + " account ID:" + accountID);
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
@@ -169,8 +193,50 @@ exports.findByAccountID = function (accountID, callback) {
             if (result.length === 0) {
                 callback({'result': false, 'data': '', 'mess': "Dont have any record accountID =" + accountID});
             } else {
-                callback({'result': true, 'ParkingInfo': result, 'mess': ''});
+                callback({'result': true, 'data': result, 'mess': ''});
             }
+        });
+    });
+};
+
+exports.findStatusByAccountID = function (accountID, callback) {
+    console.log("find " + table_name + " account ID:" + accountID);
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+        var parkingStatus;
+
+        var sqlBooked = "SELECT p.* " +
+            "FROM " + table_name + " p, `car` c " +
+            "WHERE p.carID = c.id " +
+            "AND p.parkingStatus = 0 " +
+            "AND c.accountId = '" + accountID + "'";
+
+        var sqlChecked = "SELECT p.* " +
+            "FROM " + table_name + " p, `car` c " +
+            "WHERE p.carID = c.id " +
+            "AND p.parkingStatus = 1 " +
+            "AND c.accountId = '" + accountID + "'";
+
+        client.query(sqlBooked, function (err, result) {
+            // db.endConnection();
+            if (err) return db_error.errorSQL(sql, callback, err);
+
+            if (result.length > 0) {
+                console.log("ParkingInfo > return > booked result")
+                return callback({'result': true, 'data': result[0], 'mess': 'is booking'});
+            } else {
+                client.query(sqlChecked, function (err, result) {
+                    // db.endConnection();
+                    if (err) return db_error.errorSQL(sql, callback, err);
+
+                    if (result.length > 0) {
+                        console.log("ParkingInfo > return > checked result")
+                        return callback({'result': true, 'data': result[0], 'mess': 'is booking'});
+                    }
+                });
+            }
+
+            return db_error.errorDBConnection(err, callback);
         });
     });
 };
