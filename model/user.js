@@ -6,8 +6,8 @@ var db = require('../database/dbConfig');
 var db_error = require('../database/db_error');
 const table_name = 'user';
 
-exports.add = function (firstName, lastName, dob, phone, address, callback) {
-    console.log("add new " + table_name);
+exports.Add = function (firstName, lastName, dob, phone, address, callback) {
+    console.log("Add new " + table_name);
 
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
@@ -26,7 +26,7 @@ exports.add = function (firstName, lastName, dob, phone, address, callback) {
                     if (err) {
                         return console.error('error running query 2:' + table_name, err);
                     }
-                    callback({'result': true, 'data': '', 'mess': "Successfully register new " + table_name});
+                    callback({'result': true, 'data': '', 'mess': "Successfully Register new " + table_name});
                 });
             } else {
                 callback({'result': false, 'data': '', 'mess': "this " + table_name + " was registered"});
@@ -35,8 +35,8 @@ exports.add = function (firstName, lastName, dob, phone, address, callback) {
     });
 };
 
-exports.remove = function (id, callback) {
-    console.log("remove " + table_name + " id: " + id);
+exports.Remove = function (id, callback) {
+    console.log("Remove " + table_name + " id: " + id);
 
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
@@ -58,7 +58,7 @@ exports.remove = function (id, callback) {
     });
 };
 
-exports.findByUserID = function (userID, callback) {
+exports.FindByUserId = function (userID, callback) {
     console.log("find " + table_name + " userID:" + userID);
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
@@ -77,7 +77,7 @@ exports.findByUserID = function (userID, callback) {
     });
 };
 
-exports.updateByID = function (id, newFirstName, newLastName, newdob, newPhone, newAddress, callback) {
+exports.UpdateById = function (id, newFirstName, newLastName, newdob, newPhone, newAddress, callback) {
     console.log("change " + table_name);
 
     db.getConnection(function (err, client) {

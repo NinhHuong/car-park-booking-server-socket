@@ -6,8 +6,8 @@ var db = require('../database/dbConfig');
 var db_error = require('../database/db_error');
 const table_name = 'car';
 
-exports.add = function (accountID, vehicleNumber, callback) {
-    console.log("add new " + table_name + " vehicleNumber: " + vehicleNumber + " accountID: " + accountID);
+exports.Add = function (accountID, vehicleNumber, callback) {
+    console.log("Add new " + table_name + " vehicleNumber: " + vehicleNumber + " accountID: " + accountID);
 
     db.getConnection(function (err, client) {
         if (err)
@@ -24,7 +24,7 @@ exports.add = function (accountID, vehicleNumber, callback) {
                     if (err)
                         return db_error.errorSQL(sql, callback, err);
 
-                    callback({'result': true, 'data': '','mess': "Successfully register new " + table_name, });
+                    callback({'result': true, 'data': '','mess': "Successfully Register new " + table_name });
                 });
             } else {
                 callback({'result': false,'data': '', 'mess': "this " + table_name + " was registered"});
@@ -33,8 +33,8 @@ exports.add = function (accountID, vehicleNumber, callback) {
     });
 };
 
-exports.remove = function (vehicleNumber, callback) {
-    console.log("remove " + table_name + " vehicleNumber: " + vehicleNumber);
+exports.Remove = function (vehicleNumber, callback) {
+    console.log("Remove " + table_name + " vehicleNumber: " + vehicleNumber);
 
     db.getConnection(function (err, client) {
         if (err)
@@ -59,7 +59,7 @@ exports.remove = function (vehicleNumber, callback) {
     });
 };
 
-exports.findByAccountID = function (accountid, callback) {
+exports.FindByAccountID = function (accountid, callback) {
     console.log("find " + table_name + " accountID:" + accountid);
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
@@ -81,7 +81,7 @@ exports.findByAccountID = function (accountid, callback) {
     });
 };
 
-exports.updateByVehicle = function (accountID, oldVehicle, newVehicle, callback) {
+exports.UpdateByVehicle = function (accountID, oldVehicle, newVehicle, callback) {
     console.log("change " + table_name + " accountID: " + accountID + " oldVehicle: " + oldVehicle + " newVehicle: " + newVehicle);
 
     db.getConnection(function (err, client) {

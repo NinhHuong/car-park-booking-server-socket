@@ -5,7 +5,7 @@ var db = require('../database/dbConfig');
 var db_error = require('../database/db_error');
 const table_name = 'role';
 
-exports.add = function (name, callback) {
+exports.Add = function (name, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
@@ -21,13 +21,13 @@ exports.add = function (name, callback) {
                     callback({'result': true,'data': '', 'mess': "Successfully regist new role"});
                 });
             } else {
-                callback({'result': false,'data': '', 'mess': "this role name was register"});
+                callback({'result': false,'data': '', 'mess': "this role name was Register"});
             }
         });
     });
 };
 
-exports.remove = function (id, callback) {
+exports.Remove = function (id, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
@@ -43,13 +43,13 @@ exports.remove = function (id, callback) {
                     callback({'result': true,'data': '','mess': "Successfully DELETE " + table_name});
                 });
             } else {
-                callback({'result': false,'data': '','mess': "this " + table_name + " name was register"});
+                callback({'result': false,'data': '','mess': "this " + table_name + " name was Register"});
             }
         });
     });
 };
 
-exports.edit = function (id,name, callback) {
+exports.Edit = function (id, name, callback) {
     db.getConnection(function (err, client) {
         if (err) {
             return console.error('error fetching client from pool', err);
@@ -67,14 +67,14 @@ exports.edit = function (id,name, callback) {
                     callback({'result': true,'data': '', 'mess': "Successfully UPDATE " + table_name});
                 });
             } else {
-                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was register"});
+                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was Register"});
             }
         });
     });
 };
 
 
-exports.findByID = function (id, callback) {
+exports.FindById = function (id, callback) {
     db.getConnection(function (err, client) {
         if (err) {
             return console.error('error fetching client from pool', err);

@@ -7,8 +7,8 @@ var rand = require('csprng');
 var nodemailer = require('nodemailer');
 var db = require('../database/dbConfig');
 
-//register
-exports.register = function (email, password, roleID, callback) {
+//Register
+exports.Register = function (email, password, roleID, callback) {
     var token = crypto.createHash('sha512').update(email + rand).digest("hex");
 
     db.getConnection(function (err, client) {
@@ -57,15 +57,15 @@ exports.register = function (email, password, roleID, callback) {
                     callback({'result': true, 'data': "Successfully Registered"});
                 });
             } else {
-                console.log("Register fail")
+                console.log("Register fail");
                 callback({'result': false, 'mess': "Email already Registered"});
             }
         });
     });
 };
 
-//login
-exports.login = function (email, password, callback) {
+//Login
+exports.Login = function (email, password, callback) {
     db.getConnection(function (err, client) {
             if (err) {
                 return console.error('error running query', err);
@@ -108,8 +108,8 @@ exports.login = function (email, password, callback) {
     ;
 };
 
-//check_token
-exports.check_token = function (token, callback) {
+//CheckToken
+exports.CheckToken = function (token, callback) {
     db.getConnection(function (err, client) {
             if (err) {
                 return console.error('error running query', err);
@@ -122,12 +122,12 @@ exports.check_token = function (token, callback) {
                 }
 
                 if (result.length > 0) {
-                    var token_db = result[0].token;
-                    if (token_db === token) {
+                    var tokenDb = result[0].token;
+                    if (tokenDb === token) {
                         console.log("Remember me successfull");
                         callback({
                             'response': "Remember Success",
-                            'result': true,
+                            'result': true
                         });
                     } else {
                         console.log("Remember fail");
@@ -146,7 +146,7 @@ exports.check_token = function (token, callback) {
 };
 
 //reset password
-exports.reset_pass_init = function (email, callback) {
+exports.ResetPassInit = function (email, callback) {
     console.log(">> Calling reset pass");
     db.getConnection(function (err, client) {
         if (err) {
@@ -194,7 +194,7 @@ exports.reset_pass_init = function (email, callback) {
 };
 
 //compare password
-exports.compare_code = function (email, code, callback) {
+exports.CompareCode = function (email, code, callback) {
     console.log(">> Calling compare pass");
     db.getConnection(function (err, client) {
         if (err) {
@@ -208,11 +208,11 @@ exports.compare_code = function (email, code, callback) {
                     client.query("UPDATE account SET isVerify = '" + 1 + "' WHERE email = '" + email + "'", function (err) {
                         if (err)
                             return console.error('error running query', err);
-                        console.log("Client code match")
+                        console.log("Client code match");
                         callback({'result': true, 'data': {'mess': "code match"}});
                     });
                 } else {
-                    console.log("Client code NOT match")
+                    console.log("Client code NOT match");
                     callback({'result': false, 'data': {'mess': "code not match"}});
                 }
             } else {
@@ -223,7 +223,7 @@ exports.compare_code = function (email, code, callback) {
 };
 
 //change password
-exports.reset_pass_change = function (email, pass, callback) {
+exports.ResetPassChange = function (email, pass, callback) {
     console.log(">> Calling change pass");
     db.getConnection(function (err, client) {
         if (err) {

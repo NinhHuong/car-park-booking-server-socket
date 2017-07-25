@@ -6,8 +6,8 @@ var db = require('../database/dbConfig');
 var db_error = require('../database/db_error');
 const table_name = 'parkinginfo';
 
-exports.add = function (carID, garageID, timeBooked, callback) {
-    console.log("add new " + table_name);
+exports.Add = function (carID, garageID, timeBooked, callback) {
+    console.log("Add new " + table_name);
     console.log(carID + ", " + garageID + ", " + timeBooked);
 
     db.getConnection(function (err, client) {
@@ -42,7 +42,7 @@ exports.add = function (carID, garageID, timeBooked, callback) {
     });
 };
 
-exports.updateByIDTimeGoIn = function (id, timeGoIn, callback) {
+exports.UpdateByIDTimeGoIn = function (id, timeGoIn, callback) {
     console.log("change " + table_name);
 
     db.getConnection(function (err, client) {
@@ -67,7 +67,7 @@ exports.updateByIDTimeGoIn = function (id, timeGoIn, callback) {
     });
 };
 
-exports.updateByIDAndStatus = function (id, status, callback) {
+exports.UpdateByIDAndStatus = function (id, status, callback) {
     console.log("change " + table_name);
 
     db.getConnection(function (err, client) {
@@ -91,7 +91,7 @@ exports.updateByIDAndStatus = function (id, status, callback) {
 };
 
 
-exports.updateByIDTimeGoOut = function (id, timeGoOut, callback) {
+exports.UpdateByIDTimeGoOut = function (id, timeGoOut, callback) {
     console.log("change " + table_name);
 
     db.getConnection(function (err, client) {
@@ -117,8 +117,8 @@ exports.updateByIDTimeGoOut = function (id, timeGoOut, callback) {
 };
 
 
-exports.removeByID = function (id, callback) {
-    console.log("remove " + table_name + " id: " + id);
+exports.RemoveByID = function (id, callback) {
+    console.log("Remove " + table_name + " id: " + id);
 
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
@@ -140,7 +140,7 @@ exports.removeByID = function (id, callback) {
     });
 };
 
-exports.findByID = function (ID, callback) {
+exports.FindById = function (ID, callback) {
     console.log("find " + table_name + " ID:" + ID);
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
@@ -159,7 +159,7 @@ exports.findByID = function (ID, callback) {
     });
 };
 
-exports.findByCarID = function (carID, callback) {
+exports.FindByCarID = function (carID, callback) {
     console.log("find " + table_name + " carID:" + carID);
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
@@ -178,7 +178,7 @@ exports.findByCarID = function (carID, callback) {
     });
 };
 
-exports.findHistoryByAccountID = function (accountID, callback) {
+exports.FindHistoryByAccountId = function (accountID, callback) {
     console.log("find " + table_name + " account ID:" + accountID);
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
@@ -221,7 +221,7 @@ exports.findStatusByAccountID = function (accountID, callback) {
             if (err) return db_error.errorSQL(sql, callback, err);
 
             if (result.length > 0) {
-                console.log("ParkingInfo > return > booked result")
+                console.log("ParkingInfo > return > booked result");
                 return callback({'result': true, 'data': result[0], 'mess': 'is booking'});
             } else {
                 client.query(sqlChecked, function (err, result) {
@@ -229,7 +229,7 @@ exports.findStatusByAccountID = function (accountID, callback) {
                     if (err) return db_error.errorSQL(sql, callback, err);
 
                     if (result.length > 0) {
-                        console.log("ParkingInfo > return > checked result")
+                        console.log("ParkingInfo > return > checked result");
                         return callback({'result': true, 'data': result[0], 'mess': 'is booking'});
                     }
                 });
@@ -298,7 +298,7 @@ exports.findByGagareIDStatusAndTime = function (garageID, status, timeStart, tim
 
 exports.findByGagareIDAndTime = function (garageID, typeTime, timeStart, timeEnd, callback) {
     if (!(typeTime === 'timeBooked' || typeTime === 'timeGoIn' || typeTime === 'timeGoOut')) {
-        callback({'retult': false, 'data': {'mess': "Dont have any field " + typeTime}})
+        callback({'retult': false, 'data': {'mess': "Dont have any field " + typeTime}});
         return;
     }
 

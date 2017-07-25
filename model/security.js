@@ -6,7 +6,7 @@ var db = require('../database/dbConfig');
 var db_error = require('../database/db_error');
 const table_name = 'security';
 
-exports.add = function (accountID, garageID, callback) {
+exports.Add = function (accountID, garageID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
         var sql = "SELECT * FROM " + table_name + " WHERE accountID = '" + accountID + "' AND garageID = '" + garageID + "'";
@@ -20,13 +20,13 @@ exports.add = function (accountID, garageID, callback) {
                     callback({'result': true, 'data': '','mess': "Successfully regist new " + table_name});
                 });
             } else {
-                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was register"});
+                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was Register"});
             }
         });
     });
 };
 
-exports.remove = function (accountID, garageID, callback) {
+exports.Remove = function (accountID, garageID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
@@ -42,13 +42,13 @@ exports.remove = function (accountID, garageID, callback) {
                     callback({'result': true,'data': '', 'mess': "Successfully delete " + table_name});
                 });
             } else {
-                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was register"});
+                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was Register"});
             }
         });
     });
 };
 
-exports.findByAccountID = function (accountID, callback) {
+exports.FindByAccountId = function (accountID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
@@ -66,7 +66,7 @@ exports.findByAccountID = function (accountID, callback) {
     });
 };
 
-exports.findByGagareID = function (garageID, callback) {
+exports.FindByGagareId = function (garageID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
@@ -84,7 +84,7 @@ exports.findByGagareID = function (garageID, callback) {
     });
 };
 
-exports.updateByID = function (id, newAccountID, newGarageID, callback) {
+exports.UpdateById = function (id, newAccountID, newGarageID, callback) {
     console.log("change " + table_name);
 
     db.getConnection(function (err, client) {
