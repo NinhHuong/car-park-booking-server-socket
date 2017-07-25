@@ -216,7 +216,7 @@ exports.FindStatusByAccountId = function (accountID, callback) {
 
         client.query(sqlBooked, function (err, result) {
             // db.endConnection();
-            if (err) return db_error.errorSQL(sql, callback, err);
+            if (err) return db_error.errorSQL(sqlBooked, callback, err);
 
             if (result.length > 0) {
                 console.log("ParkingInfo > return > booked result");
@@ -224,7 +224,7 @@ exports.FindStatusByAccountId = function (accountID, callback) {
             } else {
                 client.query(sqlChecked, function (err, result) {
                     // db.endConnection();
-                    if (err) return db_error.errorSQL(sql, callback, err);
+                    if (err) return db_error.errorSQL(sqlChecked, callback, err);
 
                     if (result.length > 0) {
                         console.log("ParkingInfo > return > checked result");
