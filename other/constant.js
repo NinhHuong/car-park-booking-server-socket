@@ -44,11 +44,13 @@ exports.CONST = {
     REQUEST_REMOVE_CAR: 'request_remove_car_by_vehicle_number',
     REQUEST_FIND_CAR_BY_ACCOUNT_ID: 'request_find_car_by_account_id',
     REQUEST_EDIT_VEHICLE_BY_NUMBER: 'request_change_vehicle_by_number',
+    REQUEST_REMOVE_CAR_BY_ID: 'request_remove_car_by_id',
 
     RESPONSE_ADD_NEW_CAR: 'response_add_new_car',
     RESPONSE_REMOVE_CAR: 'response_remove_car_by_vehicle_number',
     RESPONSE_FIND_CAR_BY_ACCOUNT_ID: 'response_find_car_by_account_id',
     RESPONSE_EDIT_VEHICLE_BY_NUMBER: 'response_change_vehicle_by_number',
+    RESPONSE_REMOVE_CAR_BY_ID: 'response_remove_car_by_id',
     //endregion
 
     //region USER

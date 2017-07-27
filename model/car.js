@@ -24,10 +24,10 @@ exports.Add = function (accountID, vehicleNumber, callback) {
                     if (err)
                         return db_error.errorSQL(sql, callback, err);
 
-                    callback({"result": true, "data": "","mess": "Successfully Register new " + table_name });
+                    callback({"result": true, "data": "", "mess": "Successfully Register new " + table_name});
                 });
             } else {
-                callback({"result": false,"data": "", "mess": "this " + table_name + " was registered"});
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was registered"});
             }
         });
     });
@@ -50,10 +50,38 @@ exports.Remove = function (vehicleNumber, callback) {
                 client.query(sql, function (err) {
                     if (err)  return db_error.errorSQL(sql, callback, err);
 
-                    callback({"result": true, "data": "","mess": "Successfully delete " + table_name});
+                    callback({"result": true, "data": "", "mess": "Successfully delete " + table_name});
                 });
             } else {
-                callback({"result": false, "data": "","mess": "this " + table_name + " was not in database"});
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was not in database"});
+            }
+        });
+    });
+};
+
+exports.RemoveByID = function (id, endresult, callback) {
+    console.log('Remove ' + table_name + ' id: ' + id);
+    db.getConnection(function (err, client) {
+        if (err)
+            return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT * FROM " + table_name + " WHERE id = '" + id + "'";
+        client.query(sql, function (err, result) {
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+            if (!(result.length === 0)) {
+                sql = "DELETE FROM PARKINGINFO WHERE carID = '" + id + "'";
+                client.query(sql, function (err) {
+                    if (err)  return db_error.errorSQL(sql, callback, err);
+                });
+
+                sql = "DELETE FROM " + table_name + " WHERE id = '" + id + "'";
+                client.query(sql, function (err) {
+                    if (err)  return db_error.errorSQL(sql, callback, err);
+                    callback({"result": true, "data": "", "mess": "Successfully delete " + table_name});
+                });
+            } else {
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was not in database"});
             }
         });
     });
@@ -72,9 +100,9 @@ exports.FindByAccountID = function (accountid, callback) {
                 if (err)  return db_error.errorSQL(sql, callback, err);
 
                 if (result.length === 0) {
-                    callback({"result": false,"data": "", "mess": "Dont have any car"});
+                    callback({"result": false, "data": "", "mess": "Dont have any car"});
                 } else {
-                    callback({"result": true, "data": result , "mess":""});
+                    callback({"result": true, "data": result, "mess": ""});
                 }
             });
         });
@@ -89,7 +117,7 @@ exports.UpdateByVehicle = function (accountID, oldVehicle, newVehicle, callback)
 
         var sql = "SELECT * FROM " + table_name + " WHERE accountID = " + accountID + " AND vehicleNumber = '" + oldVehicle + "'";
         client.query(sql, function (err, result) {
-            if (err) return db_error.errorSQL(sql,callback,err);
+            if (err) return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
                 var id = result[0].id;
@@ -98,11 +126,11 @@ exports.UpdateByVehicle = function (accountID, oldVehicle, newVehicle, callback)
 
                 // console.log(sql);
                 client.query(sql, function (err) {
-                    if (err)  return db_error.errorSQL(sql,callback,err);
-                    callback({"result": true,"data": "", "mess": "Successfully updated " + table_name});
+                    if (err)  return db_error.errorSQL(sql, callback, err);
+                    callback({"result": true, "data": "", "mess": "Successfully updated " + table_name});
                 });
             } else {
-                callback({"result": false,"data": "", "mess": "this " + table_name + " was not in Database"});
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was not in Database"});
             }
         });
     });

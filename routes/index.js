@@ -25,6 +25,8 @@ io.sockets.on('connection', function (socket) {
         console.log('test_emit_func');
     });
 
+
+
     //region ACCOUNT
     //Login request
     socket.on(constant.CONST.REQUEST_LOGIN_WITH_EMAIL_AND_PASS, function (email, password) {
@@ -143,6 +145,13 @@ io.sockets.on('connection', function (socket) {
         car.UpdateByVehicle(accountID, oldVehicle, newVehicle, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_EDIT_VEHICLE_BY_NUMBER, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_REMOVE_CAR_BY_ID, function (id, accountID) {
+        car.RemoveByID(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_REMOVE_CAR_BY_ID, res);
         });
     });
     //endregion
