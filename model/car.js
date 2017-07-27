@@ -59,7 +59,7 @@ exports.Remove = function (vehicleNumber, callback) {
     });
 };
 
-exports.RemoveByID = function (id, endresult, callback) {
+exports.RemoveByID = function (id, callback) {
     console.log('Remove ' + table_name + ' id: ' + id);
     db.getConnection(function (err, client) {
         if (err)
