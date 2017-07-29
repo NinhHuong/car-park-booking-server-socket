@@ -134,7 +134,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on(constant.CONST.REQUEST_FIND_CAR_BY_ACCOUNT_ID, function (accountID) {
         car.FindByAccountID(accountID, function (res) {
-            console.log(res);
+            // console.log(res);
             socket.emit(constant.CONST.RESPONSE_FIND_CAR_BY_ACCOUNT_ID, res);
         });
     });
@@ -146,7 +146,7 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    socket.on(constant.CONST.REQUEST_REMOVE_CAR_BY_ID, function (id, accountID) {
+    socket.on(constant.CONST.REQUEST_REMOVE_CAR_BY_ID, function (id) {
         car.RemoveByID(id, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_REMOVE_CAR_BY_ID, res);
