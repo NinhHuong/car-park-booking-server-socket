@@ -12,8 +12,8 @@ exports.Add = function (carID, garageID, timeBooked, callback) {
 
     db.getConnection(function (err, client) {
 
-        if(err)
-            db_error.errorDBConnection(err,callback);
+        if (err)
+            db_error.errorDBConnection(err, callback);
 
         var sql = "SELECT * FROM " + table_name + " WHERE carID = " + carID;
         client.query(sql, function (err, result) {
@@ -161,7 +161,6 @@ exports.FindByCarID = function (carID, callback) {
     console.log('find ' + table_name + ' carID:' + carID);
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
-
         var sql = "SELECT * FROM " + table_name + " WHERE carID = '" + carID + "'";
         client.query(sql, function (err, result) {
             // db.endConnection();
@@ -281,6 +280,60 @@ exports.FindByGagareIdStatusAndTime = function (garageID, status, timeStart, tim
         var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status
             + "' AND timeBooked BETWEEN  '" + timeStart + "' AND '" + timeEnd + "'";
         var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+            if (result.length === 0) {
+                callback({"result": false, "data": "", "mess": "Dont have any record " + partEndsql});
+            } else {
+                callback({"result": true, "data": result, "mess": ""});
+            }
+        });
+    });
+};
+
+exports.GetCarWillIn = function (garageID, callback) {
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + 0 + "' AND ";
+        var date = new Date();
+        if (date.getHours() < 12)
+            partEndsql += "(DATE(timeBooked) = DATE(NOW() - INTERVAL 1 DAY) OR  DATE(timeBooked) = DATE(NOW()))";
+        else
+            partEndsql += " DATE(timeBooked) = DATE(NOW())";
+
+        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+            if (result.length === 0) {
+                callback({"result": false, "data": "", "mess": "Dont have any record " + partEndsql});
+            } else {
+                callback({"result": true, "data": result, "mess": ""});
+            }
+        });
+    });
+};
+
+exports.GetCarWillOut = function (garageID, callback) {
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + 1 + "' AND ";
+
+        var date = new Date();
+        if (date.getHours() < 12)
+            partEndsql += "(DATE(timeBooked) = DATE(NOW() - INTERVAL 1 DAY) OR  DATE(timeBooked) = DATE(NOW()))";
+        else
+            partEndsql += " DATE(timeBooked) = DATE(NOW())";
+
+        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+
+
         client.query(sql, function (err, result) {
             // db.endConnection();
             if (err)  return db_error.errorSQL(sql, callback, err);

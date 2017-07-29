@@ -97,6 +97,9 @@ exports.CONST = {
     REQUEST_PARKING_INFO_BY_ACCOUNT_ID: 'request_booking_account_id',
     REQUEST_EDIT_PARKING_INFO_BY_ID_STATUS: 'request_edit_parking_info_id_status',
 
+    REQUEST_CAR_GO_IN: 'request_car_go_in',
+    REQUEST_CAR_GO_OUT: 'request_car_go_out',
+
     RESPONSE_ADD_NEW_PARKING_INFO: 'response_add_new_booking',
     RESPONSE_REMOVE_PARKING_INFO_BY_ID: 'response_remove_booking_by_id',
     RESPONSE_FIND_PARKING_INFO_BY_ID: 'response_find_booking_by_id',
@@ -107,6 +110,9 @@ exports.CONST = {
     RESPONSE_PARKING_INFO_HISTORY_BY_ACCOUNT_ID: 'response_booking_history_account_id',
     RESPONSE_PARKING_INFO_BY_ACCOUNT_ID: 'response_booking_account_id',
     RESPONSE_EDIT_PARKING_INFO_BY_ID_STATUS: 'response_edit_parking_info_id_status',
+
+    RESPONSE_CAR_GO_IN: 'response_car_go_in',
+    RESPONSE_CAR_GO_OUT: 'response_car_go_OUT',
 
     //endregion
 

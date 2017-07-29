@@ -25,8 +25,6 @@ io.sockets.on('connection', function (socket) {
         console.log('test_emit_func');
     });
 
-
-
     //region ACCOUNT
     //Login request
     socket.on(constant.CONST.REQUEST_LOGIN_WITH_EMAIL_AND_PASS, function (email, password) {
@@ -256,6 +254,20 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_EDIT_PARKING_INFO_BY_ID_STATUS, res);
         });
     });
+
+    socket.on(constant.CONST.REQUEST_CAR_GO_IN, function (id) {
+        parkingInfo.GetCarWillIn(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_CAR_GO_IN, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_CAR_GO_OUT, function (id) {
+        parkingInfo.GetCarWillOut(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
+        });
+    });
     //endregion
 
     //region SECURITY
@@ -317,6 +329,7 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_FIND_ROLE_BY_GARAGE_ID, res);
         });
     });
+
 
     //endregion
 
