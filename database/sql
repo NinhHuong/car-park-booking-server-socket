@@ -120,16 +120,16 @@ INSERT INTO car (accountID,vehicleNumber) VALUES (6,"44425"),(7,"17-909"),(5,"73
 
 INSERT INTO garage (name,address,totalSlot,busySlot,locationX,locationY,accountId,timeStart,timeEnd,xStatus)
 VALUES
- ("Elit Etiam Laoreet Industries","P.O. Box 521, 2035 Integer Road",48,30,21.027629, 105.778612,1,"2018-02-13 22:12:57","2018-06-18 08:32:26",1),
-("Risus Duis A Consulting","971-8579 Metus Av.",48,19,21.013842, 105.528602,1,"2016-10-10 13:32:06","2017-11-02 22:02:01",1),
-("Pede Nunc Sed Company","572-5408 Consequat Street",48,22,21.011989, 105.527508,1,"2017-01-17 13:49:12","2016-07-31 00:44:35",1),
-("Rhoncus Foundation","P.O. Box 397, 545 Auctor. Road",43,15,21.011108, 105.523056,2,"2018-02-22 07:07:24","2017-11-14 03:39:15",1),
-("Odio A PC","5938 Enim. Street",49,30,21.010295, 105.525819,3,"2018-04-01 15:14:21","2018-03-13 12:55:44",1),
-("Dictum Cursus Ltd","P.O. Box 553, 8708 Arcu. Rd.",50,27,21.021959, 105.549691,3,"2017-12-24 22:04:47","2017-05-19 01:10:24",1),
-("Laoreet Foundation","Ap #323-870 Malesuada Ave",49,20,21.021328, 105.551054,2,"2018-01-13 00:24:12","2018-05-03 19:36:37",1),
-("Ante Industries","Ap #188-5840 Augue Avenue",33,29,21.019966, 105.550850,1,"2018-02-26 07:11:56","2017-11-09 19:32:18",1),
-("Ut Company","Ap #402-1609 Eget Rd.",32,23,21.019325, 105.552073,1,"2017-12-19 04:54:43","2017-06-21 03:19:53",1),
-("Ut Company","Ap #402-1609 Eget Rd.",32,23,21.019327, 105.552075,1,"2017-12-19 04:54:43","2017-06-21 03:19:53",1);
+ ("LandMark 72"," Tn Keangnam Hn Landmark 72, Lô E6, Phạm Hùng, Phường Mễ Trì, Quận Nam Từ Liêm, Hà Nội",48,30,21.016597, 105.784059,1,"2018-02-13 22:12:57","2018-06-18 08:32:26",1),
+("Sudico Building HH3 - Sudico Building","Mễ Trì, Từ Liêm, Hanoi.",48,19,21.016553, 105.779535,1,"2016-10-10 13:32:06","2017-11-02 22:02:01",1),
+("Quán Lẩu Nướng Hàn Quốc","9 Dương Đình Nghệ, Yên Hoà, Cầu Giấy, Hà Nội",48,22,21.020049, 105.786040,1,"2017-01-17 13:49:12","2016-07-31 00:44:35",1),
+("Sân tập lái ôtô Hòa Lạc - FPT","tt. Liên Quan, Thạch Thất, Hanoi",43,15,21.011138, 105.524557,2,"2018-02-22 07:07:24","2017-11-14 03:39:15",1),
+("Viettel Data Center","Thạch Thất, Hanoi",49,30,21.009193, 105.531250,3,"2018-04-01 15:14:21","2018-03-13 12:55:44",1),
+("Công Ty Tnhh Vnprodev","10 Cầu Giấy, Quan Hoa, Cầu Giấy, Hà Nội",50,27,21.030208, 105.799866,3,"2017-12-24 22:04:47","2017-05-19 01:10:24",1),
+("Công Ty Cổ Phần Đầu Tư Và Xây Dựng Draco Việt Nam","105 Hoàng Văn Thái, Khương Mai, Thanh Xuân, Hà Nội",49,20,20.996350, 105.827893,2,"2018-01-13 00:24:12","2018-05-03 19:36:37",1),
+("Doanh Nghiệp Vàng Chiến Minh","119 Cầu Giấy, Quan Hoa, Cầu Giấy, Hà Nội",33,29,21.031554, 105.799691,1,"2018-02-26 07:11:56","2017-11-09 19:32:18",1),
+("Hung Thuận Auto Gia Huy","38 Dương Đình Nghệ, Mễ Trì, Từ Liêm, Hà Nội",32,23,21.019162, 105.784826,1,"2017-12-19 04:54:43","2017-06-21 03:19:53",1),
+("World Seafood Restaurant 2","18, Dương Đình Nghệ, Yên Hoà, Cầu Giấy, Hà Nội",32,23,21.020500, 105.786733,1,"2017-12-19 04:54:43","2017-06-21 03:19:53",1);
 
 INSERT INTO Security (garageID,accountID) VALUES (8,3),(6,3),(3,4),(8,5),(10,4),(5,3),(8,3),(1,3),(1,4),(2,3);
 INSERT INTO Security (garageID,accountID) VALUES (4,6),(9,5),(10,4),(10,3),(2,3),(10,3),(7,3),(2,5),(7,3);
