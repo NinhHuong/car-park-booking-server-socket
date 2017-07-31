@@ -56,7 +56,7 @@ CREATE TABLE `ParkingInfo` (
 
 CREATE TABLE `Car` (
 	`id` int NOT NULL AUTO_INCREMENT,
-	`accountID` int NOT NULL,
+	`accountID` int ,
 	`vehicleNumber` varchar(50) NOT NULL,
 	PRIMARY KEY (`id`)
 );

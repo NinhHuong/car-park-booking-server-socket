@@ -15,6 +15,12 @@ var security = require('../model/security');
 var role = require('../model/role');
 
 var constant = require('../other/constant');
+
+Number.prototype.padLeft = function (base, chr) {
+    var len = (String(base || 10).length - String(this).length) + 1;
+    return len > 0 ? new Array(len).join(chr || '0') + this : this;
+}
+
 console.log("Start server: " + ip.address() + ":5000");
 
 io.sockets.on('connection', function (socket) {
@@ -255,6 +261,7 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    // get all were was booked
     socket.on(constant.CONST.REQUEST_CAR_GO_IN, function (id) {
         parkingInfo.GetCarWillIn(id, function (res) {
             console.log(res);
@@ -262,10 +269,68 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    // get all car were in garage
     socket.on(constant.CONST.REQUEST_CAR_GO_OUT, function (id) {
         parkingInfo.GetCarWillOut(id, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
+        });
+    });
+
+    // change data. one car booked to go in
+    socket.on(constant.CONST.REQUEST_CAR_IN_ID, function (id, garageID) {
+        parkingInfo.CarInId(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_CAR_IN, res);
+
+            if (res.result) {
+                parkingInfo.GetCarWillIn(garageID, function (res) {
+                    console.log("Reset list car will in garage : " + garageID);
+                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_IN, res);
+                });
+                parkingInfo.GetCarWillOut(garageID, function (res) {
+                    console.log("Reset list car will out garage : " + garageID);
+                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
+                });
+            }
+        });
+    });
+
+    // Create new data. one car was not book go in
+    socket.on(constant.CONST.REQUEST_CAR_IN_NUMBER, function (vehicleNumber, garageID) {
+        parkingInfo.CarInVehicleNumber(vehicleNumber, garageID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_CAR_IN, res);
+
+            if (res.result) {
+                parkingInfo.GetCarWillIn(garageID, function (res) {
+                    console.log("Reset list car will in garage : " + garageID);
+                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_IN, res);
+                });
+                parkingInfo.GetCarWillOut(garageID, function (res) {
+                    console.log("Reset list car will out garage : " + garageID);
+                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
+                });
+            }
+        });
+    });
+
+    // change data. one car go in  to go out
+    socket.on(constant.CONST.REQUEST_CAR_OUT, function (vehicleNumber, garageID) {
+        parkingInfo.CarOut(vehicleNumber, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_CAR_OUT, res);
+
+            if (res.result) {
+                parkingInfo.GetCarWillIn(garageID, function (res) {
+                    console.log("Reset list car will in garage : " + garageID);
+                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_IN, res);
+                });
+                parkingInfo.GetCarWillOut(garageID, function (res) {
+                    console.log("Reset list car will out garage : " + garageID);
+                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
+                });
+            }
         });
     });
     //endregion

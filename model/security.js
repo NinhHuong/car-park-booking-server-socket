@@ -52,7 +52,7 @@ exports.FindByAccountId = function (accountID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
-        var sql = "SELECT * FROM " + table_name + " WHERE accountID = '" + accountID + "'";
+        var sql = "SELECT * FROM " + table_name + " WHERE accountID = '" + accountID + "' LIMIT 0,1";
         client.query(sql, function (err) {
             // db.endConnection();
             if (err) return db_error.errorSQL(sql, callback, err);

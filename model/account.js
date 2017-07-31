@@ -82,6 +82,7 @@ exports.Login = function (email, password, callback) {
                     var id = result[0].id;
                     var token = result[0].token;
                     var verify = result[0].isVerify;
+                    var role = result[0].roleID;
                     if (password_db === password) {
                         console.log("Login successfull");
                         callback({
@@ -90,17 +91,31 @@ exports.Login = function (email, password, callback) {
                             "email": true,
                             "password": true,
                             "is_verify": verify,
-                            "token": token
+                            "token": token,
+                            "role":role
                         });
                     } else {
                         console.log('Login fail');
-                        callback({"response": "Invalid Password", "id": id, "email": true, "password": false, "is_verify": verify, "token": token, "res": false});
+                        callback({"response": "Invalid Password",
+                            "id": id,
+                            "email": true,
+                            "password": false,
+                            "is_verify": verify,
+                            "token": token,
+                            "role":role,
+                            "res": false});
                     }
 
                 }
                 else {
                     console.log('User not exist');
-                    callback({"response": "User not exist", "id": "", "email": false, "password": false, "is_verify": "", "token": "", "res": false});
+                    callback({"response": "User not exist",
+                        "id": "",
+                        "email": false,
+                        "password": false,
+                        "is_verify": "",
+                        "token": "",
+                        "res": false});
                 }
             });
         }
@@ -123,11 +138,13 @@ exports.CheckToken = function (token, callback) {
 
                 if (result.length > 0) {
                     var tokenDb = result[0].token;
+                    var role = result[0].roleID;
                     if (tokenDb === token) {
                         console.log('Remember me successfull');
                         callback({
                             "response": "Remember Success",
-                            "result": true
+                            "result": true,
+                            "role": role
                         });
                     } else {
                         console.log('Remember fail');

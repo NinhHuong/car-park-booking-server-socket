@@ -99,6 +99,9 @@ exports.CONST = {
 
     REQUEST_CAR_GO_IN: 'request_car_go_in',
     REQUEST_CAR_GO_OUT: 'request_car_go_out',
+    REQUEST_CAR_IN_ID: 'request_one_car_in_by_id',
+    REQUEST_CAR_IN_NUMBER: 'request_one_car_in_by_vehicle_number',
+    REQUEST_CAR_OUT: 'request_one_car_out',
 
     RESPONSE_ADD_NEW_PARKING_INFO: 'response_add_new_booking',
     RESPONSE_REMOVE_PARKING_INFO_BY_ID: 'response_remove_booking_by_id',
@@ -112,7 +115,10 @@ exports.CONST = {
     RESPONSE_EDIT_PARKING_INFO_BY_ID_STATUS: 'response_edit_parking_info_id_status',
 
     RESPONSE_CAR_GO_IN: 'response_car_go_in',
-    RESPONSE_CAR_GO_OUT: 'response_car_go_OUT',
+    RESPONSE_CAR_GO_OUT: 'response_car_go_out',
+    RESPONSE_CAR_IN: 'response_one_car_in',
+    RESPONSE_CAR_OUT: 'response_one_car_out',
+
 
     //endregion
 
@@ -120,13 +126,13 @@ exports.CONST = {
     REQUEST_ADD_NEW_SECURITY: 'request_add_new_security',
     REQUEST_REMOVE_SECURITY: 'request_remove_security',
     REQUEST_FIND_SECURITY_BY_GARAGE_ID: 'request_find_security_by_garage_id',
-    REQUEST_FIND_SECURITY_BY_ACCOUNT_ID: 'request_edit_security_by_account_id',
+    REQUEST_FIND_SECURITY_BY_ACCOUNT_ID: 'request_find_security_by_account_id',
     REQUEST_EDIT_SECURITY_BY_ID: 'request_edit_security_by_id',
 
     RESPONSE_ADD_NEW_SECURITY: 'response_add_new_security',
     RESPONSE_REMOVE_SECURITY: 'response_remove_security',
     RESPONSE_FIND_SECURITY_BY_GARAGE_ID: 'response_find_security_by_garage_id',
-    RESPONSE_FIND_SECURITY_BY_ACCOUNT_ID: 'response_edit_security_by_account_id',
+    RESPONSE_FIND_SECURITY_BY_ACCOUNT_ID: 'response_find_security_by_account_id',
     RESPONSE_EDIT_SECURITY_BY_ID: 'response_edit_security_by_id',
 
     RB_GARAGE_STATUS: 'request_find_booking_by_garage_id_and_status',

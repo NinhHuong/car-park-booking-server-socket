@@ -5,6 +5,7 @@
 var db = require('../database/dbConfig');
 var db_error = require('../database/db_error');
 const table_name = 'parkinginfo';
+var car = require('../model/car');
 
 exports.Add = function (carID, garageID, timeBooked, callback) {
     console.log('Add new ' + table_name);
@@ -298,14 +299,9 @@ exports.GetCarWillIn = function (garageID, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
 
-        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + 0 + "' AND ";
-        var date = new Date();
-        if (date.getHours() < 12)
-            partEndsql += "(DATE(timeBooked) = DATE(NOW() - INTERVAL 1 DAY) OR  DATE(timeBooked) = DATE(NOW()))";
-        else
-            partEndsql += " DATE(timeBooked) = DATE(NOW())";
-
-        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + 0 + "'";
+        var sql = "SELECT parkinginfo.*, vehicleNumber FROM " + table_name +
+            " join car ON parkinginfo.carID = car.id WHERE " + partEndsql;
 
         client.query(sql, function (err, result) {
             // db.endConnection();
@@ -323,17 +319,12 @@ exports.GetCarWillIn = function (garageID, callback) {
 exports.GetCarWillOut = function (garageID, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
-        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + 1 + "' AND ";
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + 1 + "'";
 
-        var date = new Date();
-        if (date.getHours() < 12)
-            partEndsql += "(DATE(timeBooked) = DATE(NOW() - INTERVAL 1 DAY) OR  DATE(timeBooked) = DATE(NOW()))";
-        else
-            partEndsql += " DATE(timeBooked) = DATE(NOW())";
+        var sql = "SELECT parkinginfo.*, vehicleNumber FROM " + table_name +
+            " join car ON parkinginfo.carID = car.id WHERE " + partEndsql;
 
-        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
-
-
+        console.log("sql:"+sql);
         client.query(sql, function (err, result) {
             // db.endConnection();
             if (err)  return db_error.errorSQL(sql, callback, err);
@@ -346,6 +337,128 @@ exports.GetCarWillOut = function (garageID, callback) {
         });
     });
 };
+
+exports.CarInId = function (id, callback) {
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT * FROM " + table_name + " WHERE id = " + id;
+
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+            if (result.length === 0) {
+                callback({"result": false, "data": "", "mess": "Dont have any record "});
+            } else {
+                var d = new Date,
+                    timeConvert = [d.getFullYear(),
+                            (d.getMonth() + 1).padLeft(),
+                            d.getDate().padLeft()].join('/') + ' ' +
+                        [d.getHours().padLeft(),
+                            d.getMinutes().padLeft(),
+                            d.getSeconds().padLeft()].join(':');
+                sql = "UPDATE " + table_name + " SET timeGoIn = '" + timeConvert + "' , parkingStatus = " + 1 + " WHERE id = " + id;
+                client.query(sql, function (err, result) {
+                    if (err) return db_error.errorSQL(sql, callback, err);
+                    console.log("ID: " + id + " time go in:" + timeConvert);
+                    callback({"result": true, "data": "", "mess": "Car out"});
+                });
+            }
+        });
+    });
+}
+
+exports.CarInVehicleNumber = function (vehicleNumber, garageID, callback) {
+    db.getConnection(function (err, client) {
+        car.FindByVehicleNumber(vehicleNumber, function (findRes) {
+            var result = findRes.result;
+            var d = new Date,
+                timeConvert = [d.getFullYear(),
+                        (d.getMonth() + 1).padLeft(),
+                        d.getDate().padLeft()].join('/') + ' ' +
+                    [d.getHours().padLeft(),
+                        d.getMinutes().padLeft(),
+                        d.getSeconds().padLeft()].join(':');
+            if (!result) {
+                car.AddVehicleNumber(vehicleNumber, function (addRes) {
+                    if (addRes.result) {
+                        car.FindByVehicleNumber(vehicleNumber, function (findResNext) {
+                            var carId = findResNext.data[0].id;
+
+                            sql = "INSERT INTO " + table_name + " (carId, garageID, timeGoIn, parkingStatus) VALUE ('" +
+                                carId + "', '" +
+                                garageID + "', '" +
+                                timeConvert + "', '" +
+                                1 + "')";
+
+                            client.query(sql, function (err, result) {
+                                // db.endConnection();
+                                if (err)  return db_error.errorSQL(sql, callback, err);
+                                console.log("Create new parking: carID "+
+                                    carId +", garageID "+
+                                    garageID+", timeGoIn "+
+                                    timeConvert+", status"+1);
+                                callback({"result": true, "data": "", "mess": "Car in"});
+
+                            });
+                        });
+                    }else callback({"result": false, "data": "", "mess": "Fail when add new vehicle"});
+                });
+            }else {
+                var carId = findRes.data[0].id;
+
+                sql = "INSERT INTO " + table_name + " (carId, garageID, timeGoIn, parkingStatus) VALUE ('" +
+                    carId + "', '" +
+                    garageID + "', '" +
+                    timeConvert + "', '" +
+                    1 + "')";
+
+                client.query(sql, function (err, result) {
+                    // db.endConnection();
+                    if (err)  return db_error.errorSQL(sql, callback, err);
+                    console.log("Create new parking: carID " +
+                        carId + ", garageID " +
+                        garageID + ", timeGoIn " +
+                        timeConvert + ", status" + 1);
+                    callback({"result": true, "data": "", "mess": "Car in"});
+                });
+            }
+        });
+    });
+   }
+
+exports.CarOut = function (id, callback) {
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT * FROM " + table_name + " WHERE id = " + id;
+
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+            if (result.length === 0) {
+                callback({"result": false, "data": "", "mess": "Dont have any record "});
+            } else {
+                var d = new Date,
+                    timeConvert = [d.getFullYear(),
+                            (d.getMonth() + 1).padLeft(),
+                            d.getDate().padLeft()].join('/') + ' ' +
+                        [d.getHours().padLeft(),
+                            d.getMinutes().padLeft(),
+                            d.getSeconds().padLeft()].join(':');
+                sql = "UPDATE " + table_name + " SET timeGoOut = '" + timeConvert + "' , parkingStatus = " + 2 + " WHERE id = " + id;
+                client.query(sql, function (err, result) {
+                    if (err) return db_error.errorSQL(sql, callback, err);
+                    console.log("ID: " + id + " timeGoOut:" + timeConvert);
+                    callback({"result": true, "data": "", "mess": "Car out"});
+                });
+            }
+        });
+    });
+}
+
 
 exports.FindByGagareIdAndTime = function (garageID, typeTime, timeStart, timeEnd, callback) {
     if (!(typeTime === 'timeBooked' || typeTime === 'timeGoIn' || typeTime === 'timeGoOut')) {
