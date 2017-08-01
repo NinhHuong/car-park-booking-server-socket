@@ -193,6 +193,7 @@ exports.findHistoryByAccountID = function (accountID, callback) {
             if (result.length === 0) {
                 callback({'result': false, 'data': '', 'mess': "Dont have any record accountID =" + accountID});
             } else {
+                console.log("get history success")
                 callback({'result': true, 'data': result, 'mess': ''});
             }
         });
@@ -209,13 +210,15 @@ exports.findStatusByAccountID = function (accountID, callback) {
             "FROM " + table_name + " p, `car` c " +
             "WHERE p.carID = c.id " +
             "AND p.parkingStatus = 0 " +
-            "AND c.accountId = '" + accountID + "'";
+            "AND c.accountId = '" + accountID + "'"+
+            "ORDER BY p.timeBooked DESC";
 
         var sqlChecked = "SELECT p.* " +
             "FROM " + table_name + " p, `car` c " +
             "WHERE p.carID = c.id " +
             "AND p.parkingStatus = 1 " +
-            "AND c.accountId = '" + accountID + "'";
+            "AND c.accountId = '" + accountID + "'" +
+            "ORDER BY p.timeBooked DESC";
 
         client.query(sqlBooked, function (err, result) {
             // db.endConnection();
@@ -233,10 +236,11 @@ exports.findStatusByAccountID = function (accountID, callback) {
                         console.log("ParkingInfo > return > checked result")
                         return callback({'result': true, 'data': result[0], 'mess': 'is booking'});
                     }
+                    else {
+                        return callback({'result': false, 'data': '', 'mess': 'no booking'});
+                    }
                 });
             }
-
-            return db_error.errorDBConnection(err, callback);
         });
     });
 };
