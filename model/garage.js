@@ -4,8 +4,8 @@
 var db = require('../database/dbConfig');
 var db_error = require('../database/db_error');
 var table_name = 'garage';
-//add
-exports.add = function (name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, statux, callback) {
+//Add
+exports.Add = function (name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, statux, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
 
@@ -17,12 +17,12 @@ exports.add = function (name, address, totalSlot, busySlot, locationX, locationY
         client.query(sql, function (err) {
             // db.endConnection();
             if (err)  return db_error.errorSQL(sql, callback, err);
-            callback({'result': true, 'data': '', 'mess': 'Successfully add'});
+            callback({"result": true, "data": "", "mess": "Successfully Add"});
         });
     });
 };
 
-exports.getAllGarages = function (callback) {
+exports.GetAllGarages = function (callback) {
     db.getConnection(function (err, client) {
         if (err)return db_error.errorDBConnection(err, callback);
 
@@ -34,13 +34,13 @@ exports.getAllGarages = function (callback) {
                 if (err)  return db_error.errorSQL(sql, callback, err);
 
                 console.log("Getting all garages");
-                callback({'result': true, "Garages": result, 'mess': ''});
+                callback({"result": true, "Garages": result, "mess": ""});
             });
         });
     });
 };
 
-exports.getGaragesByID = function (id, callback) {
+exports.GetGaragesByID = function (id, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
 
@@ -50,12 +50,12 @@ exports.getGaragesByID = function (id, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             console.log(result);
-            callback({'result': true, "Garage": result, 'mess': ''});
+            callback({"result": true, "Garage": result, "mess": ""});
         });
     });
 };
 
-exports.getGaragesByAccountID = function (accountID, callback) {
+exports.GetGaragesByAccountID = function (accountID, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
 
@@ -65,12 +65,12 @@ exports.getGaragesByAccountID = function (accountID, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             console.log(result);
-            callback({'result': true, "Garage": result, 'mess': ''});
+            callback({"result": true, "Garage": result, "mess": ""});
         });
     });
 };
 
-exports.updateByID = function (id, name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, xstatus, callback) {
+exports.UpdateByID = function (id, name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, xstatus, callback) {
     db.getConnection(function (err, client) {
         if (err)return db_error.errorDBConnection(err, callback);
 
@@ -86,16 +86,16 @@ exports.updateByID = function (id, name, address, totalSlot, busySlot, locationX
                 console.log(sql);
                 client.query(sql, function (err) {
                     if (err)  return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'data': '', 'mess': "Successfully updated " + table_name});
+                    callback({"result": true, "data": "", "mess": "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in Database"});
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was not in Database"});
             }
         });
     });
 };
 
-exports.changeStatusByID = function (id, xstatus, callback) {
+exports.ChangeStatusByID = function (id, xstatus, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
 
@@ -109,29 +109,29 @@ exports.changeStatusByID = function (id, xstatus, callback) {
                 // console.log(sql);
                 client.query(sql, function (err) {
                     if (err) return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'data': '', 'mess': "Successfully updated " + table_name});
+                    callback({"result": true, "data": "", "mess": "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false, 'data': '', 'mess': "this " + table_name + " was not in Database"});
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was not in Database"});
             }
         });
     });
 };
 
-function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+function GetDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2 - lat1);  // deg2rad below
-    var dLon = deg2rad(lon2 - lon1);
+    var dLat = DegToRad(lat2 - lat1);  // deg2rad below
+    var dLon = DegToRad(lon2 - lon1);
     var a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.cos(DegToRad(lat1)) * Math.cos(DegToRad(lat2)) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
     ;
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c; // Distance in km
-    return d;
+     // Distance in km
+    return R * c;
 }
 
-function deg2rad(deg) {
+function DegToRad(deg) {
     return deg * (Math.PI / 180)
 }
