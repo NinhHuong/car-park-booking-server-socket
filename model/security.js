@@ -6,7 +6,7 @@ var db = require('../database/dbConfig');
 var db_error = require('../database/db_error');
 const table_name = 'security';
 
-exports.add = function (accountID, garageID, callback) {
+exports.Add = function (accountID, garageID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
         var sql = "SELECT * FROM " + table_name + " WHERE accountID = '" + accountID + "' AND garageID = '" + garageID + "'";
@@ -17,16 +17,16 @@ exports.add = function (accountID, garageID, callback) {
                 sql = "INSERT INTO " + table_name + " (accountID,garageID) VALUES (" + accountID + "," + garageID + ")";
                 client.query(sql, function (err) {
                     if (err) return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true, 'data': '','mess': "Successfully regist new " + table_name});
+                    callback({"result": true, "data": "","mess": "Successfully regist new " + table_name});
                 });
             } else {
-                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was register"});
+                callback({"result": false,"data": "", "mess": "this " + table_name + " name was Register"});
             }
         });
     });
 };
 
-exports.remove = function (accountID, garageID, callback) {
+exports.Remove = function (accountID, garageID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
@@ -39,20 +39,20 @@ exports.remove = function (accountID, garageID, callback) {
                 sql = "DELETE FROM " + table_name + " WHERE id ='" + id + "'";
                 client.query(sql, function (err) {
                     if (err)return db_error.errorSQL(sql, callback, err);
-                    callback({'result': true,'data': '', 'mess': "Successfully delete " + table_name});
+                    callback({"result": true,"data": "", "mess": "Successfully delete " + table_name});
                 });
             } else {
-                callback({'result': false,'data': '', 'mess': "this " + table_name + " name was register"});
+                callback({"result": false,"data": "", "mess": "this " + table_name + " name was Register"});
             }
         });
     });
 };
 
-exports.findByAccountID = function (accountID, callback) {
+exports.FindByAccountId = function (accountID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
-        var sql = "SELECT * FROM " + table_name + " WHERE accountID = '" + accountID + "'";
+        var sql = "SELECT * FROM " + table_name + " WHERE accountID = '" + accountID + "' LIMIT 0,1";
         client.query(sql, function (err) {
             // db.endConnection();
             if (err) return db_error.errorSQL(sql, callback, err);
@@ -60,13 +60,13 @@ exports.findByAccountID = function (accountID, callback) {
                 if (err)return db_error.errorSQL(sql, callback, err);
 
                 console.log(result);
-                callback({'result': true, 'data': result,'mess':''});
+                callback({"result": true, "data": result,"mess":""});
             });
         });
     });
 };
 
-exports.findByGagareID = function (garageID, callback) {
+exports.FindByGagareId = function (garageID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
@@ -78,14 +78,14 @@ exports.findByGagareID = function (garageID, callback) {
                 if (err) return db_error.errorSQL(sql, callback, err);
 
                 console.log(result);
-                callback({'result': true, 'data': result,'mess':''});
+                callback({"result": true, "data": result,"mess":""});
             });
         });
     });
 };
 
-exports.updateByID = function (id, newAccountID, newGarageID, callback) {
-    console.log("change " + table_name);
+exports.UpdateById = function (id, newAccountID, newGarageID, callback) {
+    console.log('change ' + table_name);
 
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
@@ -102,10 +102,10 @@ exports.updateByID = function (id, newAccountID, newGarageID, callback) {
                     if (err) {
                         return console.error('error running query' + table_name, err);
                     }
-                    callback({'result': true, 'mess': "Successfully updated " + table_name});
+                    callback({"result": true, "mess": "Successfully updated " + table_name});
                 });
             } else {
-                callback({'result': false,'mess': "this " + table_name + " was not in Database"});
+                callback({"result": false,"mess": "this " + table_name + " was not in Database"});
             }
         });
     });
