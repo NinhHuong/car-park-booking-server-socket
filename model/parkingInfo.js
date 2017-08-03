@@ -329,7 +329,7 @@ exports.GetCarWillOut = function (garageID, callback) {
         var sql = "SELECT parkinginfo.*, vehicleNumber FROM " + table_name +
             " join car ON parkinginfo.carID = car.id WHERE " + partEndsql;
 
-        console.log("sql:"+sql);
+        // console.log("sql:"+sql);
         client.query(sql, function (err, result) {
             // db.endConnection();
             if (err)  return db_error.errorSQL(sql, callback, err);
