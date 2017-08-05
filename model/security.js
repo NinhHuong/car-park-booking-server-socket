@@ -52,14 +52,15 @@ exports.FindByAccountId = function (accountID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
-        var sql = "SELECT * FROM " + table_name + " WHERE accountID = '" + accountID + "' LIMIT 0,1";
+        var sql = "SELECT security.*,garage.xStatus,garage.totalSlot FROM " + table_name +
+            " JOIN garage ON garage.id = security.garageid" +
+            " WHERE security.accountID = '" + accountID + "' LIMIT 0,1";
         client.query(sql, function (err) {
             // db.endConnection();
             if (err) return db_error.errorSQL(sql, callback, err);
             client.query(sql, function (err, result) {
                 if (err)return db_error.errorSQL(sql, callback, err);
 
-                console.log(result);
                 callback({"result": true, "data": result,"mess":""});
             });
         });

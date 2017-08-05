@@ -115,6 +115,7 @@ exports.Login = function (email, password, callback) {
                         "password": false,
                         "is_verify": "",
                         "token": "",
+                        "role":"",
                         "res": false});
                 }
             });
