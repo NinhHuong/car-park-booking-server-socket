@@ -5,6 +5,13 @@ exports.pi = '3.14';
 
 exports.CONST = {
 
+    //region OTHERS
+    REQUEST_NOTI_TIME_OUT : 'request_notification_time_out',
+    REQUEST_TOKEN_REGISTRATION: 'request_token_registration',
+
+    RESPONSE_NOTI_TIME_OUT : 'response_notification_time_out',
+    //endregion
+
     //region ACCOUNT
     REQUEST_LOGIN_WITH_EMAIL_AND_PASS: 'check_email_and_password',
     REQUEST_CHECK_TOKEN: 'request_check_token',
@@ -43,12 +50,14 @@ exports.CONST = {
     REQUEST_ADD_NEW_CAR: 'request_add_new_car',
     REQUEST_REMOVE_CAR: 'request_remove_car_by_vehicle_number',
     REQUEST_FIND_CAR_BY_ACCOUNT_ID: 'request_find_car_by_account_id',
+    REQUEST_FIND_CAR_BY_ID: 'request_find_car_by_id',
     REQUEST_EDIT_VEHICLE_BY_NUMBER: 'request_change_vehicle_by_number',
     REQUEST_REMOVE_CAR_BY_ID: 'request_remove_car_by_id',
 
     RESPONSE_ADD_NEW_CAR: 'response_add_new_car',
     RESPONSE_REMOVE_CAR: 'response_remove_car_by_vehicle_number',
     RESPONSE_FIND_CAR_BY_ACCOUNT_ID: 'response_find_car_by_account_id',
+    RESPONSE_FIND_CAR_BY_ID: 'response_find_car_by_id',
     RESPONSE_EDIT_VEHICLE_BY_NUMBER: 'response_change_vehicle_by_number',
     RESPONSE_REMOVE_CAR_BY_ID: 'response_remove_car_by_id',
     //endregion
@@ -87,6 +96,7 @@ exports.CONST = {
 
     //region PARKING INFO
     REQUEST_ADD_NEW_PARKING_INFO: 'request_add_new_booking',
+    REQUEST_ADD_NEW_PARKING_INFO_BY_USER: 'request_add_new_booking_by_user',
     REQUEST_REMOVE_PARKING_INFO_BY_ID: 'request_remove_booking_by_id',
     REQUEST_FIND_PARKING_INFO_BY_ID: 'request_find_booking_by_id',
     REQUEST_FIND_PARKING_INFO_BY_CAR_ID: 'request_find_booking_by_car_id',
@@ -104,6 +114,7 @@ exports.CONST = {
     REQUEST_CAR_OUT: 'request_one_car_out',
 
     RESPONSE_ADD_NEW_PARKING_INFO: 'response_add_new_booking',
+    RESPONSE_ADD_NEW_PARKING_INFO_BY_USER: 'response_add_new_booking_by_user',
     RESPONSE_REMOVE_PARKING_INFO_BY_ID: 'response_remove_booking_by_id',
     RESPONSE_FIND_PARKING_INFO_BY_ID: 'response_find_booking_by_id',
     RESPONSE_FIND_PARKING_INFO_BY_CAR_ID: 'response_find_booking_by_car_id',
