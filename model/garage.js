@@ -114,6 +114,7 @@ exports.UpdateByID = function (id, name, address, totalSlot, busySlot, locationX
     });
 };
 
+
 exports.UpdateBusySlotByID = function (id, status, callback) {
     db.getConnection(function (err, client) {
         if (err)return db_error.errorDBConnection(err, callback);
@@ -140,7 +141,8 @@ exports.UpdateBusySlotByID = function (id, status, callback) {
     });
 };
 
-exports.ChangeStatusByID = function (id, xstatus, callback) {
+
+exports.ChangeStatusByID = function (id,busySlot, xstatus, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
 
@@ -149,7 +151,7 @@ exports.ChangeStatusByID = function (id, xstatus, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
-                sql = "UPDATE " + table_name + " SET xStatus = '" + xstatus + "' WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET busySlot = '"+busySlot+"', xStatus = '" + xstatus + "' WHERE id = " + id;
 
                 // console.log(sql);
                 client.query(sql, function (err) {

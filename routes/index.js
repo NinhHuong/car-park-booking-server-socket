@@ -128,8 +128,8 @@ io.sockets.on('connection', function (socket) {
     });
 
     //EDIT STATUS OF GARAGE BY GARAGE ID
-    socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id, status) {
-        garage.ChangeStatusByID(id, status, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id,busySlot, status) {
+        garage.ChangeStatusByID(id,busySlot, status, function (res) {
             socket.emit(constant.CONST.RESPONSE_EDIT_STATUS_GARAGE_BY_ID, res);
         })
     });
