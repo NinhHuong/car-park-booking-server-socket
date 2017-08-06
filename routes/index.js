@@ -76,6 +76,14 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_CHANGE_PASSWORD, res);
         });
     });
+
+    //create new account for security
+    socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_SECURITY, function (email, pass,accountAdminID) {
+        account.RegisterForSecurity(email, pass,accountAdminID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_CREATE_ACCOUNT_SECURITY, res);
+        });
+    });
     //endregion
 
     //region GARAGES

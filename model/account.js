@@ -6,6 +6,7 @@ var crypto = require('crypto');
 var rand = require('csprng');
 var nodemailer = require('nodemailer');
 var db = require('../database/dbConfig');
+var security = require('../model/security');
 
 //Register
 exports.Register = function (email, password, roleID, callback) {
@@ -55,6 +56,84 @@ exports.Register = function (email, password, roleID, callback) {
                     });
 
                     callback({"result": true, "data": "Successfully Registered"});
+                });
+            } else {
+                console.log("Register fail");
+                callback({"result": false, "mess": "Email already Registered"});
+            }
+        });
+    });
+};
+
+//Register for security
+exports.RegisterForSecurity = function (email, password, accountAdminID, callback) {
+    var token = crypto.createHash('sha512').update(email + rand).digest("hex");
+    db.getConnection(function (err, client) {
+        if (err) {
+            return console.error('error fetching client from pool', err);
+        }
+
+        var sql = "SELECT * FROM account WHERE email = '" + email + "'";
+        client.query(sql, function (err, result) {
+            if (err) {
+                return console.error('error running query', err);
+            }
+
+            if (result.length === 0) {
+                var temp = rand(16, 16);
+
+                sql = "INSERT INTO account(email, hash_password, token, roleID,reset_str) VALUES ('" +
+                    email + "', '" + password + "', '" + token + "', '" + "3" + "', '"+temp+"')";
+                console.log(sql);
+                client.query(sql, function (err) {
+                    // db.endConnection();
+                    if (err) {
+                        return console.error('error running query', err);
+                    }
+                    console.log("Register successful");
+                    var mailOptions = {
+                        from: "Auto Car Park",
+                        to: email,
+                        subject: "Reset Password ",
+                        text: "Hello " + email + ".\nCode to validate account is " + temp + ".\n\nRegards,\nAuto Car-Park Team."
+                    };
+
+                    smtpTransport.sendMail(mailOptions, function (error) {
+                        if (error) {
+                            callback({
+                                "result": false,
+                                "mess": "Error"
+                            });
+                            console.log(error);
+                        } else {
+                            callback({
+                                "result": true,
+                                "mess": "Successfull."
+                            });
+                        }
+                    });
+
+                    var garageID, accountSecurityID;
+                    sql = "SELECT * FROM garage where accountID = '"+accountAdminID+"'";
+                    client.query(sql, function (err, result) {
+                        // db.endConnection();
+                        if (err) {
+                            return console.error('error running query', err);
+                        }
+
+                        garageID=result[0].id;
+
+                        sql = "SELECT * FROM account where email = '"+email+"'";
+                        client.query(sql, function (err, result) {
+                            // db.endConnection();
+                            if (err) {
+                                return console.error('error running query', err);
+                            }
+                            accountSecurityID=result[0].id;
+
+                            security.Add(accountSecurityID,garageID,callback);
+                        });
+                    });
                 });
             } else {
                 console.log("Register fail");
