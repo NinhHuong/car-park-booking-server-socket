@@ -405,6 +405,13 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    socket.on(constant.CONST.REQUEST_ALL_SECURITY, function (garageID) {
+        security.FindAllAccountSecurity(garageID, function (res) {
+            console.log("Get all sec of garage id:"+garageID);
+            socket.emit(constant.CONST.RESPONSE_ALL_SECURITY, res);
+        });
+    });
+
     //endregion
 
     //region ROLE
@@ -428,6 +435,7 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_FIND_ROLE_BY_GARAGE_ID, res);
         });
     });
+
 
 
     //endregion
