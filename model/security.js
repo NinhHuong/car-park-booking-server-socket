@@ -67,6 +67,28 @@ exports.FindByAccountId = function (accountID, callback) {
     });
 };
 
+exports.FindAllAccountSecurity = function (garageID, callback) {
+    db.getConnection(function (err, client) {
+        if (err)  return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT account.id, account.email, account.role, account.isVerify," +
+            " user.firstName, user.lastName, user.phone, user.dateOfBirth, user.address" +
+            " FROM " + table_name +
+            " JOIN account ON account.id = security.accountID" +
+            " JOIN user ON user.id = account.userID" +
+            " WHERE security.garageID = '" + garageID + "'";
+        client.query(sql, function (err) {
+            // db.endConnection();
+            if (err) return db_error.errorSQL(sql, callback, err);
+            client.query(sql, function (err, result) {
+                if (err)return db_error.errorSQL(sql, callback, err);
+
+                callback({"result": true, "data": result,"mess":""});
+            });
+        });
+    });
+};
+
 exports.FindByGagareId = function (garageID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);

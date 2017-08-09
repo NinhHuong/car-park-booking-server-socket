@@ -135,6 +135,7 @@ exports.CONST = {
     RESPONSE_CAR_OUT: 'response_one_car_out',
 
 
+
     //endregion
 
     //region SECURITY
@@ -149,6 +150,9 @@ exports.CONST = {
     RESPONSE_FIND_SECURITY_BY_GARAGE_ID: 'response_find_security_by_garage_id',
     RESPONSE_FIND_SECURITY_BY_ACCOUNT_ID: 'response_find_security_by_account_id',
     RESPONSE_EDIT_SECURITY_BY_ID: 'response_edit_security_by_id',
+
+    REQUEST_ALL_SECURITY: 'request_all_security',
+    RESPONSE_ALL_SECURITY: 'response_all_security',
 
     RB_GARAGE_STATUS: 'request_find_booking_by_garage_id_and_status',
     //endregion
