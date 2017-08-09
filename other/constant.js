@@ -64,13 +64,17 @@ exports.CONST = {
 
     //region USER
     REQUEST_ADD_NEW_USER: 'request_add_new_user',
+    REQUEST_ADD_NEW_USER_BY_ACCOUNT_ID: 'request_add_new_user_by_account_id',
     REQUEST_REMOVE_USER_BY_ID: 'request_remove_user_by_id',
     REQUEST_FIND_USER_BY_ID: 'request_find_user_by_id',
+    REQUEST_FIND_USER_BY_ACCOUNT_ID: 'request_find_user_by_account_id',
     REQUEST_EDIT_USER_BY_ID: 'request_edit_user_by_id',
 
     RESPONSE_ADD_NEW_USER: 'response_add_new_user',
+    RESPONSE_ADD_NEW_USER_BY_ACCOUNT_ID: 'request_add_new_user_by_account_id',
     RESPONSE_REMOVE_USER_BY_ID: 'response_remove_user_by_id',
     RESPONSE_FIND_USER_BY_ID: 'response_find_user_by_id',
+    RESPONSE_FIND_USER_BY_ACCOUNT_ID: 'response_find_user_by_account_id',
     RESPONSE_EDIT_USER_BY_ID: 'response_edit_user_by_id',
     //endregion
 

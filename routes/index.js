@@ -28,7 +28,7 @@ admin.initializeApp({
 Number.prototype.padLeft = function (base, chr) {
     var len = (String(base || 10).length - String(this).length) + 1;
     return len > 0 ? new Array(len).join(chr || '0') + this : this;
-}
+};
 
 console.log("Start server: " + ip.address() + ":5000");
 
@@ -128,8 +128,8 @@ io.sockets.on('connection', function (socket) {
     });
 
     //EDIT STATUS OF GARAGE BY GARAGE ID
-    socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id,busySlot, status) {
-        garage.ChangeStatusByID(id,busySlot, status, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id, busySlot, status) {
+        garage.ChangeStatusByID(id, busySlot, status, function (res) {
             socket.emit(constant.CONST.RESPONSE_EDIT_STATUS_GARAGE_BY_ID, res);
         })
     });
@@ -195,6 +195,13 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    socket.on(constant.CONST.REQUEST_ADD_NEW_USER_BY_ACCOUNT_ID, function (accountId) {
+        xuser.AddByAccountId(accountId, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_USER_BY_ACCOUNT_ID, res);
+        });
+    });
+
     socket.on(constant.CONST.REQUEST_REMOVE_USER_BY_ID, function (id) {
         xuser.Remove(id, function (res) {
             console.log(res);
@@ -206,6 +213,13 @@ io.sockets.on('connection', function (socket) {
         xuser.FindByUserId(id, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_FIND_USER_BY_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_USER_BY_ACCOUNT_ID, function (accountId) {
+        xuser.FindUserByAccountId(accountId, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_USER_BY_ACCOUNT_ID, res);
         });
     });
 

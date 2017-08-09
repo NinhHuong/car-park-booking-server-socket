@@ -6,6 +6,8 @@ var crypto = require('crypto');
 var rand = require('csprng');
 var nodemailer = require('nodemailer');
 var db = require('../database/dbConfig');
+var user = require('../model/user');
+const table_name = 'account';
 
 //Register
 exports.Register = function (email, password, roleID, callback) {
@@ -25,13 +27,24 @@ exports.Register = function (email, password, roleID, callback) {
             if (result.length === 0) {
                 var temp = rand(16, 16);
                 sql = "INSERT INTO account(email, hash_password, token, roleID,reset_str) VALUES ('" +
-                    email + "', '" + password + "', '" + token + "', '" + roleID + "', '"+temp+"')";
+                    email + "', '" + password + "', '" + token + "', '" + roleID + "', '" + temp + "')";
                 client.query(sql, function (err) {
                     // db.endConnection();
                     if (err) {
                         return console.error('error running query', err);
                     }
                     console.log("Register successful");
+                    sql = "SELECT * FROM " + table_name + " WHERE email = '" + email +"'";
+                    client.query(sql, function (err, result) {
+                        // db.endConnection();
+                        if (err) {
+                            return console.error('error running query', err);
+                        }
+                        if (result.length > 0) {
+                            user.AddByAccountId(result[0].id, function () {});
+                        }
+                    });
+
                     var mailOptions = {
                         from: "Auto Car Park",
                         to: email,
@@ -58,7 +71,7 @@ exports.Register = function (email, password, roleID, callback) {
                 });
             } else {
                 console.log("Register fail");
-                callback({"result": false, "mess": "Email already Registered"});
+                callback({"result": false, "mess": "email_registered"});
             }
         });
     });
@@ -71,7 +84,7 @@ exports.Login = function (email, password, callback) {
                 return console.error('error running query', err);
             }
             console.log("Login with email: " + email);
-            var sql = "SELECT * FROM account WHERE email = '" + email +"'";
+            var sql = "SELECT * FROM account WHERE email = '" + email + "'";
             client.query(sql, function (err, result) {
                 if (err) {
                     return console.error('error running query', err);
@@ -92,31 +105,35 @@ exports.Login = function (email, password, callback) {
                             "password": true,
                             "is_verify": verify,
                             "token": token,
-                            "role":role
+                            "role": role
                         });
                     } else {
                         console.log('Login fail');
-                        callback({"response": "Invalid Password",
+                        callback({
+                            "response": "Invalid Password",
                             "id": id,
                             "email": true,
                             "password": false,
                             "is_verify": verify,
                             "token": token,
-                            "role":role,
-                            "res": false});
+                            "role": role,
+                            "res": false
+                        });
                     }
 
                 }
                 else {
                     console.log('User not exist');
-                    callback({"response": "User not exist",
+                    callback({
+                        "response": "User not exist",
                         "id": "",
                         "email": false,
                         "password": false,
                         "is_verify": "",
                         "token": "",
-                        "role":"",
-                        "res": false});
+                        "role": "",
+                        "res": false
+                    });
                 }
             });
         }
@@ -131,7 +148,7 @@ exports.CheckToken = function (token, callback) {
                 return console.error('error running query', err);
             }
             console.log('Login with remember token');
-            var sql = "SELECT * FROM account WHERE token = '" + token +"'";
+            var sql = "SELECT * FROM account WHERE token = '" + token + "'";
             client.query(sql, function (err, result) {
                 if (err) {
                     return console.error('error running query', err);
@@ -161,6 +178,33 @@ exports.CheckToken = function (token, callback) {
         }
     )
     ;
+};
+
+//update user id
+exports.UpdateByUserId = function (accountId, userId, callback) {
+    console.log('>> Calling update userId');
+    db.getConnection(function (err, client) {
+        if (err) {
+            return console.error('error connecting', err);
+        }
+        client.query("SELECT * FROM " + table_name + " WHERE id = '" + accountId, function (err, result) {
+                if (err) {
+                    return console.error('error running query', err);
+                }
+                if (result.length > 0) {
+                    client.query("UPDATE " + table_name + " SET userID = '" + userId + "' WHERE id = " + accountId, function (err) {
+                        if (err) {
+                            return console.error('error running query', err);
+                        }
+                        callback({"result": true, "data": "", "mess": "Update userId = " + userId + "success"});
+                    });
+                }
+                else {
+                    callback({"result": false, "data": "", "mess": "Update userId = " + userId + "failed"});
+                }
+            }
+        );
+    });
 };
 
 //reset password
