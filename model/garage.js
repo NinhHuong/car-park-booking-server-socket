@@ -22,6 +22,25 @@ exports.Add = function (name, address, totalSlot, busySlot, locationX, locationY
     });
 };
 
+exports.GetRemainSlotsById = function (id, callback) {
+    db.getConnection(function (err, client) {
+        if (err)return console.error('error fetching client from pool', error);
+
+        var sql = "SELECT * FROM GARAGE WHERE id =" + id;
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err) {
+                console.error('error running query :' + sql, err);
+            }
+            if (result.length > 0) {
+                callback(""+result[0].totalSlot - result[0].busySlot);
+            }else{
+                console.error('error running query');
+            }
+        });
+    });
+};
+
 exports.GetAllGarages = function (callback) {
     db.getConnection(function (err, client) {
         if (err)return db_error.errorDBConnection(err, callback);
@@ -50,7 +69,7 @@ exports.GetGaragesByID = function (id, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             console.log(result);
-            callback({"result": true, "Garage": result, "mess": ""});
+            callback({"result": true, "data": result, "mess": ""});
         });
     });
 };
@@ -95,6 +114,34 @@ exports.UpdateByID = function (id, name, address, totalSlot, busySlot, locationX
     });
 };
 
+
+exports.UpdateBusySlotByID = function (id, status, callback) {
+    db.getConnection(function (err, client) {
+        if (err)return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT * FROM " + table_name + " WHERE id = '" + id + "'";
+        client.query(sql, function (err, result) {
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+            if (!(result.length === 0)) {
+                if (status === 0) {
+                    sql = "UPDATE " + table_name + " SET busySlot = busySlot + 1 WHERE id = '" + id + "'";
+                } else if (status === 3) {
+                    sql = "UPDATE " + table_name + " SET busySlot = busySlot - 1 WHERE id = '" + id + "'";
+                }
+                console.log(sql);
+                client.query(sql, function (err) {
+                    if (err)  return db_error.errorSQL(sql, callback, err);
+                    callback({"result": true, "data": "", "mess": "Successfully updated " + table_name});
+                });
+            } else {
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was not in Database"});
+            }
+        });
+    });
+};
+
+
 exports.ChangeStatusByID = function (id,busySlot, xstatus, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
@@ -128,7 +175,7 @@ function GetDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
         Math.sin(dLon / 2) * Math.sin(dLon / 2)
     ;
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-     // Distance in km
+    // Distance in km
     return R * c;
 }
 

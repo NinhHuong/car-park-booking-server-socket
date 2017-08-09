@@ -12,7 +12,8 @@ exports.Add = function (firstName, lastName, dob, phone, address, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
-        var sql = "SELECT * FROM " + table_name + " WHERE firstName = '" + firstName + "' AND lastName = '" + lastName + "' AND dateOfBirth = '" + dob +
+        var sql = "SELECT * FROM " + table_name + " WHERE firstName = '" + firstName + "' AND lastName = '" + lastName +
+            "' AND dateOfBirth = '" + dob +
             "' AND phone = '" + phone + "' AND address = '" + address + "'";
         client.query(sql, function (err, result) {
             if (err) {
@@ -22,6 +23,34 @@ exports.Add = function (firstName, lastName, dob, phone, address, callback) {
             if (result.length === 0) {
                 sql = "INSERT INTO " + table_name + " (firstName, lastName, dateOfBirth, phone, address)" +
                     " VALUES ('" + firstName + "', '" + lastName + "', '" + dob + "', '" + phone + "', '" + address + "');";
+                client.query(sql, function (err) {
+                    if (err) {
+                        return console.error('error running query 2:' + table_name, err);
+                    }
+                    callback({"result": true, "data": "", "mess": "Successfully Register new " + table_name});
+                });
+            } else {
+                callback({"result": false, "data": "", "mess": "this " + table_name + " was registered"});
+            }
+        });
+    });
+};
+
+exports.AddByAccountId = function (accountId, callback) {
+    console.log('>Add new ' + table_name + " by accountID = " + accountId);
+
+    db.getConnection(function (err, client) {
+        if (err)  return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT * FROM " + table_name + " WHERE accountID = " + accountId;
+        client.query(sql, function (err, result) {
+            if (err) {
+                return console.error('error running query 1:' + table_name, err);
+            }
+
+            if (result.length === 0) {
+                sql = "INSERT INTO " + table_name + " (accountID)" +
+                    " VALUES ('" + accountId + "');";
                 client.query(sql, function (err) {
                     if (err) {
                         return console.error('error running query 2:' + table_name, err);
@@ -71,7 +100,38 @@ exports.FindByUserId = function (userID, callback) {
             if (result.length === 0) {
                 callback({"result": false, "data": "", "mess": "Dont have any record id =" + userID});
             } else {
-                callback({"result": true, "data": result,"mess":""});
+                callback({"result": true, "data": result, "mess": ""});
+            }
+        });
+    });
+};
+
+exports.FindUserByAccountId = function (accountId, callback) {
+    console.log('find ' + table_name + ' accountId:' + accountId);
+    db.getConnection(function (err, client) {
+        if (err)  return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT * FROM " + table_name + " WHERE accountID = " + accountId;
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err)return db_error.errorSQL(sql, callback, err);
+
+            if (result.length === 0) {
+                callback({"result": false, "data": "", "mess": "account id = " + accountId + " not found"});
+            } else {
+                var userID = result[0].id;
+                sql = "SELECT * FROM " + table_name + " WHERE id = '" + userID + "'";
+                client.query(sql, function (err, result) {
+
+                    if (err)return db_error.errorSQL(sql, callback, err);
+
+                    if (result.length === 0) {
+                        callback({"result": false, "data": "", "mess": "userId = " + userID + " not found"});
+                    } else {
+                        callback({"result": true, "data": result, "mess": ""});
+
+                    }
+                });
             }
         });
     });

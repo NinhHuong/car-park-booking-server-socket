@@ -1,4 +1,5 @@
-CREATE DATABASE `auto-car-parking`;
+CREATE DATABASE `auto-car-parking` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `auto-car-parking`;
 
 CREATE TABLE `Garage` (
 	`id` int NOT NULL AUTO_INCREMENT,
@@ -40,6 +41,7 @@ CREATE TABLE `User` (
 	`phone` varchar(100),
 	`dateOfBirth` varchar(100),
 	`address` varchar(100),
+	`accountID` int NOT NULL,
 	PRIMARY KEY (`id`)
 );
 

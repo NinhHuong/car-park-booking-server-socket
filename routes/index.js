@@ -13,13 +13,22 @@ var xuser = require('../model/user');
 var parkingInfo = require('../model/parkingInfo');
 var security = require('../model/security');
 var role = require('../model/role');
+var notify = require('../model/notify');
 
 var constant = require('../other/constant');
+var admin = require("firebase-admin");
+
+var serviceAccount = require("../carparkingapp-172006-firebase-adminsdk-7zyaw-0bf34bac34.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://carparkingapp-172006.firebaseio.com/"
+});
 
 Number.prototype.padLeft = function (base, chr) {
     var len = (String(base || 10).length - String(this).length) + 1;
     return len > 0 ? new Array(len).join(chr || '0') + this : this;
-}
+};
 
 console.log("Start server: " + ip.address() + ":5000");
 
@@ -30,6 +39,17 @@ io.sockets.on('connection', function (socket) {
     socket.on('just_for_test', function () {
         console.log('test_emit_func');
     });
+
+    //region OTHERS
+    // exports.NotifyBookingTimeout = function (timeOutStatus) {
+    //     console.log("time out status : " + timeOutStatus);
+    //     socket.emit(constant.CONST.RESPONSE_NOTI_TIME_OUT, {"result": true, "data": "", "mess": "timeout"});
+    // };
+
+    socket.on(constant.CONST.REQUEST_TOKEN_REGISTRATION, function (token) {
+        notify.NotifyTest(token);
+    });
+    //endregion
 
     //region ACCOUNT
     //Login request
@@ -116,8 +136,8 @@ io.sockets.on('connection', function (socket) {
     });
 
     //EDIT STATUS OF GARAGE BY GARAGE ID
-    socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id,busySlot, status) {
-        garage.ChangeStatusByID(id,busySlot, status, function (res) {
+    socket.on(constant.CONST.REQUEST_EDIT_STATUS_GARAGE_BY_ID, function (id, busySlot, status) {
+        garage.ChangeStatusByID(id, busySlot, status, function (res) {
             socket.emit(constant.CONST.RESPONSE_EDIT_STATUS_GARAGE_BY_ID, res);
         })
     });
@@ -153,6 +173,13 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    socket.on(constant.CONST.REQUEST_FIND_CAR_BY_ID, function (carID) {
+        car.FindByID(carID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_CAR_BY_ID, res);
+        });
+    });
+
     socket.on(constant.CONST.REQUEST_EDIT_VEHICLE_BY_NUMBER, function (accountID, oldVehicle, newVehicle) {
         car.UpdateByVehicle(accountID, oldVehicle, newVehicle, function (res) {
             console.log(res);
@@ -176,6 +203,13 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    socket.on(constant.CONST.REQUEST_ADD_NEW_USER_BY_ACCOUNT_ID, function (accountId) {
+        xuser.AddByAccountId(accountId, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_USER_BY_ACCOUNT_ID, res);
+        });
+    });
+
     socket.on(constant.CONST.REQUEST_REMOVE_USER_BY_ID, function (id) {
         xuser.Remove(id, function (res) {
             console.log(res);
@@ -187,6 +221,13 @@ io.sockets.on('connection', function (socket) {
         xuser.FindByUserId(id, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_FIND_USER_BY_ID, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_FIND_USER_BY_ACCOUNT_ID, function (accountId) {
+        xuser.FindUserByAccountId(accountId, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_FIND_USER_BY_ACCOUNT_ID, res);
         });
     });
 
@@ -203,6 +244,13 @@ io.sockets.on('connection', function (socket) {
         parkingInfo.Add(carID, garageID, timeBooked, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_ADD_NEW_PARKING_INFO, res);
+        });
+    });
+
+    socket.on(constant.CONST.REQUEST_ADD_NEW_PARKING_INFO_BY_USER, function (carID, garageID, timeBooked, notifyToken) {
+        parkingInfo.AddByUser(carID, garageID, timeBooked, notifyToken, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_ADD_NEW_PARKING_INFO_BY_USER, res);
         });
     });
 
@@ -379,6 +427,13 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    socket.on(constant.CONST.REQUEST_ALL_SECURITY, function (garageID) {
+        security.FindAllAccountSecurity(garageID, function (res) {
+            console.log("Get all sec of garage id:"+garageID);
+            socket.emit(constant.CONST.RESPONSE_ALL_SECURITY, res);
+        });
+    });
+
     //endregion
 
     //region ROLE
@@ -402,6 +457,7 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_FIND_ROLE_BY_GARAGE_ID, res);
         });
     });
+
 
 
     //endregion
