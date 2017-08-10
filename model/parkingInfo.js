@@ -12,6 +12,8 @@ var notify = require('../model/notify');
 var cancelBookingTimeout = 20 * 1000;
 var notifyBookingTimeout = 10 * 1000;
 
+var cancelTimeout;
+
 exports.Add = function (carID, garageID, timeBooked, callback) {
     console.log('Add new ' + table_name);
     console.log(carID + ", " + garageID + ", " + timeBooked);
@@ -102,10 +104,13 @@ exports.AddByUser = function (carID, garageID, timeBooked, notifyToken, callback
                         //Update garage busy slots
                         garage.UpdateBusySlotByID(garageID, 0, function () {
                         });
-                        notify.StartBookingTimeout(notifyBookingTimeout, cancelBookingTimeout, notifyToken);
-                        setTimeout(function () {
-                            exports.CancelByCarIdAndGarageId(carID, garageID);
-                        }, cancelBookingTimeout);
+                        //Start booking time out
+                        // notify.StartBookingTimeout(notifyBookingTimeout, cancelBookingTimeout, notifyToken);
+                        // cancelTimeout = setTimeout(function () {
+                        //     exports.CancelByCarIdAndGarageId(carID, garageID, function () {
+                        //
+                        //     });
+                        // }, cancelBookingTimeout);
                         callback({"result": true, "data": "", "mess": "book_successfull"});
                     });
                 });
@@ -114,8 +119,7 @@ exports.AddByUser = function (carID, garageID, timeBooked, notifyToken, callback
     });
 };
 
-
-exports.CancelByCarIdAndGarageId = function (carID, garageID) {
+exports.CancelByCarIdAndGarageId = function (carID, garageID, callback) {
     db.getConnection(function (err, client) {
         console.log('CancelByCarIdAndGarageId is running')
         var sql =
@@ -124,10 +128,17 @@ exports.CancelByCarIdAndGarageId = function (carID, garageID) {
         client.query(sql, function (err, result) {
             if (err) {
                 console.error('error running CancelByCarIdAndGarageId:' + table_name, err);
-            }else if(result.length > 0){
+            }
+            if (result.length > 0) {
                 var id = result[0].id;
-                exports.UpdateByIdAndStatus(id, 3, function (){});
-                console.log('CancelByCarIdAndGarageId query success')
+                exports.UpdateByIdAndStatus(id, 3, function (res) {
+                    if(res.result){
+                        console.log('CancelByCarIdAndGarageId query success')
+                        callback({"result": true, "data": "", "mess": "cancel_booking_success"})
+                    }
+                });
+            } else {
+                callback({"result": false, "data": "", "mess": "no_booking"})
             }
         });
     });

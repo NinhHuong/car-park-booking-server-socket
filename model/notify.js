@@ -13,8 +13,12 @@ var timerBookingCancelNotify;
 
 exports.StartBookingTimeout = function (notifyTimeout, cancelTimeout, notifyToken) {
     console.log("Set booking time out: " + notifyTimeout);
+    console.log("")
     if (timerBookingNotify !== null) {
         clearTimeout(timerBookingNotify);
+    }
+    if (timerBookingCancelNotify !== null) {
+        clearTimeout(timerBookingCancelNotify);
     }
     timerBookingNotify = setTimeout(function () {
         exports.NotifyBookingTimeout(notifyToken);

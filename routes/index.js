@@ -20,6 +20,8 @@ var admin = require("firebase-admin");
 
 var serviceAccount = require("../carparkingapp-172006-firebase-adminsdk-7zyaw-0bf34bac34.json");
 
+var cancelTimeout;
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://carparkingapp-172006.firebaseio.com/"
@@ -250,6 +252,15 @@ io.sockets.on('connection', function (socket) {
     socket.on(constant.CONST.REQUEST_ADD_NEW_PARKING_INFO_BY_USER, function (carID, garageID, timeBooked, notifyToken) {
         parkingInfo.AddByUser(carID, garageID, timeBooked, notifyToken, function (res) {
             console.log(res);
+            if (res.result) {
+                notify.StartBookingTimeout(constant.CONST.NOTIFY_BOOKING_TIMEOUT,
+                    constant.CONST.CANCEL_BOOKING_TIMEOUT, notifyToken);
+                cancelTimeout = setTimeout(function () {
+                    parkingInfo.CancelByCarIdAndGarageId(carID, garageID, function () {
+
+                    });
+                }, constant.CONST.CANCEL_BOOKING_TIMEOUT);
+            }
             socket.emit(constant.CONST.RESPONSE_ADD_NEW_PARKING_INFO_BY_USER, res);
         });
     });
@@ -388,6 +399,30 @@ io.sockets.on('connection', function (socket) {
             }
         });
     });
+
+    socket.on(constant.CONST.REQUEST_REFRESH_BOOKING_TIMEOUT, function (id, notifyToken) {
+        parkingInfo.FindById(id, function (res) {
+            console.log(res);
+            var refreshResponse;
+            if (res.result && res.data[0].parkingStatus === 0) {
+                notify.StartBookingTimeout(constant.CONST.NOTIFY_BOOKING_TIMEOUT,
+                    constant.CONST.CANCEL_BOOKING_TIMEOUT, notifyToken);
+                console.log("cancel Timeout: " + cancelTimeout);
+                clearTimeout(cancelTimeout);
+                cancelTimeout = setTimeout(function () {
+                    parkingInfo.CancelByCarIdAndGarageId(res.data[0].carID, res.data[0].garageID, function () {
+
+                    });
+                }, constant.CONST.CANCEL_BOOKING_TIMEOUT);
+                refreshResponse = {"result": true, "data": "", "mess": "refresh_success"};
+            } else {
+                refreshResponse = {"result": false, "data": "", "mess": "refresh_failed"};
+            }
+            console.log("Response: " + refreshResponse);
+            socket.emit(constant.CONST.RESPONSE_REFRESH_BOOKING_TIMEOUT, refreshResponse);
+        });
+    });
+
     //endregion
 
     //region SECURITY
@@ -428,7 +463,7 @@ io.sockets.on('connection', function (socket) {
 
     socket.on(constant.CONST.REQUEST_ALL_SECURITY, function (garageID) {
         security.FindAllAccountSecurity(garageID, function (res) {
-            console.log("Get all sec of garage id:"+garageID);
+            console.log("Get all sec of garage id:" + garageID);
             socket.emit(constant.CONST.RESPONSE_ALL_SECURITY, res);
         });
     });
@@ -456,7 +491,6 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_FIND_ROLE_BY_GARAGE_ID, res);
         });
     });
-
 
 
     //endregion

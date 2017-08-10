@@ -10,6 +10,8 @@ exports.CONST = {
     REQUEST_TOKEN_REGISTRATION: 'request_token_registration',
 
     RESPONSE_NOTI_TIME_OUT : 'response_notification_time_out',
+    CANCEL_BOOKING_TIMEOUT : 20 * 1000,
+    NOTIFY_BOOKING_TIMEOUT : 10 * 1000,
     //endregion
 
     //region ACCOUNT
@@ -114,6 +116,7 @@ exports.CONST = {
     REQUEST_PARKING_INFO_HISTORY_BY_ACCOUNT_ID: 'request_booking_history_account_id',
     REQUEST_PARKING_INFO_BY_ACCOUNT_ID: 'request_booking_account_id',
     REQUEST_EDIT_PARKING_INFO_BY_ID_STATUS: 'request_edit_parking_info_id_status',
+    REQUEST_REFRESH_BOOKING_TIMEOUT: 'request_refresh_booking_timeout',
 
     REQUEST_CAR_GO_IN: 'request_car_go_in',
     REQUEST_CAR_GO_OUT: 'request_car_go_out',
@@ -132,6 +135,7 @@ exports.CONST = {
     RESPONSE_PARKING_INFO_HISTORY_BY_ACCOUNT_ID: 'response_booking_history_account_id',
     RESPONSE_PARKING_INFO_BY_ACCOUNT_ID: 'response_booking_account_id',
     RESPONSE_EDIT_PARKING_INFO_BY_ID_STATUS: 'response_edit_parking_info_id_status',
+    RESPONSE_REFRESH_BOOKING_TIMEOUT: 'response_refresh_booking_timeout',
 
     RESPONSE_CAR_GO_IN: 'response_car_go_in',
     RESPONSE_CAR_GO_OUT: 'response_car_go_out',
