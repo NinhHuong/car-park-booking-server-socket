@@ -22,7 +22,6 @@ exports.CONST = {
     REQUEST_CHANGE_PASSWORD: 'request_change_password',
     REQUEST_GET_SALT: 'request_get_salt',
     RESPONSE_GET_SALT: 'response_get_salt',
-    REQUEST_COMPARE_CODE: 'request_compare_code',
 
     RESPONSE_CHECK_TOKEN: 'response_check_token',
     RESPONSE_COMPARE_CODE: 'response_compare_code',
@@ -30,6 +29,11 @@ exports.CONST = {
     RESPONSE_CREATE_NEW_ACCOUNT: 'response_create_account',
     RESPONSE_RESET_PASSWORD: 'response_reset_password',
     RESPONSE_CHANGE_PASSWORD: 'response_change_password',
+
+    REQUEST_CREATE_ACCOUNT_SECURITY: 'request_create_new_account_for_security',
+    RESPONSE_CREATE_ACCOUNT_SECURITY: 'response_create_new_account_for_security',
+
+
     //endregion
 
     //region GARAGE
@@ -45,7 +49,7 @@ exports.CONST = {
     RESPONSE_GET_GARAGE_BY_ID: 'response_get_garage_by_id',
     RESPONSE_GET_GARAGE_BY_ACCOUNT_ID: 'response_get_garage_by_account_id',
     RESPONSE_EDIT_GARAGE_BY_ID: 'response_edit_garage_by_id',
-    RESPONSE_EDIT_STATUS_GARAGE_BY_ID: 'response_edit_staus_garage_by_id',
+    RESPONSE_EDIT_STATUS_GARAGE_BY_ID: 'response_edit_status_garage_by_id',
     //endregion
 
     //region CAR
