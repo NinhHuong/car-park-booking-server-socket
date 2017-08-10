@@ -137,9 +137,6 @@ exports.CONST = {
     RESPONSE_CAR_GO_OUT: 'response_car_go_out',
     RESPONSE_CAR_IN: 'response_one_car_in',
     RESPONSE_CAR_OUT: 'response_one_car_out',
-
-
-
     //endregion
 
     //region SECURITY
