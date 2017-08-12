@@ -33,8 +33,8 @@ exports.GetRemainSlotsById = function (id, callback) {
                 console.error('error running query :' + sql, err);
             }
             if (result.length > 0) {
-                callback(""+result[0].totalSlot - result[0].busySlot);
-            }else{
+                callback("" + result[0].totalSlot - result[0].busySlot);
+            } else {
                 console.error('error running query');
             }
         });
@@ -132,7 +132,7 @@ exports.UpdateBusySlotByID = function (id, status, callback) {
                 console.log(sql);
                 client.query(sql, function (err) {
                     if (err)  return db_error.errorSQL(sql, callback, err);
-                    callback({"result": true, "data": "", "mess": "Successfully updated " + table_name});
+                    callback({"result": true, "data": {"id": id}, "mess": "Successfully updated " + table_name});
                 });
             } else {
                 callback({"result": false, "data": "", "mess": "this " + table_name + " was not in Database"});
@@ -142,7 +142,7 @@ exports.UpdateBusySlotByID = function (id, status, callback) {
 };
 
 
-exports.ChangeStatusByID = function (id,busySlot, xstatus, callback) {
+exports.ChangeStatusByID = function (id, busySlot, xstatus, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
 
@@ -151,7 +151,7 @@ exports.ChangeStatusByID = function (id,busySlot, xstatus, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             if (!(result.length === 0)) {
-                sql = "UPDATE " + table_name + " SET busySlot = '"+busySlot+"', xStatus = '" + xstatus + "' WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET busySlot = '" + busySlot + "', xStatus = '" + xstatus + "' WHERE id = " + id;
 
                 // console.log(sql);
                 client.query(sql, function (err) {

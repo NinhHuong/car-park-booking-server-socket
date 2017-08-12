@@ -100,8 +100,8 @@ io.sockets.on('connection', function (socket) {
     });
 
     //create new account for security
-    socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_SECURITY, function (email, pass,accountAdminID) {
-        account.RegisterForSecurity(email, pass,accountAdminID, function (res) {
+    socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_SECURITY, function (email, pass, accountAdminID) {
+        account.RegisterForSecurity(email, pass, accountAdminID, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_CREATE_ACCOUNT_SECURITY, res);
         });
@@ -245,6 +245,9 @@ io.sockets.on('connection', function (socket) {
     socket.on(constant.CONST.REQUEST_ADD_NEW_PARKING_INFO, function (carID, garageID, timeBooked) {
         parkingInfo.Add(carID, garageID, timeBooked, function (res) {
             console.log(res);
+            if (res.result) {
+
+            }
             socket.emit(constant.CONST.RESPONSE_ADD_NEW_PARKING_INFO, res);
         });
     });
@@ -253,13 +256,45 @@ io.sockets.on('connection', function (socket) {
         parkingInfo.AddByUser(carID, garageID, timeBooked, notifyToken, function (res) {
             console.log(res);
             if (res.result) {
+                //Update garage busy slots
+                garage.UpdateBusySlotByID(garageID, 0, function (garageRes) {
+                    if (garageRes.result) {
+                        garage.GetGaragesByID(garageID, function (getGarageRes) {
+                            if (getGarageRes.result) {
+                                console.log("> Update garage detail for all clients");
+                                io.sockets.emit(constant.CONST.RESPONSE_GARAGE_UPDATED,
+                                    getGarageRes);
+                            }
+                        });
+                    }
+                });
                 notify.StartBookingTimeout(constant.CONST.NOTIFY_BOOKING_TIMEOUT,
                     constant.CONST.CANCEL_BOOKING_TIMEOUT, notifyToken);
+                if (cancelTimeout !== null) {
+                    clearTimeout(cancelTimeout);
+                }
                 cancelTimeout = setTimeout(function () {
-                    parkingInfo.CancelByCarIdAndGarageId(carID, garageID, function () {
+                    parkingInfo.CancelByCarIdAndGarageId(carID, garageID, function (cancelRes) {
+                        if (cancelRes.result) {
+                            socket.emit(constant.CONST.RESPONSE_BOOKING_CANCELED,
+                                {"result": true, "data": "", "mess": "booking_canceled"});
 
+                            //Update garage busy slots
+                            garage.UpdateBusySlotByID(garageID, 3, function (garageRes) {
+                                if (garageRes.result) {
+                                    garage.GetGaragesByID(garageID, function (getGarageRes) {
+                                        if (getGarageRes.result) {
+                                            console.log("> Update garage detail for all clients");
+                                            io.sockets.emit(constant.CONST.RESPONSE_GARAGE_UPDATED,
+                                                getGarageRes);
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     });
                 }, constant.CONST.CANCEL_BOOKING_TIMEOUT);
+
             }
             socket.emit(constant.CONST.RESPONSE_ADD_NEW_PARKING_INFO_BY_USER, res);
         });
@@ -324,6 +359,22 @@ io.sockets.on('connection', function (socket) {
     socket.on(constant.CONST.REQUEST_EDIT_PARKING_INFO_BY_ID_STATUS, function (id, parkingStatus) {
         parkingInfo.UpdateByIdAndStatus(id, parkingStatus, function (res) {
             console.log(res);
+            if (res.result && parkingStatus === 3) {
+                //Cancel status
+                //Update garage busy slot
+                notify.StopBookingTimeout();
+                garage.UpdateBusySlotByID(res.data[0].garageID, parkingStatus, function (garageRes) {
+                    if (garageRes.result) {
+                        garage.GetGaragesByID(res.data[0].garageID, function (getGarageRes) {
+                            if (getGarageRes.result) {
+                                console.log("> Update garage detail for all clients");
+                                io.sockets.emit(constant.CONST.RESPONSE_GARAGE_UPDATED,
+                                    getGarageRes);
+                            }
+                        });
+                    }
+                });
+            }
             socket.emit(constant.CONST.RESPONSE_EDIT_PARKING_INFO_BY_ID_STATUS, res);
         });
     });
@@ -411,8 +462,24 @@ io.sockets.on('connection', function (socket) {
                 console.log("cancel Timeout: " + cancelTimeout);
                 clearTimeout(cancelTimeout);
                 cancelTimeout = setTimeout(function () {
-                    parkingInfo.CancelByCarIdAndGarageId(res.data[0].carID, res.data[0].garageID, function () {
-
+                    parkingInfo.CancelByCarIdAndGarageId(res.data[0].carID, res.data[0].garageID, function (cancelRes) {
+                        console.log("> Cacnel response: " + cancelRes.result);
+                        if (cancelRes.result) {
+                            socket.emit(constant.CONST.RESPONSE_BOOKING_CANCELED,
+                                {"result": true, "data": "", "mess": "booking_canceled"});
+                            //Update garage busy slots
+                            garage.UpdateBusySlotByID(res.data[0].garageID, 3, function (garageRes) {
+                                if (garageRes.result) {
+                                    garage.GetGaragesByID(res.data[0].garageID, function (getGarageRes) {
+                                        if (getGarageRes.result) {
+                                            console.log("> Update garage detail for all clients");
+                                            io.sockets.emit(constant.CONST.RESPONSE_GARAGE_UPDATED,
+                                                getGarageRes);
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     });
                 }, constant.CONST.CANCEL_BOOKING_TIMEOUT);
                 refreshResponse = {"result": true, "data": "", "mess": "refresh_success"};

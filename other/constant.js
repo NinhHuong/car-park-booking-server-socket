@@ -50,6 +50,7 @@ exports.CONST = {
     RESPONSE_GET_GARAGE_BY_ACCOUNT_ID: 'response_get_garage_by_account_id',
     RESPONSE_EDIT_GARAGE_BY_ID: 'response_edit_garage_by_id',
     RESPONSE_EDIT_STATUS_GARAGE_BY_ID: 'response_edit_status_garage_by_id',
+    RESPONSE_GARAGE_UPDATED: 'response_garage_updated',
     //endregion
 
     //region CAR
@@ -142,7 +143,7 @@ exports.CONST = {
     RESPONSE_CAR_IN: 'response_one_car_in',
     RESPONSE_CAR_OUT: 'response_one_car_out',
 
-
+    RESPONSE_BOOKING_CANCELED : 'response_booking_canceled',
 
     //endregion
 

@@ -52,9 +52,6 @@ exports.Add = function (carID, garageID, timeBooked, callback) {
                             console.error('error running query 2:' + table_name, err);
                             callback({'result': false, 'data': '', 'mess': "db_error"});
                         }
-                        //Update garage busy slots
-                        garage.UpdateBusySlotByID(garageID, 0, function () {
-                        });
                         callback({"result": true, "data": "", "mess": "book_successfull"});
                     });
                 });
@@ -101,16 +98,6 @@ exports.AddByUser = function (carID, garageID, timeBooked, notifyToken, callback
                             console.error('error running query 2:' + table_name, err);
                             callback({'result': false, 'data': '', 'mess': "db_error"});
                         }
-                        //Update garage busy slots
-                        garage.UpdateBusySlotByID(garageID, 0, function () {
-                        });
-                        //Start booking time out
-                        // notify.StartBookingTimeout(notifyBookingTimeout, cancelBookingTimeout, notifyToken);
-                        // cancelTimeout = setTimeout(function () {
-                        //     exports.CancelByCarIdAndGarageId(carID, garageID, function () {
-                        //
-                        //     });
-                        // }, cancelBookingTimeout);
                         callback({"result": true, "data": "", "mess": "book_successfull"});
                     });
                 });
@@ -183,14 +170,7 @@ exports.UpdateByIdAndStatus = function (id, status, callback) {
                 console.log(sql);
                 client.query(sql, function (err) {
                     if (err) return db_error.errorSQL(sql, callback, err);
-                    if (status === 3) {
-                        //Cancel status
-                        //Update garage busy slot
-                        notify.StopBookingTimeout();
-                        garage.UpdateBusySlotByID(result[0].garageID, status, function () {
-                        });
-                    }
-                    callback({"result": true, "data": "", "mess": "Successfully updated " + table_name});
+                    callback({"result": true, "data": result, "mess": "Successfully updated " + table_name});
                     console.log("UpdateByIdAndStatus success")
                 });
             } else {
