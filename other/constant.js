@@ -6,12 +6,12 @@ exports.pi = '3.14';
 exports.CONST = {
 
     //region OTHERS
-    REQUEST_NOTI_TIME_OUT : 'request_notification_time_out',
+    REQUEST_NOTI_TIME_OUT: 'request_notification_time_out',
     REQUEST_TOKEN_REGISTRATION: 'request_token_registration',
 
-    RESPONSE_NOTI_TIME_OUT : 'response_notification_time_out',
-    CANCEL_BOOKING_TIMEOUT : 20 * 1000,
-    NOTIFY_BOOKING_TIMEOUT : 10 * 1000,
+    RESPONSE_NOTI_TIME_OUT: 'response_notification_time_out',
+    CANCEL_BOOKING_TIMEOUT: 20 * 1000,
+    NOTIFY_BOOKING_TIMEOUT: 10 * 1000,
     //endregion
 
     //region ACCOUNT
@@ -141,6 +141,10 @@ exports.CONST = {
     RESPONSE_CAR_GO_OUT: 'response_car_go_out',
     RESPONSE_CAR_IN: 'response_one_car_in',
     RESPONSE_CAR_OUT: 'response_one_car_out',
+
+    REQUEST_HISTORY: 'request_history',
+    RESPONSE_HISTORY: 'response_history',
+
     //endregion
 
     //region SECURITY

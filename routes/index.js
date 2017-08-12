@@ -423,6 +423,14 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    socket.on(constant.CONST.REQUEST_HISTORY, function (garageID) {
+        parkingInfo.FindByGagareIdAndStatus(garageID,2, function (res) {
+            console.log("Admin request history");
+            socket.emit(constant.CONST.RESPONSE_HISTORY, res);
+        });
+    });
+
+
     //endregion
 
     //region SECURITY

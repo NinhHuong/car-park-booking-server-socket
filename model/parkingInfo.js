@@ -132,7 +132,7 @@ exports.CancelByCarIdAndGarageId = function (carID, garageID, callback) {
             if (result.length > 0) {
                 var id = result[0].id;
                 exports.UpdateByIdAndStatus(id, 3, function (res) {
-                    if(res.result){
+                    if (res.result) {
                         console.log('CancelByCarIdAndGarageId query success')
                         callback({"result": true, "data": "", "mess": "cancel_booking_success"})
                     }
@@ -374,8 +374,9 @@ exports.FindByGagareId = function (garageID, callback) {
 exports.FindByGagareIdAndStatus = function (garageID, status, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
-        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status + "'";
-        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status + "' ORDER BY DATE(timeBooked)";
+        var sql = "SELECT parkinginfo.*, vehicleNumber FROM " + table_name +
+            " join car ON parkinginfo.carID = car.id WHERE " + partEndsql;
         client.query(sql, function (err, result) {
             // db.endConnection();
             if (err) return db_error.errorSQL(sql, callback, err);
@@ -394,7 +395,8 @@ exports.FindByGagareIdStatusAndTime = function (garageID, status, timeStart, tim
         if (err) return db_error.errorDBConnection(err, callback);
         var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status
             + "' AND timeBooked BETWEEN  '" + timeStart + "' AND '" + timeEnd + "'";
-        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+        var sql = "SELECT parkinginfo.*, vehicleNumber FROM " + table_name +
+            " join car ON parkinginfo.carID = car.id WHERE " + partEndsql;
 
         client.query(sql, function (err, result) {
             // db.endConnection();
@@ -596,5 +598,3 @@ exports.FindByGagareIdAndTime = function (garageID, typeTime, timeStart, timeEnd
         });
     });
 };
-
-
