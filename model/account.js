@@ -234,11 +234,13 @@ exports.CheckToken = function (token, callback) {
                 }
 
                 if (result.length > 0) {
+                    var id = result[0].id
                     var tokenDb = result[0].token;
                     var role = result[0].roleID;
                     if (tokenDb === token) {
                         console.log('Remember me successfull');
                         callback({
+                            "id": id,
                             "response": "Remember Success",
                             "result": true,
                             "role": role
@@ -384,6 +386,23 @@ exports.ResetPassChange = function (email, pass, callback) {
                 callback({"result": false, "data": {"mess": "email not exist"}});
             }
         })
+    });
+};
+
+exports.GetAccountIDByEmail = function (email, callback) {
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT * FROM account WHERE email = '" + email + "'";
+        if (err) return db_error.errorSQL(sql, callback, err);
+        client.query(sql, function (err, result) {
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+            //console.log(result[0]);
+            var id = result[0].id
+            var role = result[0].roleID;
+            callback({"id": id, "role": role});
+        });
     });
 };
 

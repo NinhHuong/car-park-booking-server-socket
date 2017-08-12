@@ -104,6 +104,14 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_CREATE_ACCOUNT_SECURITY, res);
         });
     });
+
+    //get accountID by Email
+    socket.on(constant.CONST.REQUEST_GET_ACCOUNT_ID_BY_EMAIL, function (email) {
+        account.GetAccountIDByEmail(email,function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_GET_ACCOUNT_ID_BY_EMAIL, res);
+        });
+    });
     //endregion
 
     //region GARAGES
