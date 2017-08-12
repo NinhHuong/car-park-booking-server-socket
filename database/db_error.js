@@ -4,7 +4,7 @@
 
 exports.errorSQL = function(sql, callback, err) {
     console.error('error running query :' + sql, err);
-    callback({'result': false, 'data': '', 'mess': "Query error:"+sql});
+    callback({'result': false, 'data': '', 'mess': "Query error: "+sql});
 };
 
 

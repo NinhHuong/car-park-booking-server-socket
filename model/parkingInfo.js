@@ -12,6 +12,8 @@ var notify = require('../model/notify');
 var cancelBookingTimeout = 20 * 1000;
 var notifyBookingTimeout = 10 * 1000;
 
+var cancelTimeout;
+
 exports.Add = function (carID, garageID, timeBooked, callback) {
     console.log('Add new ' + table_name);
     console.log(carID + ", " + garageID + ", " + timeBooked);
@@ -50,9 +52,6 @@ exports.Add = function (carID, garageID, timeBooked, callback) {
                             console.error('error running query 2:' + table_name, err);
                             callback({'result': false, 'data': '', 'mess': "db_error"});
                         }
-                        //Update garage busy slots
-                        garage.UpdateBusySlotByID(garageID, 0, function () {
-                        });
                         callback({"result": true, "data": "", "mess": "book_successfull"});
                     });
                 });
@@ -99,13 +98,6 @@ exports.AddByUser = function (carID, garageID, timeBooked, notifyToken, callback
                             console.error('error running query 2:' + table_name, err);
                             callback({'result': false, 'data': '', 'mess': "db_error"});
                         }
-                        //Update garage busy slots
-                        garage.UpdateBusySlotByID(garageID, 0, function () {
-                        });
-                        notify.StartBookingTimeout(notifyBookingTimeout, cancelBookingTimeout, notifyToken);
-                        setTimeout(function () {
-                            exports.CancelByCarIdAndGarageId(carID, garageID);
-                        }, cancelBookingTimeout);
                         callback({"result": true, "data": "", "mess": "book_successfull"});
                     });
                 });
@@ -114,8 +106,7 @@ exports.AddByUser = function (carID, garageID, timeBooked, notifyToken, callback
     });
 };
 
-
-exports.CancelByCarIdAndGarageId = function (carID, garageID) {
+exports.CancelByCarIdAndGarageId = function (carID, garageID, callback) {
     db.getConnection(function (err, client) {
         console.log('CancelByCarIdAndGarageId is running')
         var sql =
@@ -124,10 +115,17 @@ exports.CancelByCarIdAndGarageId = function (carID, garageID) {
         client.query(sql, function (err, result) {
             if (err) {
                 console.error('error running CancelByCarIdAndGarageId:' + table_name, err);
-            }else if(result.length > 0){
+            }
+            if (result.length > 0) {
                 var id = result[0].id;
-                exports.UpdateByIdAndStatus(id, 3, function (){});
-                console.log('CancelByCarIdAndGarageId query success')
+                exports.UpdateByIdAndStatus(id, 3, function (res) {
+                    if (res.result) {
+                        console.log('CancelByCarIdAndGarageId query success')
+                        callback({"result": true, "data": "", "mess": "cancel_booking_success"})
+                    }
+                });
+            } else {
+                callback({"result": false, "data": "", "mess": "no_booking"})
             }
         });
     });
@@ -172,14 +170,7 @@ exports.UpdateByIdAndStatus = function (id, status, callback) {
                 console.log(sql);
                 client.query(sql, function (err) {
                     if (err) return db_error.errorSQL(sql, callback, err);
-                    if (status === 3) {
-                        //Cancel status
-                        //Update garage busy slot
-                        notify.StopBookingTimeout();
-                        garage.UpdateBusySlotByID(result[0].garageID, status, function () {
-                        });
-                    }
-                    callback({"result": true, "data": "", "mess": "Successfully updated " + table_name});
+                    callback({"result": true, "data": result, "mess": "Successfully updated " + table_name});
                     console.log("UpdateByIdAndStatus success")
                 });
             } else {
@@ -363,8 +354,9 @@ exports.FindByGagareId = function (garageID, callback) {
 exports.FindByGagareIdAndStatus = function (garageID, status, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
-        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status + "'";
-        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+        var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status + "' ORDER BY DATE(timeBooked)";
+        var sql = "SELECT parkinginfo.*, vehicleNumber FROM " + table_name +
+            " join car ON parkinginfo.carID = car.id WHERE " + partEndsql;
         client.query(sql, function (err, result) {
             // db.endConnection();
             if (err) return db_error.errorSQL(sql, callback, err);
@@ -383,7 +375,8 @@ exports.FindByGagareIdStatusAndTime = function (garageID, status, timeStart, tim
         if (err) return db_error.errorDBConnection(err, callback);
         var partEndsql = "garageID = '" + garageID + "' AND parkingStatus = '" + status
             + "' AND timeBooked BETWEEN  '" + timeStart + "' AND '" + timeEnd + "'";
-        var sql = "SELECT * FROM " + table_name + " WHERE " + partEndsql;
+        var sql = "SELECT parkinginfo.*, vehicleNumber FROM " + table_name +
+            " join car ON parkinginfo.carID = car.id WHERE " + partEndsql;
 
         client.query(sql, function (err, result) {
             // db.endConnection();
@@ -585,5 +578,3 @@ exports.FindByGagareIdAndTime = function (garageID, typeTime, timeStart, timeEnd
         });
     });
 };
-
-
