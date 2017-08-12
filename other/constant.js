@@ -166,6 +166,8 @@ exports.CONST = {
     RESPONSE_ALL_SECURITY: 'response_all_security',
 
     RB_GARAGE_STATUS: 'request_find_booking_by_garage_id_and_status',
+
+    REQUEST_REFRESH_SECURITY_PARKING_LIST: 'request_refresh_security_parking_list',
     //endregion
 
     //region ROLE
