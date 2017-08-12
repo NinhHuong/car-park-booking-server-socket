@@ -84,7 +84,10 @@ exports.GetGaragesByAccountID = function (accountID, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
             console.log(result);
-            callback({"result": true, "Garage": result, "mess": ""});
+            if(result.length ===0)
+                callback({"result": false, "data": "", "mess": ""});
+            else
+            callback({"result": true, "data": result, "mess": ""});
         });
     });
 };
