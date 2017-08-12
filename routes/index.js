@@ -100,8 +100,8 @@ io.sockets.on('connection', function (socket) {
     });
 
     //create new account for security
-    socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_SECURITY, function (email, pass,accountAdminID) {
-        account.RegisterForSecurity(email, pass,accountAdminID, function (res) {
+    socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_SECURITY, function (email, pass, accountAdminID) {
+        account.RegisterForSecurity(email, pass, accountAdminID, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_CREATE_ACCOUNT_SECURITY, res);
         });
@@ -350,17 +350,11 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_CAR_IN, res);
 
             if (res.result) {
-                console.log("One car in id:"+id);
-                parkingInfo.GetCarWillIn(garageID, function (res) {
-                    console.log("Reset list car will in garage : " + garageID);
-                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_IN, res);
-                });
-                parkingInfo.GetCarWillOut(garageID, function (res) {
-                    console.log("Reset list car will out garage : " + garageID);
-                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
-                });
-            }else
-                console.log("Error car in id:"+id);
+                console.log("parking info id " + id + " is in");
+                var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
+                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST,request);
+            } else
+                console.log("Error car in id:" + id);
 
         });
     });
@@ -371,15 +365,11 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_CAR_IN, res);
 
             if (res.result) {
-                parkingInfo.GetCarWillIn(garageID, function (res) {
-                    console.log("Reset list car will in garage : " + garageID);
-                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_IN, res);
-                });
-                parkingInfo.GetCarWillOut(garageID, function (res) {
-                    console.log("Reset list car will out garage : " + garageID);
-                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
-                });
+                console.log("parking info vehicleNumber " + vehicleNumber + " is in");
+                var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
+                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST,request);
             }
+
         });
     });
 
@@ -389,14 +379,13 @@ io.sockets.on('connection', function (socket) {
             socket.emit(constant.CONST.RESPONSE_CAR_OUT, res);
 
             if (res.result) {
-                console.log("One car out id:"+id);
-                parkingInfo.GetCarWillOut(garageID, function (res) {
-                    console.log("Reset list car will out garage : " + garageID);
-                    io.sockets.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
-                });
-            }else{
-                console.log("Error car out id:"+id);
+                console.log("parking info id " + id + " is out");
+                var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
+                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST,request);
             }
+            else
+                console.log("Error car out id:" + id);
+
         });
     });
 
@@ -424,7 +413,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     socket.on(constant.CONST.REQUEST_HISTORY, function (garageID) {
-        parkingInfo.FindByGagareIdAndStatus(garageID,2, function (res) {
+        parkingInfo.FindByGagareIdAndStatus(garageID, 2, function (res) {
             console.log("Admin request history");
             socket.emit(constant.CONST.RESPONSE_HISTORY, res);
         });
