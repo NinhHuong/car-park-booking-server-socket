@@ -86,16 +86,6 @@ ALTER TABLE `Security` ADD CONSTRAINT `Security_fk0` FOREIGN KEY (`accountID`) R
 
 ALTER TABLE `Security` ADD CONSTRAINT `Security_fk1` FOREIGN KEY (`garageID`) REFERENCES `Garage`(`id`);
 
-INSERT INTO `account`(`email`, `hash_password`, `token`, `userID`, `roleID`, `isVerify`)
-VALUES ( 'ninhhuongdst@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 1, true),
-('sidq@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','f64a74704282f9a1d9f8de3e807b20edd75744271a35584bc0367d7e0d8d3bf18382fed6e7a8f292644ef28d65814629c036dea29b2399fb72ab32eea6f9280b',2,2,true),
-('tuanna@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','b22336f265bf8514658b68f6e611e57a26ba179443defa0a5b25eaf5b963be8178b7c3e97f8912721897968356224a7251b5b481c4e01540629382dc347fcc80',3,3,true),
-('longhd@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','7bdb75a32d2dce0050eda35d9141acd67c153c51b62805c5537f65289554d2c89c542bf8836bf7b60c25e89b8b2effbe4bdf082ae6bd784b477b51b2838b3179',4,4,true),
-('longhd1@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','e7d35e8b8f17ff3b63949a9cba3fc6825f7349a47dc6e4833c93d2bd002cd5889ebdf761e7fecec90e4b9c209f9efe7a0e10731b4ec7daae3ae19b873af84e6f',5,4,true),
-('longhd2@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','263f01bdba5d9003d7cd7a528f11418486c5643332f5774d8bb8e98dc3afaa652d0117586dd4700d314b6c15467abf4fe6fa12e9fd5b1bb06d1ecac31eee95f5',6,4,true),
-('longhd3@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','178a331f38c89808a9fa6249ac26568e5b1ffb78adb09b5573eac8ec87cb7c779fe0ee8a24142bf2414122ccc90be83896373c8161762e7e192602782e556ef4',7,4,true);
-
-
 INSERT INTO `user`(`firstName`, `lastName`, `phone`, `dateOfBirth`, `address`, 'accountID')
 VALUES ('Ninh','Huong','0123456789','20/12/1994','',1),
 ("Colton","Waters","2209-584-801","21/06/2018","P.O. Box 979, 2348 Risus. Rd.",2),
@@ -112,11 +102,19 @@ VALUES ('Ninh','Huong','0123456789','20/12/1994','',1),
 INSERT INTO `role`(`name`)
 VALUES ('Super Admin'), ('Admin'), ('Security'), ('User');
 
+INSERT INTO `account`(`email`, `hash_password`, `token`, `userID`, `roleID`, `isVerify`)
+VALUES ( 'ninhhuongdst@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 1, true),
+('sidq@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','f64a74704282f9a1d9f8de3e807b20edd75744271a35584bc0367d7e0d8d3bf18382fed6e7a8f292644ef28d65814629c036dea29b2399fb72ab32eea6f9280b',2,2,true),
+('tuanna@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','b22336f265bf8514658b68f6e611e57a26ba179443defa0a5b25eaf5b963be8178b7c3e97f8912721897968356224a7251b5b481c4e01540629382dc347fcc80',3,3,true),
+('longhd@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','7bdb75a32d2dce0050eda35d9141acd67c153c51b62805c5537f65289554d2c89c542bf8836bf7b60c25e89b8b2effbe4bdf082ae6bd784b477b51b2838b3179',4,4,true),
+('longhd1@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','e7d35e8b8f17ff3b63949a9cba3fc6825f7349a47dc6e4833c93d2bd002cd5889ebdf761e7fecec90e4b9c209f9efe7a0e10731b4ec7daae3ae19b873af84e6f',5,4,true),
+('longhd2@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','263f01bdba5d9003d7cd7a528f11418486c5643332f5774d8bb8e98dc3afaa652d0117586dd4700d314b6c15467abf4fe6fa12e9fd5b1bb06d1ecac31eee95f5',6,4,true),
+('longhd3@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','178a331f38c89808a9fa6249ac26568e5b1ffb78adb09b5573eac8ec87cb7c779fe0ee8a24142bf2414122ccc90be83896373c8161762e7e192602782e556ef4',7,4,true);
+
 INSERT INTO car (accountID,vehicleNumber) VALUES (7,"717179"),(7,"50337"),(5,"4011LQ"),(7,"679142"),(6,"79494"),(7,"13154"),(5,"639674"),(7,"1370"),(7,"44194"),(7,"67450");
 INSERT INTO car (accountID,vehicleNumber) VALUES (7,"7494"),(5,"2704PE"),(6,"2763"),(7,"10170"),(7,"345704"),(7,"59509"),(7,"9644"),(5,"364217"),(7,"145917"),(5,"959474");
 INSERT INTO car (accountID,vehicleNumber) VALUES (6,"96379"),(7,"1260"),(5,"39570"),(7,"22023"),(5,"20713"),(7,"344093"),(6,"33037"),(6,"79307"),(7,"07363"),(7,"79716");
 INSERT INTO car (accountID,vehicleNumber) VALUES (6,"44425"),(7,"17-909"),(5,"73317"),(5,"142777"),(5,"67-651"),(6,"R7 5JP"),(7,"2036"),(5,"3777"),(7,"15-137"),(5,"6747");
-
 
 INSERT INTO garage (name,address,totalSlot,busySlot,locationX,locationY,accountId,timeStart,timeEnd,xStatus)
 VALUES
