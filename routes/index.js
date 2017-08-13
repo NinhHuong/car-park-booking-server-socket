@@ -382,7 +382,7 @@ io.sockets.on('connection', function (socket) {
     // get all were was booked
     socket.on(constant.CONST.REQUEST_CAR_GO_IN, function (id) {
         parkingInfo.GetCarWillIn(id, function (res) {
-            console.log(res);
+            console.log("Get car will go out in garage with id:"+id);
             socket.emit(constant.CONST.RESPONSE_CAR_GO_IN, res);
         });
     });
@@ -390,7 +390,7 @@ io.sockets.on('connection', function (socket) {
     // get all car were in garage
     socket.on(constant.CONST.REQUEST_CAR_GO_OUT, function (id) {
         parkingInfo.GetCarWillOut(id, function (res) {
-            console.log(res);
+            console.log("Get car will go out out garage with id:"+id);
             socket.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
         });
     });
