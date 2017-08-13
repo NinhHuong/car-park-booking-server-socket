@@ -86,7 +86,7 @@ ALTER TABLE `Security` ADD CONSTRAINT `Security_fk0` FOREIGN KEY (`accountID`) R
 
 ALTER TABLE `Security` ADD CONSTRAINT `Security_fk1` FOREIGN KEY (`garageID`) REFERENCES `Garage`(`id`);
 
-INSERT INTO `user`(`firstName`, `lastName`, `phone`, `dateOfBirth`, `address`, 'accountID')
+INSERT INTO `user`(`firstName`, `lastName`, `phone`, `dateOfBirth`, `address`, `accountID`)
 VALUES ('Ninh','Huong','0123456789','20/12/1994','',1),
 ("Colton","Waters","2209-584-801","21/06/2018","P.O. Box 979, 2348 Risus. Rd.",2),
 ("Walter","Kelley","1018-990-132","28/03/2017","1602 Vehicula. St.",3),
