@@ -35,14 +35,15 @@ exports.Register = function (email, password, roleID, callback) {
                         return console.error('error running query', err);
                     }
                     console.log("Register successful");
-                    sql = "SELECT * FROM " + table_name + " WHERE email = '" + email +"'";
+                    sql = "SELECT * FROM " + table_name + " WHERE email = '" + email + "'";
                     client.query(sql, function (err, result) {
                         // db.endConnection();
                         if (err) {
                             return console.error('error running query', err);
                         }
                         if (result.length > 0) {
-                            user.AddByAccountId(result[0].id, function () {});
+                            user.AddByAccountId(result[0].id, function () {
+                            });
                         }
                     });
 
@@ -96,7 +97,7 @@ exports.RegisterForSecurity = function (email, password, accountAdminID, callbac
                 var temp = rand(16, 16);
 
                 sql = "INSERT INTO account(email, hash_password, token, roleID,reset_str) VALUES ('" +
-                    email + "', '" + password + "', '" + token + "', '" + "3" + "', '"+temp+"')";
+                    email + "', '" + password + "', '" + token + "', '" + "3" + "', '" + temp + "')";
                 console.log(sql);
                 client.query(sql, function (err) {
                     // db.endConnection();
@@ -127,24 +128,24 @@ exports.RegisterForSecurity = function (email, password, accountAdminID, callbac
                     });
 
                     var garageID, accountSecurityID;
-                    sql = "SELECT * FROM garage where accountID = '"+accountAdminID+"'";
+                    sql = "SELECT * FROM garage where accountID = '" + accountAdminID + "'";
                     client.query(sql, function (err, result) {
                         // db.endConnection();
                         if (err) {
                             return console.error('error running query', err);
                         }
 
-                        garageID=result[0].id;
+                        garageID = result[0].id;
 
-                        sql = "SELECT * FROM account where email = '"+email+"'";
+                        sql = "SELECT * FROM account where email = '" + email + "'";
                         client.query(sql, function (err, result) {
                             // db.endConnection();
                             if (err) {
                                 return console.error('error running query', err);
                             }
-                            accountSecurityID=result[0].id;
+                            accountSecurityID = result[0].id;
 
-                            security.Add(accountSecurityID,garageID,callback);
+                            security.Add(accountSecurityID, garageID, callback);
                         });
                     });
                 });
@@ -402,6 +403,21 @@ exports.GetAccountIDByEmail = function (email, callback) {
             var id = result[0].id
             var role = result[0].roleID;
             callback({"id": id, "role": role});
+        });
+    });
+};
+
+exports.RemoveAccountByID = function (id, callback) {
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+
+        var sql = "DELETE FROM " + table_name + " WHERE id = '" + id + "'";
+        if (err) return db_error.errorSQL(sql, callback, err);
+        client.query(sql, function (err, result) {
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+
+            callback({"result": true, "data": "","mess": "Delete successful."});
         });
     });
 };

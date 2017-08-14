@@ -107,9 +107,36 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    //remote account of security
+    socket.on(constant.CONST.REQUEST_REMOVE_SECURITY, function (accountID, garageID) {
+        security.Remove(accountID, garageID, function (res) {
+            if (res.result) {
+                console.log("Remove account in security table");
+                car.FindByAccountID(accountID, function (resultFindCar) {
+                    if (resultFindCar.result) {
+                        for (var i = 0; i < resultFindCar.data.length; i++) {
+                            car.RemoveByID(resultFindCar.data[i].id, function (resultDeleteCar) {
+                                if (resultDeleteCar.result)
+                                    console.log("Delete car " + resultDeleteCar.data[i].id + " success");
+                                else console.log("Delete car " + resultDeleteCar.data[i].id + " fail");
+                            })
+                        }
+
+                        account.RemoveAccountByID(accountID, function (resultDeleteAccount) {
+                            socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, resultDeleteAccount);
+                        })
+                    }else
+                        console.log("Dont have car or error");
+                });
+            } else
+                console.log("Remove account in security table fail");
+            socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, res);
+        });
+    });
+
     //get accountID by Email
     socket.on(constant.CONST.REQUEST_GET_ACCOUNT_ID_BY_EMAIL, function (email) {
-        account.GetAccountIDByEmail(email,function (res) {
+        account.GetAccountIDByEmail(email, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_GET_ACCOUNT_ID_BY_EMAIL, res);
         });
@@ -390,7 +417,7 @@ io.sockets.on('connection', function (socket) {
     // get all were was booked
     socket.on(constant.CONST.REQUEST_CAR_GO_IN, function (id) {
         parkingInfo.GetCarWillIn(id, function (res) {
-            console.log("Get car will go out in garage with id:"+id);
+            console.log("Get car will go out in garage with id:" + id);
             socket.emit(constant.CONST.RESPONSE_CAR_GO_IN, res);
         });
     });
@@ -398,7 +425,7 @@ io.sockets.on('connection', function (socket) {
     // get all car were in garage
     socket.on(constant.CONST.REQUEST_CAR_GO_OUT, function (id) {
         parkingInfo.GetCarWillOut(id, function (res) {
-            console.log("Get car will go out out garage with id:"+id);
+            console.log("Get car will go out out garage with id:" + id);
             socket.emit(constant.CONST.RESPONSE_CAR_GO_OUT, res);
         });
     });
@@ -411,7 +438,7 @@ io.sockets.on('connection', function (socket) {
             if (res.result) {
                 console.log("parking info id " + id + " is in");
                 var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST,request);
+                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST, request);
             } else
                 console.log("Error car in id:" + id);
 
@@ -426,7 +453,7 @@ io.sockets.on('connection', function (socket) {
             if (res.result) {
                 console.log("parking info vehicleNumber " + vehicleNumber + " is in");
                 var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST,request);
+                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST, request);
             }
 
         });
@@ -440,7 +467,7 @@ io.sockets.on('connection', function (socket) {
             if (res.result) {
                 console.log("parking info id " + id + " is out");
                 var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST,request);
+                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST, request);
             }
             else
                 console.log("Error car out id:" + id);
