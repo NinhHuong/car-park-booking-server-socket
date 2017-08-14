@@ -86,39 +86,35 @@ ALTER TABLE `Security` ADD CONSTRAINT `Security_fk0` FOREIGN KEY (`accountID`) R
 
 ALTER TABLE `Security` ADD CONSTRAINT `Security_fk1` FOREIGN KEY (`garageID`) REFERENCES `Garage`(`id`);
 
-
-
-
-INSERT INTO `user`(`firstName`, `lastName`, `phone`, `dateOfBirth`, `address`)
-VALUES ('Ninh','Huong','0123456789','20/12/1994',''),
- ("Colton","Waters","2209-584-801","21/06/2018","P.O. Box 979, 2348 Risus. Rd."),
-("Walter","Kelley","1018-990-132","28/03/2017","1602 Vehicula. St."),
-("Sade","Figueroa","7596-935-851","15/09/2017","3576 Purus. Avenue"),
-("Cleo","Allen","8256-163-742","13/09/2016","7838 Pellentesque Road"),
-("Maile","Prince","2864-246-798","10/06/2017","Ap #790-9230 Bibendum St."),
-("Kelly","Pugh","3611-876-394","25/08/2017","182-2992 Nullam Rd."),
-("Nyssa","Sosa","4740-578-135","07/09/2017","Ap #466-3030 Magnis Rd."),
-("Griffith","Blair","0912-188-498","07/11/2017","945-7748 Arcu Street"),
-("Shafira","Lynn","9277-560-504","25/11/2017","331-3709 Quisque Ave"),
-("Felix","Moss","6296-111-746","25/04/2018","461-4379 Elementum Rd.");
+INSERT INTO `user`(`firstName`, `lastName`, `phone`, `dateOfBirth`, `address`, `accountID`)
+VALUES ('Ninh','Huong','0123456789','20/12/1994','',1),
+("Colton","Waters","2209-584-801","21/06/2018","P.O. Box 979, 2348 Risus. Rd.",2),
+("Walter","Kelley","1018-990-132","28/03/2017","1602 Vehicula. St.",3),
+("Sade","Figueroa","7596-935-851","15/09/2017","3576 Purus. Avenue",4),
+("Cleo","Allen","8256-163-742","13/09/2016","7838 Pellentesque Road",5),
+("Maile","Prince","2864-246-798","10/06/2017","Ap #790-9230 Bibendum St.",6),
+("Kelly","Pugh","3611-876-394","25/08/2017","182-2992 Nullam Rd.",0),
+("Nyssa","Sosa","4740-578-135","07/09/2017","Ap #466-3030 Magnis Rd.",0),
+("Griffith","Blair","0912-188-498","07/11/2017","945-7748 Arcu Street",0),
+("Shafira","Lynn","9277-560-504","25/11/2017","331-3709 Quisque Ave",0),
+("Felix","Moss","6296-111-746","25/04/2018","461-4379 Elementum Rd.",0);
 
 INSERT INTO `role`(`name`)
 VALUES ('Super Admin'), ('Admin'), ('Security'), ('User');
 
 INSERT INTO `account`(`email`, `hash_password`, `token`, `userID`, `roleID`, `isVerify`)
-VALUES ( 'ninhhuongdst@gmail.com', 'd1a7aec9908f1ac3d05d0b3fbaf3948fb1f42fbc1b91255f9ebb0f995d26e957c2e44037769c6a2a7aa5aa61597001bed8427c4b427dac8e6f879c95835df9c6', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 1, true),
-('sidq@gmail.com','cf2b97dd8da3cc20868fe8f5d0739c7ca4e94ed99ed2ffeb92aedebf90af351120ec98fa5edbfe958c7ae5117718272e5e53ccc1a6f2f7bcdc40d1b963c1a3e4','f64a74704282f9a1d9f8de3e807b20edd75744271a35584bc0367d7e0d8d3bf18382fed6e7a8f292644ef28d65814629c036dea29b2399fb72ab32eea6f9280b',2,2,true),
-('tuanna@gmail.com','489a0d37215d557e99e4be85cd1122bfe4c9fef0c97fa5e8248e1f8192f36fc12870469c6ac45e463bf19f743878c6cf9c9d6453df9fc804dfc84d3cff323566','b22336f265bf8514658b68f6e611e57a26ba179443defa0a5b25eaf5b963be8178b7c3e97f8912721897968356224a7251b5b481c4e01540629382dc347fcc80',3,3,true),
-('longhd@gmail.com','4a6740d8745a4ac28a38e5a5661b6e8030034520959d08975b822eb7132ab175bdc9ff25ee875efade3b810d66a308178e27f3d20916887c1f2f42e01ca7f3ba','7bdb75a32d2dce0050eda35d9141acd67c153c51b62805c5537f65289554d2c89c542bf8836bf7b60c25e89b8b2effbe4bdf082ae6bd784b477b51b2838b3179',4,4,true),
-('longhd1@gmail.com','a02eb17c189f8f7a418859f70f220042146824d1acc00469f7554c61dd96be9c6d573e2d20f4346b441468212218cc2c112024b1d9f3fc9e20709c640a826896','e7d35e8b8f17ff3b63949a9cba3fc6825f7349a47dc6e4833c93d2bd002cd5889ebdf761e7fecec90e4b9c209f9efe7a0e10731b4ec7daae3ae19b873af84e6f',5,4,true),
-('longhd2@gmail.com','7ff5bec31b91afe88de754b7bdf05cdd39e278d544c562326ddc83e6cdbe1d2e6cb9ef79fba8dc45d2fb17068d2e5393e62598a69bba39079639a0233798bc45','263f01bdba5d9003d7cd7a528f11418486c5643332f5774d8bb8e98dc3afaa652d0117586dd4700d314b6c15467abf4fe6fa12e9fd5b1bb06d1ecac31eee95f5',4,4,true),
-('longhd3@gmail.com','b2c6131e1d48be11fef13633d45cf06ed00fd91f688afae30e029ce3eea33629869dc9c3db4c294f45e222c430a05e4df03dbe89f44df000324f82fe991cd7bf','178a331f38c89808a9fa6249ac26568e5b1ffb78adb09b5573eac8ec87cb7c779fe0ee8a24142bf2414122ccc90be83896373c8161762e7e192602782e556ef4',4,4,true);
+VALUES ( 'ninhhuongdst@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 1, true),
+('sidq@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','f64a74704282f9a1d9f8de3e807b20edd75744271a35584bc0367d7e0d8d3bf18382fed6e7a8f292644ef28d65814629c036dea29b2399fb72ab32eea6f9280b',2,2,true),
+('tuanna@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','b22336f265bf8514658b68f6e611e57a26ba179443defa0a5b25eaf5b963be8178b7c3e97f8912721897968356224a7251b5b481c4e01540629382dc347fcc80',3,3,true),
+('longhd@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','7bdb75a32d2dce0050eda35d9141acd67c153c51b62805c5537f65289554d2c89c542bf8836bf7b60c25e89b8b2effbe4bdf082ae6bd784b477b51b2838b3179',4,4,true),
+('longhd1@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','e7d35e8b8f17ff3b63949a9cba3fc6825f7349a47dc6e4833c93d2bd002cd5889ebdf761e7fecec90e4b9c209f9efe7a0e10731b4ec7daae3ae19b873af84e6f',5,4,true),
+('longhd2@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','263f01bdba5d9003d7cd7a528f11418486c5643332f5774d8bb8e98dc3afaa652d0117586dd4700d314b6c15467abf4fe6fa12e9fd5b1bb06d1ecac31eee95f5',6,4,true),
+('longhd3@gmail.com','ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413','178a331f38c89808a9fa6249ac26568e5b1ffb78adb09b5573eac8ec87cb7c779fe0ee8a24142bf2414122ccc90be83896373c8161762e7e192602782e556ef4',7,4,true);
 
 INSERT INTO car (accountID,vehicleNumber) VALUES (7,"717179"),(7,"50337"),(5,"4011LQ"),(7,"679142"),(6,"79494"),(7,"13154"),(5,"639674"),(7,"1370"),(7,"44194"),(7,"67450");
 INSERT INTO car (accountID,vehicleNumber) VALUES (7,"7494"),(5,"2704PE"),(6,"2763"),(7,"10170"),(7,"345704"),(7,"59509"),(7,"9644"),(5,"364217"),(7,"145917"),(5,"959474");
 INSERT INTO car (accountID,vehicleNumber) VALUES (6,"96379"),(7,"1260"),(5,"39570"),(7,"22023"),(5,"20713"),(7,"344093"),(6,"33037"),(6,"79307"),(7,"07363"),(7,"79716");
 INSERT INTO car (accountID,vehicleNumber) VALUES (6,"44425"),(7,"17-909"),(5,"73317"),(5,"142777"),(5,"67-651"),(6,"R7 5JP"),(7,"2036"),(5,"3777"),(7,"15-137"),(5,"6747");
-
 
 INSERT INTO garage (name,address,totalSlot,busySlot,locationX,locationY,accountId,timeStart,timeEnd,xStatus)
 VALUES
@@ -128,13 +124,13 @@ VALUES
 ("Sân tập lái ôtô Hòa Lạc - FPT","tt. Liên Quan, Thạch Thất, Hanoi",43,15,21.011138, 105.524557,2,"2018-02-22 07:07:24","2017-11-14 03:39:15",1),
 ("Viettel Data Center","Thạch Thất, Hanoi",49,30,21.009193, 105.531250,3,"2018-04-01 15:14:21","2018-03-13 12:55:44",1),
 ("Công Ty Tnhh Vnprodev","10 Cầu Giấy, Quan Hoa, Cầu Giấy, Hà Nội",50,27,21.030208, 105.799866,3,"2017-12-24 22:04:47","2017-05-19 01:10:24",1),
-("Công Ty Cổ Phần Đầu Tư Và Xây Dựng Draco Việt Nam","105 Hoàng Văn Thái, Khương Mai, Thanh Xuân, Hà Nội",49,20,20.996350, 105.827893,2,"2018-01-13 00:24:12","2018-05-03 19:36:37",1),
+("Công Ty Cổ Phần Đầu Tư Và Xây Dựng Draco Việt Nam","105 Hoàng Văn Thái, Khương Mai, Thanh Xuân, Hà Nội",49,20,20.996350, 105.827893,1,"2018-01-13 00:24:12","2018-05-03 19:36:37",1),
 ("Doanh Nghiệp Vàng Chiến Minh","119 Cầu Giấy, Quan Hoa, Cầu Giấy, Hà Nội",33,29,21.031554, 105.799691,1,"2018-02-26 07:11:56","2017-11-09 19:32:18",1),
 ("Hung Thuận Auto Gia Huy","38 Dương Đình Nghệ, Mễ Trì, Từ Liêm, Hà Nội",32,23,21.019162, 105.784826,1,"2017-12-19 04:54:43","2017-06-21 03:19:53",1),
 ("World Seafood Restaurant 2","18, Dương Đình Nghệ, Yên Hoà, Cầu Giấy, Hà Nội",32,23,21.020500, 105.786733,1,"2017-12-19 04:54:43","2017-06-21 03:19:53",1);
 
 INSERT INTO Security (garageID,accountID) VALUES (8,3),(6,3),(3,4),(8,5),(10,4),(5,3),(8,3),(1,3),(1,4),(2,3);
-INSERT INTO Security (garageID,accountID) VALUES (4,6),(9,5),(10,4),(10,3),(2,3),(10,3),(7,3),(2,5),(7,3);
+INSERT INTO Security (garageID,accountID) VALUES (4,3),(9,5),(10,4),(10,3),(2,3),(10,3),(7,3),(2,5),(7,3);
 
 INSERT INTO ParkingInfo (carID,garageID,timeBooked,timeGoIn,timeGoOut,parkingStatus) VALUES (4,8,"2013-08-17 21:43:19","2016-02-12 07:30:03","2017-10-05 12:28:27",0),(6,7,"2015-07-14 23:17:46","2015-12-07 23:27:41","2017-06-09 17:22:16",2),(10,1,"2013-07-15 12:01:53","2016-02-09 06:30:01","2016-09-18 13:52:36",1),(8,1,"2013-11-10 20:44:49","2015-10-21 00:33:28","2017-01-28 11:37:07",2),(6,5,"2014-03-21 15:05:11","2015-08-29 19:37:28","2016-08-03 11:28:42",2),(3,2,"2010-10-07 14:56:09","2015-10-17 11:34:33","2017-12-22 01:44:26",2),(6,8,"2012-09-09 05:34:51","2015-10-15 03:16:34","2017-09-07 21:16:19",0),(3,4,"2012-06-12 04:00:59","2016-03-09 12:32:27","2016-12-03 05:56:22",0),(7,10,"2014-04-15 19:57:19","2016-05-02 11:31:56","2016-08-02 01:33:17",0),(7,2,"2013-09-07 23:52:44","2015-10-30 14:36:11","2018-04-02 02:13:16",2);
 INSERT INTO ParkingInfo (carID,garageID,timeBooked,timeGoIn,timeGoOut,parkingStatus) VALUES (8,8,"2012-01-11 18:38:56","2015-09-08 17:31:13","2018-06-02 21:21:20",0),(1,9,"2015-07-02 23:37:24","2015-07-29 22:28:54","2017-10-07 14:53:28",1),(9,8,"2011-04-13 15:37:23","2016-02-11 20:58:20","2018-07-15 05:17:27",2),(5,1,"2010-09-14 23:21:43","2015-08-17 12:07:39","2017-09-26 13:44:12",1),(1,9,"2012-02-13 11:31:19","2016-01-29 08:52:54","2017-05-06 00:55:22",2),(9,1,"2011-09-16 16:28:23","2016-04-19 15:24:57","2016-09-19 09:50:13",0),(5,8,"2014-02-13 11:37:45","2015-09-06 13:26:28","2017-08-04 16:17:42",1),(1,6,"2014-08-24 02:17:18","2015-07-27 22:08:54","2017-04-13 07:06:42",1),(10,10,"2011-03-12 21:19:30","2015-08-11 12:38:05","2017-03-26 12:08:33",1),(10,5,"2013-08-13 14:13:44","2015-10-21 16:33:38","2018-01-28 06:18:14",0);

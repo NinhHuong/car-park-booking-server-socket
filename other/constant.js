@@ -33,7 +33,8 @@ exports.CONST = {
     REQUEST_CREATE_ACCOUNT_SECURITY: 'request_create_new_account_for_security',
     RESPONSE_CREATE_ACCOUNT_SECURITY: 'response_create_new_account_for_security',
 
-
+    REQUEST_GET_ACCOUNT_ID_BY_EMAIL: 'request_get_account_id_by_email',
+    RESPONSE_GET_ACCOUNT_ID_BY_EMAIL: 'response_get_account_id_by_email',
     //endregion
 
     //region GARAGE
@@ -166,6 +167,8 @@ exports.CONST = {
     RESPONSE_ALL_SECURITY: 'response_all_security',
 
     RB_GARAGE_STATUS: 'request_find_booking_by_garage_id_and_status',
+
+    REQUEST_REFRESH_SECURITY_PARKING_LIST: 'request_refresh_security_parking_list',
     //endregion
 
     //region ROLE
