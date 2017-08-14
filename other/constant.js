@@ -10,8 +10,8 @@ exports.CONST = {
     REQUEST_TOKEN_REGISTRATION: 'request_token_registration',
 
     RESPONSE_NOTI_TIME_OUT: 'response_notification_time_out',
-    CANCEL_BOOKING_TIMEOUT: 20 * 1000,
-    NOTIFY_BOOKING_TIMEOUT: 10 * 1000,
+    CANCEL_BOOKING_TIMEOUT: 15 * 60 * 1000,
+    NOTIFY_BOOKING_TIMEOUT: 10 * 60 * 1000,
     //endregion
 
     //region ACCOUNT
