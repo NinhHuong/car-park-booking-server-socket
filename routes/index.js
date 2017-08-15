@@ -109,29 +109,31 @@ io.sockets.on('connection', function (socket) {
 
     //remote account of security
     socket.on(constant.CONST.REQUEST_REMOVE_SECURITY, function (accountID, garageID) {
-        security.Remove(accountID, garageID, function (res) {
-            if (res.result) {
-                console.log("Remove account in security table");
-                car.FindByAccountID(accountID, function (resultFindCar) {
-                    if (resultFindCar.result) {
-                        for (var i = 0; i < resultFindCar.data.length; i++) {
-                            car.RemoveByID(resultFindCar.data[i].id, function (resultDeleteCar) {
-                                if (resultDeleteCar.result)
-                                    console.log("Delete car " + resultDeleteCar.data[i].id + " success");
-                                else console.log("Delete car " + resultDeleteCar.data[i].id + " fail");
-                            })
-                        }
-
-                        account.RemoveAccountByID(accountID, function (resultDeleteAccount) {
-                            socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, resultDeleteAccount);
-                        })
-                    }else
-                        console.log("Dont have car or error");
+        car.FindByAccountID(accountID, function (resultFindCar) {
+            if (resultFindCar.result) {
+                for (var i = 0; i < resultFindCar.data.length; i++) {
+                    car.RemoveByID(resultFindCar.data[i].id, function (resultDeleteCar) {
+                        if (resultDeleteCar.result)
+                            console.log("Delete car " + resultDeleteCar.data[i].id + " success");
+                        else console.log("Delete car " + resultDeleteCar.data[i].id + " fail");
+                    })
+                }
+                security.Remove(accountID, garageID, function (res) {
+                    if (res.result)
+                        console.log("Remove account in security table");
+                    else
+                        console.log("Remove account in security table fail");
                 });
+
+                account.RemoveAccountByID(accountID, function (resultDeleteAccount) {
+                    // socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, resultDeleteAccount);
+                    socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, res);
+                })
             } else
-                console.log("Remove account in security table fail");
-            socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, res);
+                console.log("Dont have car or error");
         });
+
+
     });
 
     //get accountID by Email

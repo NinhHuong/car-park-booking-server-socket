@@ -18,6 +18,7 @@ exports.CONST = {
     REQUEST_LOGIN_WITH_EMAIL_AND_PASS: 'check_email_and_password',
     REQUEST_CHECK_TOKEN: 'request_check_token',
     REQUEST_CREATE_NEW_ACCOUNT: 'request_create_account',
+    REQUEST_COMPARE_CODE: 'request_compare_code',
     REQUEST_RESET_PASSWORD: 'request_reset_password',
     REQUEST_CHANGE_PASSWORD: 'request_change_password',
     REQUEST_GET_SALT: 'request_get_salt',
