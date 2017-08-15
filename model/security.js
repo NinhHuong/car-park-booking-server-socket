@@ -52,7 +52,7 @@ exports.FindByAccountId = function (accountID, callback) {
     db.getConnection(function (err, client) {
         if (err)  return db_error.errorDBConnection(err, callback);
 
-        var sql = "SELECT security.*,garage.xStatus,garage.totalSlot FROM " + table_name +
+        var sql = "SELECT security.*,garage.* FROM " + table_name +
             " JOIN garage ON garage.id = security.garageid" +
             " WHERE security.accountID = '" + accountID + "' LIMIT 0,1";
         client.query(sql, function (err) {

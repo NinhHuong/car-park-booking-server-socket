@@ -126,8 +126,8 @@ io.sockets.on('connection', function (socket) {
                 });
 
                 account.RemoveAccountByID(accountID, function (resultDeleteAccount) {
-                    // socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, resultDeleteAccount);
-                    socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, res);
+                    console.log("Remove account in account table");
+                    socket.emit(constant.CONST.RESPONSE_REMOVE_SECURITY, resultDeleteAccount);
                 })
             } else
                 console.log("Dont have car or error");
