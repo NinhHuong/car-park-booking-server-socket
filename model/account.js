@@ -8,6 +8,7 @@ var nodemailer = require('nodemailer');
 var db = require('../database/dbConfig');
 var security = require('../model/security');
 var user = require('../model/user');
+var db_error = require('../database/db_error');
 const table_name = 'account';
 
 //Register
@@ -50,7 +51,7 @@ exports.Register = function (email, password, roleID, callback) {
                     var mailOptions = {
                         from: "Auto Car Park",
                         to: email,
-                        subject: "Reset Password ",
+                        subject: "Create new account ",
                         text: "Hello " + email + ".\nCode to validate account is " + temp + ".\n\nRegards,\nAuto Car-Park Team."
                     };
 
@@ -108,7 +109,7 @@ exports.RegisterForSecurity = function (email, password, accountAdminID, callbac
                     var mailOptions = {
                         from: "Auto Car Park",
                         to: email,
-                        subject: "Reset Password ",
+                        subject: "Create new account ",
                         text: "Hello " + email + ".\nCode to validate account is " + temp + ".\n\nRegards,\nAuto Car-Park Team."
                     };
 
@@ -152,6 +153,77 @@ exports.RegisterForSecurity = function (email, password, accountAdminID, callbac
             } else {
                 console.log("Register fail");
                 callback({"result": false, "mess": "Email already Registered"});
+            }
+        });
+    });
+};
+
+//register for admin
+exports.RegisterForAdmin = function (email, password, callback) {
+    var token = crypto.createHash('sha512').update(email + rand).digest("hex");
+    db.getConnection(function (err, client) {
+        if (err) {
+            db_error.errorDBConnection(err, callback);
+        }
+
+        var sql = "SELECT * FROM account WHERE email = '" + email + "'";
+        client.query(sql, function (err, result) {
+            if (err) db_error.errorSQL(err, callback);
+
+            if (result.length === 0) {
+                var temp = rand(16, 16);
+
+                sql = "INSERT INTO account(email, hash_password, token, roleID,reset_str) VALUES ('" +
+                    email + "', '" + password + "', '" + token + "', '" + "2" + "', '" + temp + "')";
+
+                client.query(sql, function (err) {
+                    if (err) db_error.errorSQL(err, callback);
+
+                    console.log("Register successful");
+                    var mailOptions = {
+                        from: "Auto Car Park",
+                        to: email,
+                        subject: "Create new account ",
+                        text: "Hello " + email + ".\nCode to validate account is " + temp + ".\n\nRegards,\nAuto Car-Park Team."
+                    };
+
+                    smtpTransport.sendMail(mailOptions, function (error) {
+                        if (error) {
+                            callback({
+                                "result": false,
+                                "mess": "Error"
+                            });
+                            console.log(error);
+                        } else {
+                            sql = "SELECT * FROM account WHERE email = '" + email + "'";
+                            client.query(sql, function (err, result) {
+                                if (err) db_error.errorSQL(err, callback);
+
+                                callback({
+                                    "result": true, "data": ({"accountID": result[0].id}), "mess": "Successfull."
+                                });
+                            });
+                            callback({
+                                "result": true,
+                                "mess": "Successfull."
+                            });
+                        }
+                    });
+                });
+            } else {
+                var sql = "SELECT * FROM account WHERE email = '" + email + "' AND roleID = '2'";
+                client.query(sql, function (err, result) {
+                    if (err) db_error.errorSQL(err, callback);
+
+                    if(result.length === 0){
+                        console.log("Register fail");
+                        callback({"result": false, "mess": "Email already Registered"});
+                    }else{
+                        callback({
+                            "result": true, "data": ({"accountID": result[0].id}), "mess": "Successfull."
+                        });
+                    }
+                });
             }
         });
     });
@@ -417,7 +489,7 @@ exports.RemoveAccountByID = function (id, callback) {
             if (err)  return db_error.errorSQL(sql, callback, err);
 
 
-            callback({"result": true, "data": "","mess": "Delete successful."});
+            callback({"result": true, "data": "", "mess": "Delete successful."});
         });
     });
 };

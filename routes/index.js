@@ -107,6 +107,22 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    //create new account for security
+    socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_SECURITY, function (email, pass, accountAdminID) {
+        account.RegisterForSecurity(email, pass, accountAdminID, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_CREATE_ACCOUNT_SECURITY, res);
+        });
+    });
+
+    //create new account for admin
+    socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_ADMIN, function (email, pass) {
+        account.RegisterForAdmin(email, pass, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_CREATE_ACCOUNT_ADMIN, res);
+        });
+    });
+
     //remote account of security
     socket.on(constant.CONST.REQUEST_REMOVE_SECURITY, function (accountID, garageID) {
         car.FindByAccountID(accountID, function (resultFindCar) {

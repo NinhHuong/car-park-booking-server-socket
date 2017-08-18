@@ -34,6 +34,9 @@ exports.CONST = {
     REQUEST_CREATE_ACCOUNT_SECURITY: 'request_create_new_account_for_security',
     RESPONSE_CREATE_ACCOUNT_SECURITY: 'response_create_new_account_for_security',
 
+    REQUEST_CREATE_ACCOUNT_ADMIN: 'request_create_new_account_for_admin',
+    RESPONSE_CREATE_ACCOUNT_ADMIN: 'response_create_new_account_for_admin',
+
     REQUEST_GET_ACCOUNT_ID_BY_EMAIL: 'request_get_account_id_by_email',
     RESPONSE_GET_ACCOUNT_ID_BY_EMAIL: 'response_get_account_id_by_email',
     //endregion
