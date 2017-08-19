@@ -39,6 +39,9 @@ exports.CONST = {
 
     REQUEST_GET_ACCOUNT_ID_BY_EMAIL: 'request_get_account_id_by_email',
     RESPONSE_GET_ACCOUNT_ID_BY_EMAIL: 'response_get_account_id_by_email',
+
+    REQUEST_REMOVE_ACCOUNT_BY_ID: 'request_remove_account_by_id',
+    RESPONSE_REMOVE_ACCOUNT_BY_ID: 'response_remove_account_by_id',
     //endregion
 
     //region GARAGE

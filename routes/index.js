@@ -99,13 +99,13 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
-    //create new account for security
-    socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_SECURITY, function (email, pass, accountAdminID) {
-        account.RegisterForSecurity(email, pass, accountAdminID, function (res) {
-            console.log(res);
-            socket.emit(constant.CONST.RESPONSE_CREATE_ACCOUNT_SECURITY, res);
-        });
-    });
+    // //create new account for security
+    // socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_SECURITY, function (email, pass, accountAdminID) {
+    //     account.RegisterForSecurity(email, pass, accountAdminID, function (res) {
+    //         console.log(res);
+    //         socket.emit(constant.CONST.RESPONSE_CREATE_ACCOUNT_SECURITY, res);
+    //     });
+    // });
 
     //create new account for security
     socket.on(constant.CONST.REQUEST_CREATE_ACCOUNT_SECURITY, function (email, pass, accountAdminID) {
@@ -120,6 +120,14 @@ io.sockets.on('connection', function (socket) {
         account.RegisterForAdmin(email, pass, function (res) {
             console.log(res);
             socket.emit(constant.CONST.RESPONSE_CREATE_ACCOUNT_ADMIN, res);
+        });
+    });
+
+    //remove new account of admin
+    socket.on(constant.CONST.REQUEST_REMOVE_ACCOUNT_BY_ID, function (id) {
+        account.RemoveAccountByID(id, function (res) {
+            console.log(res);
+            socket.emit(constant.CONST.RESPONSE_REMOVE_ACCOUNT_BY_ID, res);
         });
     });
 

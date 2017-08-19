@@ -200,7 +200,7 @@ exports.RegisterForAdmin = function (email, password, callback) {
                                 if (err) db_error.errorSQL(err, callback);
 
                                 callback({
-                                    "result": true, "data": ({"accountID": result[0].id}), "mess": "Successfull."
+                                    "result": true, "data": ({"accountAdminID": result[0].id}), "mess": "Successfull."
                                 });
                             });
                             callback({
@@ -211,19 +211,8 @@ exports.RegisterForAdmin = function (email, password, callback) {
                     });
                 });
             } else {
-                var sql = "SELECT * FROM account WHERE email = '" + email + "' AND roleID = '2'";
-                client.query(sql, function (err, result) {
-                    if (err) db_error.errorSQL(err, callback);
 
-                    if(result.length === 0){
-                        console.log("Register fail");
-                        callback({"result": false, "mess": "Email already Registered"});
-                    }else{
-                        callback({
-                            "result": true, "data": ({"accountID": result[0].id}), "mess": "Successfull."
-                        });
-                    }
-                });
+                callback({"result": false,data:"", "mess": "Email already Registered"});
             }
         });
     });
@@ -487,7 +476,6 @@ exports.RemoveAccountByID = function (id, callback) {
         if (err) return db_error.errorSQL(sql, callback, err);
         client.query(sql, function (err, result) {
             if (err)  return db_error.errorSQL(sql, callback, err);
-
 
             callback({"result": true, "data": "", "mess": "Delete successful."});
         });
