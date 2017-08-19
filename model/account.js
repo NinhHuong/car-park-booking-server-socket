@@ -127,6 +127,17 @@ exports.RegisterForSecurity = function (email, password, accountAdminID, callbac
                             });
                         }
                     });
+                    sql = "SELECT * FROM " + table_name + " WHERE email = '" + email + "'";
+                    client.query(sql, function (err, result) {
+                        // db.endConnection();
+                        if (err) {
+                            return console.error('error running query', err);
+                        }
+                        if (result.length > 0) {
+                            user.AddByAccountId(result[0].id, function () {
+                            });
+                        }
+                    });
 
                     var garageID, accountSecurityID;
                     sql = "SELECT * FROM garage where accountID = '" + accountAdminID + "'";
@@ -178,6 +189,18 @@ exports.RegisterForAdmin = function (email, password, callback) {
 
                 client.query(sql, function (err) {
                     if (err) db_error.errorSQL(err, callback);
+
+                    sql = "SELECT * FROM " + table_name + " WHERE email = '" + email + "'";
+                    client.query(sql, function (err, result) {
+                        // db.endConnection();
+                        if (err) {
+                            return console.error('error running query', err);
+                        }
+                        if (result.length > 0) {
+                            user.AddByAccountId(result[0].id, function () {
+                            });
+                        }
+                    });
 
                     console.log("Register successful");
                     var mailOptions = {
