@@ -293,7 +293,6 @@ exports.Login = function (email, password, callback) {
                         "id": "",
                         "email": false,
                         "password": false,
-                        "is_verify": "",
                         "token": "",
                         "role": "",
                         "res": false
