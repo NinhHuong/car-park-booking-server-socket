@@ -478,8 +478,8 @@ io.sockets.on('connection', function (socket) {
     });
 
     // Create new data. one car was not book go in
-    socket.on(constant.CONST.REQUEST_CAR_IN_NUMBER, function (vehicleNumber, garageID) {
-        parkingInfo.CarInVehicleNumber(vehicleNumber, garageID, function (res) {
+    socket.on(constant.CONST.REQUEST_CAR_IN_NUMBER, function (vehicleNumber,securityID, garageID) {
+        parkingInfo.CarInVehicleNumber(vehicleNumber,securityID, garageID, function (res) {
             socket.emit(constant.CONST.RESPONSE_CAR_IN, res);
 
             if (res.result) {
@@ -488,10 +488,15 @@ io.sockets.on('connection', function (socket) {
                 io.emit(constant.CONST.RESPONSE_GARAGE_UPDATED, request);
 
                 garage.UpdateBusySlotByID(garageID, 0, function (resultUpdateGarage) {
-                    if (resultUpdateGarage.result)
-                        console.log("Increase busy slot in garage garageID" + garageID);
-                    else
-                        console.log("Error increase busy slot in garage garageID" + garageID);
+                    if (resultUpdateGarage.result) {
+                        garage.GetGaragesByID(garageID, function (getGarageRes) {
+                            if (getGarageRes.result) {
+                                console.log("> Update garage detail for all clients");
+                                io.sockets.emit(constant.CONST.RESPONSE_GARAGE_UPDATED,
+                                    getGarageRes);
+                            }
+                        });
+                    }
                 });
             }else
                 console.log("Error car in number:" + vehicleNumber);
@@ -509,10 +514,15 @@ io.sockets.on('connection', function (socket) {
                 var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
                 io.emit(constant.CONST.RESPONSE_GARAGE_UPDATED, request);
                 garage.UpdateBusySlotByID(garageID, 3, function (resultUpdateGarage) {
-                    if (resultUpdateGarage.result)
-                        console.log("Decrease busy slot in garage garageID" + garageID);
-                    else
-                        console.log("Error decrease busy slot in garage garageID" + garageID);
+                    if (resultUpdateGarage.result) {
+                        garage.GetGaragesByID(garageID, function (getGarageRes) {
+                            if (getGarageRes.result) {
+                                console.log("> Update garage detail for all clients");
+                                io.sockets.emit(constant.CONST.RESPONSE_GARAGE_UPDATED,
+                                    getGarageRes);
+                            }
+                        });
+                    }
                 });
             }
             else

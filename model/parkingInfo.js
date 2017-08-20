@@ -464,9 +464,9 @@ exports.CarInId = function (id, callback) {
     });
 }
 
-exports.CarInVehicleNumber = function (vehicleNumber, garageID, callback) {
+exports.CarInVehicleNumber = function (vehicleNumber,securityID, garageID, callback) {
     db.getConnection(function (err, client) {
-        car.FindByVehicleNumber(vehicleNumber, function (findRes) {
+        car.FindCar(securityID,vehicleNumber, function (findRes) {
             var result = findRes.result;
             var d = new Date,
                 timeConvert = [d.getFullYear(),
@@ -476,9 +476,9 @@ exports.CarInVehicleNumber = function (vehicleNumber, garageID, callback) {
                         d.getMinutes().padLeft(),
                         d.getSeconds().padLeft()].join(':');
             if (!result) {
-                car.AddVehicleNumber(vehicleNumber, function (addRes) {
+                car.Add(securityID,vehicleNumber, function (addRes) {
                     if (addRes.result) {
-                        car.FindByVehicleNumber(vehicleNumber, function (findResNext) {
+                        car.FindCar(securityID,vehicleNumber, function (findResNext) {
                             var carId = findResNext.data[0].id;
 
                             sql = "INSERT INTO " + table_name + " (carId, garageID, timeGoIn, parkingStatus) VALUE ('" +

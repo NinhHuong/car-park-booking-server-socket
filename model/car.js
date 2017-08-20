@@ -185,6 +185,25 @@ exports.FindByVehicleNumber = function (vehicleNumber, callback) {
     });
 };
 
+exports.FindCar = function (accountID, vehicleNumber, callback) {
+    console.log('find ' + table_name + ' vehicleNumber:' + vehicleNumber);
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT * FROM " + table_name + " WHERE vehicleNumber = '" + vehicleNumber + "' AND accountID = '"+accountID+"'";
+        client.query(sql, function (err, result) {
+            // db.endConnection();
+            if (err) return db_error.errorSQL(sql, callback, err);
+
+            if (result.length === 0) {
+                callback({"result": false, "data": "", "mess": "Dont have any car"});
+            } else {
+                callback({"result": true, "data": result, "mess": ""});
+            }
+        });
+    });
+};
+
 
 exports.UpdateByVehicle = function (accountID, oldVehicle, newVehicle, callback) {
     console.log('change ' + table_name + ' accountID: ' + accountID + ' oldVehicle: ' + oldVehicle + ' newVehicle: ' + newVehicle);
