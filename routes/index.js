@@ -463,10 +463,6 @@ io.sockets.on('connection', function (socket) {
 
             if (res.result) {
                 console.log("parking info id " + id + " is in");
-                var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-
-                io.emit(constant.CONST.RESPONSE_GARAGE_UPDATED, request);
-
                 garage.UpdateBusySlotByID(garageID, 0, function (resultUpdateGarage) {
                     if (resultUpdateGarage.result) {
                         garage.GetGaragesByID(garageID, function (getGarageRes) {
@@ -491,8 +487,6 @@ io.sockets.on('connection', function (socket) {
 
             if (res.result) {
                 console.log("parking info vehicleNumber " + vehicleNumber + " is in");
-                var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-                io.emit(constant.CONST.RESPONSE_GARAGE_UPDATED, request);
 
                 garage.UpdateBusySlotByID(garageID, 0, function (resultUpdateGarage) {
                     if (resultUpdateGarage.result) {
@@ -518,9 +512,7 @@ io.sockets.on('connection', function (socket) {
 
             if (res.result) {
                 console.log("parking info id " + id + " is out");
-                var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-                io.emit(constant.CONST.RESPONSE_GARAGE_UPDATED, request);
-                garage.UpdateBusySlotByID(garageID, 3, function (resultUpdateGarage) {
+                    garage.UpdateBusySlotByID(garageID, 3, function (resultUpdateGarage) {
                     if (resultUpdateGarage.result) {
                         garage.GetGaragesByID(garageID, function (getGarageRes) {
                             if (getGarageRes.result) {
