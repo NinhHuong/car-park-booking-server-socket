@@ -464,13 +464,20 @@ io.sockets.on('connection', function (socket) {
             if (res.result) {
                 console.log("parking info id " + id + " is in");
                 var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-                // garage.UpdateBusySlotByID(garageID, 0, function (resultUpdateGarage) {
-                //     if (resultUpdateGarage.result)
-                //         console.log("Increase busy slot in garage garageID" + garageID);
-                //     else
-                //         console.log("Error increase busy slot in garage garageID" + garageID);
-                // });
+
                 io.emit(constant.CONST.RESPONSE_GARAGE_UPDATED, request);
+
+                garage.UpdateBusySlotByID(garageID, 0, function (resultUpdateGarage) {
+                    if (resultUpdateGarage.result) {
+                        garage.GetGaragesByID(garageID, function (getGarageRes) {
+                            if (getGarageRes.result) {
+                                console.log("> Update garage detail for all clients");
+                                io.sockets.emit(constant.CONST.RESPONSE_GARAGE_UPDATED,
+                                    getGarageRes);
+                            }
+                        });
+                    }
+                });
             } else
                 console.log("Error car in id:" + id);
 
