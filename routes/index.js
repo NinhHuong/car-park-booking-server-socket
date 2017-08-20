@@ -464,13 +464,13 @@ io.sockets.on('connection', function (socket) {
             if (res.result) {
                 console.log("parking info id " + id + " is in");
                 var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-                garage.UpdateBusySlotByID(garageID, 0, function (resultUpdateGarage) {
-                    if (resultUpdateGarage.result)
-                        console.log("Increase busy slot in garage garageID" + garageID);
-                    else
-                        console.log("Error increase busy slot in garage garageID" + garageID);
-                });
-                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST, request);
+                // garage.UpdateBusySlotByID(garageID, 0, function (resultUpdateGarage) {
+                //     if (resultUpdateGarage.result)
+                //         console.log("Increase busy slot in garage garageID" + garageID);
+                //     else
+                //         console.log("Error increase busy slot in garage garageID" + garageID);
+                // });
+                io.emit(constant.CONST.RESPONSE_GARAGE_UPDATED, request);
             } else
                 console.log("Error car in id:" + id);
 
@@ -485,7 +485,7 @@ io.sockets.on('connection', function (socket) {
             if (res.result) {
                 console.log("parking info vehicleNumber " + vehicleNumber + " is in");
                 var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST, request);
+                io.emit(constant.CONST.RESPONSE_GARAGE_UPDATED, request);
 
                 garage.UpdateBusySlotByID(garageID, 0, function (resultUpdateGarage) {
                     if (resultUpdateGarage.result)
@@ -507,7 +507,7 @@ io.sockets.on('connection', function (socket) {
             if (res.result) {
                 console.log("parking info id " + id + " is out");
                 var request = ({"result": true, "data": ({"garageID": garageID}), "mess": "Car out"});
-                io.emit(constant.CONST.REQUEST_REFRESH_SECURITY_PARKING_LIST, request);
+                io.emit(constant.CONST.RESPONSE_GARAGE_UPDATED, request);
                 garage.UpdateBusySlotByID(garageID, 3, function (resultUpdateGarage) {
                     if (resultUpdateGarage.result)
                         console.log("Decrease busy slot in garage garageID" + garageID);
