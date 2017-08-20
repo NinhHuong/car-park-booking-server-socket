@@ -43,6 +43,22 @@ exports.Add = function (accountID, vehicleNumber, callback) {
     });
 };
 
+exports.AddBySecurity = function (accountID, vehicleNumber, callback) {
+    console.log('Add new ' + table_name + ' vehicleNumber: ' + vehicleNumber + ' accountID: ' + accountID);
+    db.getConnection(function (err, client) {
+        if (err)
+            return db_error.errorDBConnection(err, callback);
+
+        var sql = "INSERT INTO " + table_name + " (accountID, vehicleNumber) VALUES ('" + accountID + "', '" + vehicleNumber + "');";
+        client.query(sql, function (err, result) {
+            if (err)
+                return db_error.errorSQL(sql, callback, err);
+
+            callback({'result': true, 'data': '', 'mess': "Successfully register new " + table_name,});
+        });
+    });
+};
+
 exports.AddVehicleNumber = function (vehicleNumber, callback) {
     console.log('Add new ' + table_name + ' vehicleNumber: ' + vehicleNumber);
 
@@ -190,7 +206,7 @@ exports.FindCar = function (accountID, vehicleNumber, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
 
-        var sql = "SELECT * FROM " + table_name + " WHERE vehicleNumber = '" + vehicleNumber + "' AND accountID = '"+accountID+"'";
+        var sql = "SELECT * FROM " + table_name + " WHERE vehicleNumber = '" + vehicleNumber + "' AND accountID = '" + accountID + "'";
         client.query(sql, function (err, result) {
             // db.endConnection();
             if (err) return db_error.errorSQL(sql, callback, err);

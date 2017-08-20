@@ -476,7 +476,7 @@ exports.CarInVehicleNumber = function (vehicleNumber,securityID, garageID, callb
                         d.getMinutes().padLeft(),
                         d.getSeconds().padLeft()].join(':');
             if (!result) {
-                car.Add(securityID,vehicleNumber, function (addRes) {
+                car.AddBySecurity(securityID,vehicleNumber, function (addRes) {
                     if (addRes.result) {
                         car.FindCar(securityID,vehicleNumber, function (findResNext) {
                             var carId = findResNext.data[0].id;
