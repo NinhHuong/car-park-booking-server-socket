@@ -295,7 +295,8 @@ exports.Login = function (email, password, callback) {
                         "password": false,
                         "token": "",
                         "role": "",
-                        "res": false
+                        "res": false,
+                        "is_verify": "1S",
                     });
                 }
             });
