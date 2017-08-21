@@ -235,7 +235,7 @@ exports.RegisterForAdmin = function (email, password, callback) {
                 });
             } else {
 
-                callback({"result": false,data:"", "mess": "Email already Registered"});
+                callback({"result": false, data: "", "mess": "Email already Registered"});
             }
         });
     });
@@ -260,28 +260,36 @@ exports.Login = function (email, password, callback) {
                     var token = result[0].token;
                     var verify = result[0].isVerify;
                     var role = result[0].roleID;
-                    if (password_db === password) {
+                    var isLogin = result[0].isLogin;
+                    if (password_db === password && isLogin === 0) {
                         console.log("Login successfull");
                         callback({
+                            "result":true,
                             "response": "Login Success",
                             "id": id,
                             "email": true,
                             "password": true,
                             "is_verify": verify,
                             "token": token,
-                            "role": role
+                            "role": role,
+                            "isLogin": isLogin
+                        });
+
+                        var none;
+                        updateIsLogin(id, 1,function (none) {
                         });
                     } else {
                         console.log('Login fail');
                         callback({
-                            "response": "Invalid Password",
+                            "response": "Login fail",
                             "id": id,
                             "email": true,
                             "password": false,
                             "is_verify": verify,
                             "token": token,
                             "role": role,
-                            "res": false
+                            "res": false,
+                            "isLogin": isLogin
                         });
                     }
 
@@ -296,7 +304,8 @@ exports.Login = function (email, password, callback) {
                         "token": "",
                         "role": "",
                         "res": false,
-                        "is_verify": "1S",
+                        "is_verify": "1",
+                        "isLogin": 0
                     });
                 }
             });
@@ -373,6 +382,41 @@ exports.UpdateByUserId = function (accountId, userId, callback) {
     });
 };
 
+function updateIsLogin(accountId, newIsLogin, callback) {
+    db.getConnection(function (err, client) {
+        if (err) {
+            return console.error('error connecting', err);
+        }
+
+        client.query("SELECT * FROM " + table_name + " WHERE id = '" + accountId+"'", function (err, result) {
+                if (err) {
+                    return console.error('error running query', err);
+                }
+                if (result.length > 0) {
+                    client.query("UPDATE " + table_name + " SET isLogin = '" + newIsLogin + "' WHERE id = '" + accountId+"'", function (err) {
+                        if (err) {
+                            callback({result: false, data:"", mess: ""});
+                            return console.error('error running query', err);
+                        }
+                        callback({result: true, data:"", mess: ""});
+                        return console.error('Update status cussessfull with account ' + accountId + ' and new status is' + newIsLogin);
+                    });
+                }
+                else {
+                    callback({result: false, data:"", mess: ""});
+                    return console.error('Cant find account id ' + accountId);
+                }
+            }
+        );
+    });
+}
+
+//Log out
+exports.LogOut = function (accountId, callback) {
+    console.log('>> Calling logout accountId ' + accountId);
+    updateIsLogin(accountId, 0, callback);
+};
+
 //reset password
 exports.ResetPassInit = function (email, callback) {
     console.log('>> Calling reset pass');
@@ -437,7 +481,7 @@ exports.CompareCode = function (email, code, callback) {
                         if (err)
                             return console.error('error running query', err);
                         console.log("Client code match");
-                        callback({"result": true, "data": {"mess": "code match"}});
+                        callback({"result": true, "data": {"mess": "code match"},"id":result[0].id});
                     });
                 } else {
                     console.log("Client code NOT match");

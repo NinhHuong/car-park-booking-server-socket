@@ -1,0 +1,482 @@
+-- phpMyAdmin SQL Dump
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Aug 21, 2017 at 06:34 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.1
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `auto-car-parking`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account`
+--
+
+CREATE TABLE `account` (
+  `id` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `hash_password` varchar(250) NOT NULL,
+  `token` varchar(250) NOT NULL,
+  `userID` int(11) DEFAULT NULL,
+  `roleID` int(11) NOT NULL,
+  `isVerify` tinyint(1) NOT NULL,
+  `reset_str` varchar(6) DEFAULT NULL,
+  `isLogin` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`id`, `email`, `hash_password`, `token`, `userID`, `roleID`, `isVerify`, `reset_str`, `isLogin`) VALUES
+(1, 'ninhhuongdst@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e69415aeb5d1a85f64050', 1, 1, 1, NULL, 0),
+(2, 'sidq@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'f64a74704282f9a1d9f8de3e807b20edd75744271a35584bc0367d7e0d8d3bf18382fed6e7a8f292644ef28d65814629c036dea29b2399fb72ab32eea6f9280b', 2, 2, 1, NULL, 0),
+(3, 'tuanna@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'b22336f265bf8514658b68f6e611e57a26ba179443defa0a5b25eaf5b963be8178b7c3e97f8912721897968356224a7251b5b481c4e01540629382dc347fcc80', 3, 3, 1, NULL, 0),
+(4, 'longhd@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '7bdb75a32d2dce0050eda35d9141acd67c153c51b62805c5537f65289554d2c89c542bf8836bf7b60c25e89b8b2effbe4bdf082ae6bd784b477b51b2838b3179', 4, 4, 1, NULL, 0),
+(5, 'longhd1@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'e7d35e8b8f17ff3b63949a9cba3fc6825f7349a47dc6e4833c93d2bd002cd5889ebdf761e7fecec90e4b9c209f9efe7a0e10731b4ec7daae3ae19b873af84e6f', 5, 4, 1, NULL, 0),
+(6, 'longhd2@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '263f01bdba5d9003d7cd7a528f11418486c5643332f5774d8bb8e98dc3afaa652d0117586dd4700d314b6c15467abf4fe6fa12e9fd5b1bb06d1ecac31eee95f5', 6, 4, 1, NULL, 0),
+(7, 'longhd3@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '178a331f38c89808a9fa6249ac26568e5b1ffb78adb09b5573eac8ec87cb7c779fe0ee8a24142bf2414122ccc90be83896373c8161762e7e192602782e556ef4', 7, 4, 1, NULL, 0),
+(9, 'admin01@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '3606271d05f4664083172ce6471984154a9fbe08642bba674fda3abedfd65e8e8ab39c54f6774d4abcb67a9eae7aef93be54b4c0a4eabea50295edc83a866ef6', NULL, 2, 1, '3df6', 0),
+(11, 'admin02@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '26338b654297d4e97cef4b6c6fb718cd082d5de34d257297ffb2d08f64111fd29bfb9dc5f4a9e7b6e1b6f16282077ed6bc29728546182e1528a716803d4ba509', NULL, 2, 1, '2731', 0),
+(12, 'admin03@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'bfc0872ba97db878e5915e1299f09c622f1eccc7ba72fed8e0e4c0bc72d092aa6d658f35fa432d0596797dd32ab5fcf5d4389553be6f7c053db2397d2abb5f9c', NULL, 2, 1, 'cd69', 0),
+(13, 'admin04@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '50c9f3627429e795b30cca302ee4ddc3a287152491e0055177b27c39966ab74d6a0ed19635d602be70d95fa125d11a1ac2bcc8a39e4bac395a771b3b94106197', NULL, 2, 1, 'e747', 0),
+(14, 'admin05@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '559ea7cd1ffd9f81749800df154b36d5413ff7c5a1d567772c8d05ffd40a4c506ff8525027eeb6557dadf203b05cca62141e22ee87f3ce4367cd25bfab8e9187', NULL, 2, 1, 'dd6c', 0),
+(15, 'admin06@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'f8d45760b0050117f3391edfbf6d268378fafb7d3c97da588a232e546d7f2e1397c4fdee77567072525bb4dd1b3f2557ab8d129ece7ccb01f18233fe9860ae5b', NULL, 2, 1, 'df1b', 0),
+(16, 'admin07@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '1bacd47b63f156caddcfaa040aa5044527c910aa8ef595b507f267164078871e6c40f8320c22be51dba1745d1bd3cc068745f2ccd77e1b7bd7d1e11ac1b4f922', NULL, 2, 1, 'ffc6', 0),
+(17, 'admin08@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '12c98d0fef012596d2745ae3c17d6db9b5f21ab92b2b907c2f21c4ad592ffabf55059c064512974354178fb5b1ca8345a01a04885c0e8c97adea32efe23a7808', NULL, 2, 1, 'bb5f', 0),
+(18, 'admin09@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '2d50e53a526ddf011d28732f5d797832a5cce32db7ec0eb29b321e31b9f04b7c3a7c28e55474a65199cdf7711ae3880b8874c72bd63bdb2f8c6ae53d85b27002', NULL, 2, 1, '4068', 0),
+(19, 'admin10@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '27ebfaf4c653130ebd83776c1442b6fdc64b7e6bb4c0f41cd06d310dd592d246288ce90128849887c756505b16ca4b92b555fff979b5e0d8f5610c2a81bd6973', NULL, 2, 1, '8390', 0),
+(20, 'sec11@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '00b98a0309d32b8fa17011437af2cb3757e984b527e142d8e04b7882bedac9574d7f4e6b8b724272fb227dc53cefedf27b02766464599dcb909eaf0581b689c1', NULL, 3, 1, '96e2', 0),
+(22, 'sec12@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '8da91eb2820a1edfe47fe589207bc62ce935be2c542df161f95dedddb9b594a3b25e880e5ee66b33f5cd7e82e643951449632fedf91944d122fd291bbe10480f', NULL, 3, 0, 'ca0e', 0),
+(24, 'sec13@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'c9053fddb2ee9ca07d3519d60b92261ad34015f88c121a0f14bad85fae3edef3b38f109b26587333edd38fa8bd3a7e91a0b06265588c240822d6c93c73a955d7', NULL, 3, 0, '2476', 0),
+(26, 'sec21@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'd2e1ba10c64ed7555348fbd3ee5cc3e382d052333c1695e57189f6442474b73956abac202c2f0ca692bca98d7d0420554c3d911ae6c06d10be95eca3f09251f2', NULL, 3, 0, '4fe9', 0),
+(27, 'sec22@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '4c52e0939b2bfc9c7e3e0f4e76e9341dbb4c99f4bc7ce2c7ff6bc5f67460da28eb2b7e0038579d1912ab404ec8b4fd9cbceacb8c62e6f69ef4b2f7c19398f6e8', NULL, 3, 0, 'afe1', 0),
+(28, 'sec31@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '7590bbc85a11ca6735d6671a6c081971dbeb6a95695cf1b1966723fe0de55b4921a18de1a79fb24b3d8ae632a8144ebc89a048a2dc625daa266b60517f54aece', NULL, 3, 0, '0f4d', 0),
+(29, 'sec32@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'f08b882f66b7e1917f211e1f78d3dd57b233aa4f200eaeb241124447dd6779ec387bb64b81e0cdedb906857e115fe1d364985d0b25e5e40f5f1225620385cfd7', NULL, 3, 0, '256f', 0),
+(30, 'sec41@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'f2569d803073969597ae16ffe13a6cdeff818e6d9b557256593ca6d975cf9f6b4e1faf930f3fa38f999f5d0d6f8bc1456f35c6bbcf399f71da4d89bba8e93f4d', NULL, 3, 1, 'b8b0', 0),
+(31, 'sec42@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '2b147be128f0fb04943757e98ceee9fe11e374a1c256a63db39d91a4813a06e51285d3b0fdd296dd3ea67bd3d7e017366fdceeaa5d29ac7b7a78491e800f6b7d', NULL, 3, 0, '6c0d', 0),
+(32, 'sec51@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'a40a33d107efb43a5d99f5476ed8fe0d1954274c70de1f013fe5e65951272fae7f3f310331f37ca4dd674260e690835fa8dfa2df514666a3faffab601c79ac02', NULL, 3, 0, '4bcb', 0),
+(33, 'sec52@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '45e2764047f810e6cf721324cf88800ac99a302ea08abc8be7e842164f0a6f80c00bb000d973cc17a27027eb782132e57556c37cf724c4c99b48fa2145a5d980', NULL, 3, 0, '9be3', 0),
+(34, 'sec61@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'ecae0b7ad094c792e2dba77bfa7272dd283506ec219cdbf84cc488847766952c1973fad5a502fc0295379bb2512bf6251069d4a57f62ef10a23845c0146e968d', NULL, 3, 0, '2392', 0),
+(35, 'sec62@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'd512f14a19ce95ee1fe9761e56823742c4ff58eca20db33257d29c54ddd6594184716e9d583dc12d06fe6989d94203f1d8ad9914e8566146e42107a6925ee93a', NULL, 3, 0, 'f877', 0),
+(36, 'sec71@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '5d94177d98348cd2c0cc92047f593a42c337551575a42cf5230d510b404976b5aaa0690efb2c9610f6453623f5f6d0ac078082d8aca001687bcfd16b0cf17439', NULL, 3, 0, '67b0', 0),
+(37, 'sec72@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '38e96cfec6e7a5fe682ec1ce0a082f2417903b714a97ffd15b3fb0de1fbef7889b9a4c87a93ec68e10af807dc7c0c1be5ad0ffc42c6b5ba85728802c5119517c', NULL, 3, 0, 'fa5f', 0),
+(38, 'sec81@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'ae1d0964bdade98236fbd8c3538c091be57295bb5b378b8a25b8feccaf396cd2170b167f8c735857015b997016794fc62efb321c94279167c6b4d1b0019db7f4', NULL, 3, 0, '28c4', 0),
+(39, 'sec82@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '42377879c7ae813bbd4c9f730119bf1fbb11e16c7e50a518372e4be4a9f349977e92beb35a362ea772bde374faed81a8466a8c76a65d6e13f161480d49da7542', NULL, 3, 0, 'bb13', 0),
+(40, 'sec91@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '6597ce29b01363a869b244e8b31626421456e33b88ca38b1f8b48e3d2c3e96fca77f18047335ee4f84d6d4d37cf450718517f2c09bd86143a39d5881608afe0c', NULL, 3, 0, 'c597', 0),
+(41, 'sec92@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'ea05166e04642486723932c25544f66277c2f062fad1fba9d499bf48a1245353e302fa45439217b4cbd660a06ce1b8ed6fa79e433b09033dcf02848356444e59', NULL, 3, 0, 'e88e', 0),
+(42, 'sec101@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '61e0c5c5c4dd372f98438ad48a6f46fceabafaeae761da3fc5a37f34254b2578813030668ec9864346a9092262ed36be721e310ca8276465e203fb8889e4a164', NULL, 3, 0, '84f7', 0),
+(43, 'sec102@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'ba5a312c7815c013dcb4928b3290e5554e22f58bed2e7144fdbab8eed31445cb43357d699ae8a77c5907db455467d387696361c6360fa5a6d8c44877e061496d', NULL, 3, 0, '3de5', 0),
+(44, 'superadmin@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '5e19efdfd462138bb264abec60024e3be01c22e99720c10a498057bba6ba48752aa586b3045f90b1f999053ccf5186cde5d6dd23f26e6941saeb5d1a85f64050', 1, 1, 1, NULL, 0),
+(48, 'user01@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', '2c6eb58d24ec555e73024fc0f2194f248b446e407770c98b0f02b79dbe54ef204e0c6ba9c8a24abcf527db6c680e6007247fa1f71c925b4efe11a95a271dc814', NULL, 4, 1, '1111', 0),
+(49, 'user02@gmail.com', 'ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae6956df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413', 'f05d24a1fc4b452943ac071161f7a203d873caeab9cf85cdcbdd53faa11d35475d12c25002681cd0d0032d39d56872cd470589510898e14d86ce5c1d50a7f23d', NULL, 4, 1, '15b2', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `car`
+--
+
+CREATE TABLE `car` (
+  `id` int(11) NOT NULL,
+  `accountID` int(11) DEFAULT NULL,
+  `vehicleNumber` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `car`
+--
+
+INSERT INTO `car` (`id`, `accountID`, `vehicleNumber`) VALUES
+(1, 7, '717179'),
+(2, 7, '50337'),
+(3, 5, '4011LQ'),
+(4, 7, '679142'),
+(5, 6, '79494'),
+(6, 7, '13154'),
+(7, 5, '639674'),
+(8, 7, '1370'),
+(9, 7, '44194'),
+(10, 7, '67450'),
+(11, 7, '7494'),
+(12, 5, '2704PE'),
+(13, 6, '2763'),
+(14, 7, '10170'),
+(15, 7, '345704'),
+(16, 7, '59509'),
+(17, 7, '9644'),
+(18, 5, '364217'),
+(19, 7, '145917'),
+(20, 5, '959474'),
+(21, 6, '96379'),
+(22, 7, '1260'),
+(23, 5, '39570'),
+(24, 7, '22023'),
+(25, 5, '20713'),
+(26, 7, '344093'),
+(27, 6, '33037'),
+(28, 6, '79307'),
+(29, 7, '07363'),
+(30, 7, '79716'),
+(31, 6, '44425'),
+(32, 7, '17-909'),
+(33, 5, '73317'),
+(34, 5, '142777'),
+(35, 5, '67-651'),
+(36, 6, 'R7 5JP'),
+(37, 7, '2036'),
+(38, 5, '3777'),
+(39, 7, '15-137'),
+(40, 5, '6747'),
+(41, NULL, 'abcd'),
+(42, NULL, 'rvrv'),
+(43, 48, '74c19698'),
+(44, NULL, '75c1 9661'),
+(45, 48, '75c1'),
+(46, NULL, '77ab'),
+(47, 30, 'test1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `garage`
+--
+
+CREATE TABLE `garage` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `totalSlot` int(11) NOT NULL,
+  `busySlot` int(11) NOT NULL,
+  `locationX` double NOT NULL,
+  `locationY` double NOT NULL,
+  `accountID` int(11) NOT NULL,
+  `timeStart` datetime NOT NULL,
+  `timeEnd` datetime NOT NULL,
+  `xStatus` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `garage`
+--
+
+INSERT INTO `garage` (`id`, `name`, `address`, `totalSlot`, `busySlot`, `locationX`, `locationY`, `accountID`, `timeStart`, `timeEnd`, `xStatus`) VALUES
+(12, 'LandMark 72', 'Toa nha keangnam HN, Lo E6 Pham Hung, Me Tri, Nam Tu Liem, Ha Noi', 50, 0, 21.016597, 105.784059, 9, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1),
+(13, 'Sudico Building HH3', 'Me Tri, Tu Liem, Ha Noi', 50, 0, 21.016553, 105.779535, 11, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
+(14, 'Quan lau nuong Han Quoc', '9 Duong Dinh Nghe, yen Hoa, Cau Giay, Ha Noi', 50, 0, 21.020049, 105.78604, 12, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
+(15, 'San Tap Lai oto hoa lac FPT', 'tt Lien Quan, Thach that, Ha noi', 50, 2, 21.011138, 105.524557, 13, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
+(16, 'Viettel Data Center', 'Thach That, Hanoi', 100, 0, 21.009193, 105.53125, 14, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
+(17, 'Cong Ty tnhh Vnprodev', '10 Cau giay, Quan Hoa, Cau Giay, Ha noi', 30, 0, 21.030208, 105.799866, 15, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
+(18, 'Cong ty Co Phan Dau Tu Va Xay Dung Draco Viet Nam', '105 Hoang Van Thai, Khuong Mai, Thanh Xuan, Ha noi', 30, 0, 20.99635, 105.827893, 16, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
+(19, 'Doanh Nghiep Vang Chien Minh', '199 Cau Giay, Quan Hoa, Cau Giay, Ha Noi', 25, 0, 21.031554, 105.799691, 17, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
+(20, 'Hung Thuan Auto Gia Huy', '38 Duong Dinh Nghe, My Tri, Tu Liem, Ha Noi', 120, 0, 21.019162, 105.784826, 18, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0),
+(21, 'World seafood restaurant 2', '18 Duong Dinh Nghe, yen Hoa, Cau Giay, Ha Noi', 60, 0, 21.0205, 105.786733, 19, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `parkinginfo`
+--
+
+CREATE TABLE `parkinginfo` (
+  `id` int(11) NOT NULL,
+  `carID` int(11) NOT NULL,
+  `garageID` int(11) NOT NULL,
+  `timeBooked` datetime NOT NULL,
+  `timeGoIn` datetime DEFAULT NULL,
+  `timeGoOut` datetime DEFAULT NULL,
+  `parkingStatus` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `parkinginfo`
+--
+
+INSERT INTO `parkinginfo` (`id`, `carID`, `garageID`, `timeBooked`, `timeGoIn`, `timeGoOut`, `parkingStatus`) VALUES
+(303, 43, 15, '2017-08-20 13:16:29', '2017-08-20 13:19:26', '2017-08-20 13:19:32', 2),
+(304, 44, 15, '0000-00-00 00:00:00', '2017-08-20 13:34:15', '2017-08-20 13:34:28', 2),
+(305, 45, 15, '2017-08-20 22:30:28', '2017-08-20 22:35:21', '2017-08-21 00:23:09', 2),
+(306, 43, 15, '2017-08-20 22:43:22', NULL, NULL, 3),
+(308, 47, 15, '0000-00-00 00:00:00', '2017-08-20 23:54:37', '2017-08-21 00:03:13', 2),
+(309, 43, 15, '2017-08-21 00:01:46', NULL, NULL, 3),
+(310, 43, 15, '2017-08-21 00:22:31', '2017-08-21 00:23:14', NULL, 1),
+(311, 45, 15, '2017-08-21 00:24:20', '2017-08-21 00:25:27', NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role`
+--
+
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `role`
+--
+
+INSERT INTO `role` (`id`, `name`) VALUES
+(1, 'Super Admin'),
+(2, 'Admin'),
+(3, 'Security'),
+(4, 'User');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `security`
+--
+
+CREATE TABLE `security` (
+  `id` int(11) NOT NULL,
+  `accountID` int(11) NOT NULL,
+  `garageID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `security`
+--
+
+INSERT INTO `security` (`id`, `accountID`, `garageID`) VALUES
+(21, 20, 12),
+(23, 22, 12),
+(25, 24, 12),
+(26, 26, 13),
+(27, 27, 13),
+(28, 28, 14),
+(29, 29, 14),
+(30, 30, 15),
+(31, 31, 15),
+(32, 32, 16),
+(33, 33, 16),
+(34, 34, 17),
+(35, 35, 17),
+(36, 36, 18),
+(37, 37, 18),
+(38, 38, 19),
+(39, 39, 19),
+(40, 40, 20),
+(41, 41, 20),
+(42, 42, 21),
+(43, 43, 21);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `firstName` varchar(100) DEFAULT NULL,
+  `lastName` varchar(100) DEFAULT NULL,
+  `phone` varchar(100) DEFAULT NULL,
+  `dateOfBirth` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `accountID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `firstName`, `lastName`, `phone`, `dateOfBirth`, `address`, `accountID`) VALUES
+(1, 'Ninh', 'Huong', '0123456789', '20/12/1994', '', 1),
+(2, 'Colton', 'Waters', '2209-584-801', '21/06/2018', 'P.O. Box 979, 2348 Risus. Rd.', 2),
+(3, 'Walter', 'Kelley', '1018-990-132', '28/03/2017', '1602 Vehicula. St.', 3),
+(4, 'Sade', 'Figueroa', '7596-935-851', '15/09/2017', '3576 Purus. Avenue', 4),
+(5, 'Cleo', 'Allen', '8256-163-742', '13/09/2016', '7838 Pellentesque Road', 5),
+(6, 'Maile', 'Prince', '2864-246-798', '10/06/2017', 'Ap #790-9230 Bibendum St.', 6),
+(7, 'Kelly', 'Pugh', '3611-876-394', '25/08/2017', '182-2992 Nullam Rd.', 7),
+(8, 'Nyssa', 'Sosa', '4740-578-135', '07/09/2017', 'Ap #466-3030 Magnis Rd.', 8),
+(9, 'Griffith', 'Blair', '0912-188-498', '07/11/2017', '945-7748 Arcu Street', 0),
+(10, 'Shafira', 'Lynn', '9277-560-504', '25/11/2017', '331-3709 Quisque Ave', 0),
+(11, 'Felix', 'Moss', '6296-111-746', '25/04/2018', '461-4379 Elementum Rd.', 0),
+(12, NULL, NULL, NULL, NULL, NULL, 9),
+(13, NULL, NULL, NULL, NULL, NULL, 10),
+(14, NULL, NULL, NULL, NULL, NULL, 11),
+(15, NULL, NULL, NULL, NULL, NULL, 12),
+(16, NULL, NULL, NULL, NULL, NULL, 13),
+(17, NULL, NULL, NULL, NULL, NULL, 14),
+(18, NULL, NULL, NULL, NULL, NULL, 15),
+(19, NULL, NULL, NULL, NULL, NULL, 16),
+(20, NULL, NULL, NULL, NULL, NULL, 17),
+(21, NULL, NULL, NULL, NULL, NULL, 18),
+(22, NULL, NULL, NULL, NULL, NULL, 19),
+(23, NULL, NULL, NULL, NULL, NULL, 20),
+(24, NULL, NULL, NULL, NULL, NULL, 21),
+(25, NULL, NULL, NULL, NULL, NULL, 22),
+(26, NULL, NULL, NULL, NULL, NULL, 23),
+(27, NULL, NULL, NULL, NULL, NULL, 24),
+(28, NULL, NULL, NULL, NULL, NULL, 25),
+(29, NULL, NULL, NULL, NULL, NULL, 26),
+(30, NULL, NULL, NULL, NULL, NULL, 27),
+(31, NULL, NULL, NULL, NULL, NULL, 28),
+(32, NULL, NULL, NULL, NULL, NULL, 29),
+(33, NULL, NULL, NULL, NULL, NULL, 30),
+(34, NULL, NULL, NULL, NULL, NULL, 31),
+(35, NULL, NULL, NULL, NULL, NULL, 32),
+(36, NULL, NULL, NULL, NULL, NULL, 33),
+(37, NULL, NULL, NULL, NULL, NULL, 34),
+(38, NULL, NULL, NULL, NULL, NULL, 35),
+(39, NULL, NULL, NULL, NULL, NULL, 36),
+(40, NULL, NULL, NULL, NULL, NULL, 37),
+(41, NULL, NULL, NULL, NULL, NULL, 38),
+(42, NULL, NULL, NULL, NULL, NULL, 39),
+(43, NULL, NULL, NULL, NULL, NULL, 40),
+(44, NULL, NULL, NULL, NULL, NULL, 41),
+(45, NULL, NULL, NULL, NULL, NULL, 42),
+(46, NULL, NULL, NULL, NULL, NULL, 43),
+(47, NULL, NULL, NULL, NULL, NULL, 44),
+(48, NULL, NULL, NULL, NULL, NULL, 48),
+(49, NULL, NULL, NULL, NULL, NULL, 49);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Account_fk0` (`userID`),
+  ADD KEY `Account_fk1` (`roleID`);
+
+--
+-- Indexes for table `car`
+--
+ALTER TABLE `car`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Car_fk0` (`accountID`);
+
+--
+-- Indexes for table `garage`
+--
+ALTER TABLE `garage`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Garage_fk0` (`accountID`);
+
+--
+-- Indexes for table `parkinginfo`
+--
+ALTER TABLE `parkinginfo`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ParkingInfo_fk0` (`carID`),
+  ADD KEY `ParkingInfo_fk1` (`garageID`);
+
+--
+-- Indexes for table `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `security`
+--
+ALTER TABLE `security`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Security_fk0` (`accountID`),
+  ADD KEY `Security_fk1` (`garageID`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `account`
+--
+ALTER TABLE `account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+--
+-- AUTO_INCREMENT for table `car`
+--
+ALTER TABLE `car`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+--
+-- AUTO_INCREMENT for table `garage`
+--
+ALTER TABLE `garage`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+--
+-- AUTO_INCREMENT for table `parkinginfo`
+--
+ALTER TABLE `parkinginfo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=312;
+--
+-- AUTO_INCREMENT for table `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `security`
+--
+ALTER TABLE `security`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `account`
+--
+ALTER TABLE `account`
+  ADD CONSTRAINT `Account_fk0` FOREIGN KEY (`userID`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `Account_fk1` FOREIGN KEY (`roleID`) REFERENCES `role` (`id`);
+
+--
+-- Constraints for table `car`
+--
+ALTER TABLE `car`
+  ADD CONSTRAINT `Car_fk0` FOREIGN KEY (`accountID`) REFERENCES `account` (`id`);
+
+--
+-- Constraints for table `garage`
+--
+ALTER TABLE `garage`
+  ADD CONSTRAINT `Garage_fk0` FOREIGN KEY (`accountID`) REFERENCES `account` (`id`);
+
+--
+-- Constraints for table `parkinginfo`
+--
+ALTER TABLE `parkinginfo`
+  ADD CONSTRAINT `ParkingInfo_fk0` FOREIGN KEY (`carID`) REFERENCES `car` (`id`),
+  ADD CONSTRAINT `ParkingInfo_fk1` FOREIGN KEY (`garageID`) REFERENCES `garage` (`id`);
+
+--
+-- Constraints for table `security`
+--
+ALTER TABLE `security`
+  ADD CONSTRAINT `Security_fk0` FOREIGN KEY (`accountID`) REFERENCES `account` (`id`),
+  ADD CONSTRAINT `Security_fk1` FOREIGN KEY (`garageID`) REFERENCES `garage` (`id`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

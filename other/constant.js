@@ -42,6 +42,9 @@ exports.CONST = {
 
     REQUEST_REMOVE_ACCOUNT_BY_ID: 'request_remove_account_by_id',
     RESPONSE_REMOVE_ACCOUNT_BY_ID: 'response_remove_account_by_id',
+
+    REQUEST_LOG_OUT: 'request_log_out',
+    RESPONSE_LOG_OUT: 'response_log_out',
     //endregion
 
     //region GARAGE
