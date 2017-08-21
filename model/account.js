@@ -549,6 +549,21 @@ exports.RemoveAccountByID = function (id, callback) {
     });
 };
 
+exports.GetAccountByParkingID = function (parkingID, callback) {
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT account.* FROM account JOIN car ON car.accountid = account.id JOIN parkingInfo ON parkingInfo.carID = car.id WHERE parkingInfo.id = '"+parkingID+"'";
+        client.query(sql, function (err, result) {
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+            //console.log(result[0]);
+            var id = result[0].id;
+            callback({"result":true, "id": id});
+        });
+    });
+};
+
 var smtpTransport = nodemailer.createTransport("SMTP", {
     service: "Gmail",
     auth: {

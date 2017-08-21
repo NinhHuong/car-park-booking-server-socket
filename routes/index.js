@@ -503,6 +503,16 @@ io.sockets.on('connection', function (socket) {
                             getGarageRes);
                     }
                 });
+
+                account.GetAccountByParkingID(id, function (getAccountRes) {
+                    if(getAccountRes.result){
+                        var accId = getAccountRes.id;
+                        console.log("> send message to account ID "+accId+" with id of socket "+dict[accId]);
+
+                        io.sockets.to(dict[accId]).emit(constant.CONST.RESPONSE_BOOKING_CANCELED,
+                            {"result": true, "data": "", "mess": "checked_in"});
+                    }
+                });
             }
             else
                 console.log("Error car in id:" + id);
