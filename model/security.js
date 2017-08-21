@@ -75,7 +75,7 @@ exports.FindAllAccountSecurity = function (garageID, callback) {
             " user.firstName, user.lastName, user.phone, user.dateOfBirth, user.address" +
             " FROM " + table_name +
             " JOIN account ON account.id = security.accountID" +
-            " JOIN user ON user.id = account.userID" +
+            " JOIN user ON user.accountID = account.id" +
             " WHERE security.garageID = '" + garageID + "'";
         client.query(sql, function (err) {
             // db.endConnection();
