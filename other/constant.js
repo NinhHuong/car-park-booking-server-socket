@@ -54,6 +54,8 @@ exports.CONST = {
     REQUEST_GET_GARAGE_BY_ACCOUNT_ID: 'request_get_garage_by_account_id',
     REQUEST_EDIT_GARAGE_BY_ID: 'request_edit_garage_by_id',
     REQUEST_EDIT_STATUS_GARAGE_BY_ID: 'request_edit_status_garage_by_id',
+    REQUEST_GET_ALL_GARAGES_AND_ADMIN: 'request_all_garages_and_admin',
+    REQUEST_REMOVE_GARAGE_BY_ID: 'request_remove_garage_by_id',
 
     RESPONSE_ADD_NEW_GARAGE: 'response_add_new_garage',
     RESPONSE_GET_ALL_GARAGE: 'response_all_garages',
@@ -62,6 +64,9 @@ exports.CONST = {
     RESPONSE_EDIT_GARAGE_BY_ID: 'response_edit_garage_by_id',
     RESPONSE_EDIT_STATUS_GARAGE_BY_ID: 'response_edit_status_garage_by_id',
     RESPONSE_GARAGE_UPDATED: 'response_garage_updated',
+    RESPONSE_GET_ALL_GARAGES_AND_ADMIN: 'response_all_garages_and_admin',
+    RESPONSE_REMOVE_GARAGE_BY_ID: 'response_remove_garage_by_id',
+
     //endregion
 
     //region CAR

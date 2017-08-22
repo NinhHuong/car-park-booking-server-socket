@@ -59,6 +59,25 @@ exports.GetAllGarages = function (callback) {
     });
 };
 
+exports.GetAllGaragesAndAccount = function (callback) {
+    db.getConnection(function (err, client) {
+        if (err)return db_error.errorDBConnection(err, callback);
+
+        var sql = "SELECT " + table_name + ".*, account.email FROM " + table_name + ", account" +
+            " WHERE "+ table_name + ".accountID = account.id";
+        client.query(sql, function (err) {
+            // db.endConnection();
+            if (err)  return db_error.errorSQL(sql, callback, err);
+            client.query(sql, function (err, result) {
+                if (err)  return db_error.errorSQL(sql, callback, err);
+
+                console.log("Getting all garages and accounts");
+                callback({"result": true, "data": result, "mess": ""});
+            });
+        });
+    });
+};
+
 exports.GetGaragesByID = function (id, callback) {
     db.getConnection(function (err, client) {
         if (err) return db_error.errorDBConnection(err, callback);
@@ -164,6 +183,20 @@ exports.ChangeStatusByID = function (id, busySlot, xstatus, callback) {
             } else {
                 callback({"result": false, "data": "", "mess": "this " + table_name + " was not in Database"});
             }
+        });
+    });
+};
+
+exports.RemoveByID = function (id, callback) {
+    db.getConnection(function (err, client) {
+        if (err) return db_error.errorDBConnection(err, callback);
+
+        var sql = "DELETE FROM " + table_name + " WHERE id = '" + id + "'";
+        if (err) return db_error.errorSQL(sql, callback, err);
+        client.query(sql, function (err, result) {
+            if (err)  return db_error.errorSQL(sql, callback, err);
+
+            callback({"result": true, "data": "", "mess": "Delete successful."});
         });
     });
 };

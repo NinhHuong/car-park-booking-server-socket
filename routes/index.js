@@ -217,6 +217,13 @@ io.sockets.on('connection', function (socket) {
         })
     });
 
+    //GET ALL GARAGE
+    socket.on(constant.CONST.REQUEST_GET_ALL_GARAGES_AND_ADMIN, function () {
+        garage.GetAllGaragesAndAccount(function (res) {
+            socket.emit(constant.CONST.RESPONSE_GET_ALL_GARAGES_AND_ADMIN, res);
+        })
+    });
+
     //GET GARAGE FOLLOW GARAGE ID
     socket.on(constant.CONST.REQUEST_GET_GARAGE_BY_ID, function (id) {
         garage.GetGaragesByID(id, function (res) {
@@ -242,6 +249,13 @@ io.sockets.on('connection', function (socket) {
     socket.on(constant.CONST.REQUEST_EDIT_GARAGE_BY_ID, function (id, name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, xstatus) {
         garage.UpdateByID(id, name, address, totalSlot, busySlot, locationX, locationY, accountID, timeStart, timeEnd, xstatus, function (res) {
             socket.emit(constant.CONST.RESPONSE_EDIT_GARAGE_BY_ID, res);
+        })
+    });
+
+    //REMOVE GARAGE
+    socket.on(constant.CONST.REQUEST_REMOVE_GARAGE_BY_ID, function (id) {
+        garage.RemoveByID(id, function (res) {
+            socket.emit(constant.CONST.RESPONSE_REMOVE_GARAGE_BY_ID, res);
         })
     });
 

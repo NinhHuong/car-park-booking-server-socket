@@ -26,6 +26,9 @@ SET time_zone = "+00:00";
 -- Table structure for table `account`
 --
 
+CREATE DATABASE `auto-car-parking` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `auto-car-parking`;
+
 CREATE TABLE `account` (
   `id` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
