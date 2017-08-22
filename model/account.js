@@ -163,7 +163,7 @@ exports.RegisterForSecurity = function (email, password, accountAdminID, callbac
                 });
             } else {
                 console.log("Register fail");
-                callback({"result": false, "mess": "Email already Registered"});
+                callback({"result": false, "mess": "email_registered"});
             }
         });
     });
@@ -223,19 +223,19 @@ exports.RegisterForAdmin = function (email, password, callback) {
                                 if (err) db_error.errorSQL(err, callback);
 
                                 callback({
-                                    "result": true, "data": ({"accountAdminID": result[0].id}), "mess": "Successfull."
+                                    "result": true, "data": ({"accountAdminID": result[0].id}), "mess": "Successful."
                                 });
                             });
                             callback({
                                 "result": true,
-                                "mess": "Successfull."
+                                "mess": "Successful."
                             });
                         }
                     });
                 });
             } else {
 
-                callback({"result": false, data: "", "mess": "Email already Registered"});
+                callback({"result": false, data: "", "mess": "email_registered"});
             }
         });
     });
