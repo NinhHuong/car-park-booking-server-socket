@@ -255,8 +255,13 @@ io.sockets.on('connection', function (socket) {
     //REMOVE GARAGE
     socket.on(constant.CONST.REQUEST_REMOVE_GARAGE_BY_ID, function (id) {
         garage.RemoveByID(id, function (res) {
-            socket.emit(constant.CONST.RESPONSE_REMOVE_GARAGE_BY_ID, res);
+            //Remove admin account
+            if(res.result){
+                account.RemoveAccountByID(id);
+                socket.emit(constant.CONST.RESPONSE_REMOVE_GARAGE_BY_ID, res);
+            }
         })
+
     });
 
     //endregion

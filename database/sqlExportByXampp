@@ -451,34 +451,34 @@ ALTER TABLE `user`
 -- Constraints for table `account`
 --
 ALTER TABLE `account`
-  ADD CONSTRAINT `Account_fk0` FOREIGN KEY (`userID`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `Account_fk0` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `Account_fk1` FOREIGN KEY (`roleID`) REFERENCES `role` (`id`);
 
 --
 -- Constraints for table `car`
 --
 ALTER TABLE `car`
-  ADD CONSTRAINT `Car_fk0` FOREIGN KEY (`accountID`) REFERENCES `account` (`id`);
+  ADD CONSTRAINT `Car_fk0` FOREIGN KEY (`accountID`) REFERENCES `account` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `garage`
 --
 ALTER TABLE `garage`
-  ADD CONSTRAINT `Garage_fk0` FOREIGN KEY (`accountID`) REFERENCES `account` (`id`);
+  ADD CONSTRAINT `Garage_fk0` FOREIGN KEY (`accountID`) REFERENCES `account` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `parkinginfo`
 --
 ALTER TABLE `parkinginfo`
-  ADD CONSTRAINT `ParkingInfo_fk0` FOREIGN KEY (`carID`) REFERENCES `car` (`id`),
-  ADD CONSTRAINT `ParkingInfo_fk1` FOREIGN KEY (`garageID`) REFERENCES `garage` (`id`);
+  ADD CONSTRAINT `ParkingInfo_fk0` FOREIGN KEY (`carID`) REFERENCES `car` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ParkingInfo_fk1` FOREIGN KEY (`garageID`) REFERENCES `garage` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `security`
 --
 ALTER TABLE `security`
-  ADD CONSTRAINT `Security_fk0` FOREIGN KEY (`accountID`) REFERENCES `account` (`id`),
-  ADD CONSTRAINT `Security_fk1` FOREIGN KEY (`garageID`) REFERENCES `garage` (`id`);
+  ADD CONSTRAINT `Security_fk0` FOREIGN KEY (`accountID`) REFERENCES `account` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `Security_fk1` FOREIGN KEY (`garageID`) REFERENCES `garage` (`id`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
