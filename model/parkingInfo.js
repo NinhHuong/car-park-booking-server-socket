@@ -453,7 +453,7 @@ exports.CarInId = function (id, callback) {
                         [d.getHours().padLeft(),
                             d.getMinutes().padLeft(),
                             d.getSeconds().padLeft()].join(':');
-                sql = "UPDATE " + table_name + " SET timeGoIn = '" + timeConvert + "' , parkingStatus = " + 1 + " WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET timeGoIn = NOW() , parkingStatus = " + 1 + " WHERE id = " + id;
                 client.query(sql, function (err, result) {
                     if (err) return db_error.errorSQL(sql, callback, err);
                     console.log("ID: " + id + " time go in:" + timeConvert);
@@ -483,8 +483,8 @@ exports.CarInVehicleNumber = function (vehicleNumber,securityID, garageID, callb
 
                             sql = "INSERT INTO " + table_name + " (carId, garageID, timeGoIn, parkingStatus) VALUE ('" +
                                 carId + "', '" +
-                                garageID + "', '" +
-                                timeConvert + "', '" +
+                                garageID + "'," +
+                                " NOW(), '" +
                                 1 + "')";
 
                             client.query(sql, function (err, result) {
@@ -505,8 +505,8 @@ exports.CarInVehicleNumber = function (vehicleNumber,securityID, garageID, callb
 
                 sql = "INSERT INTO " + table_name + " (carId, garageID, timeGoIn, parkingStatus) VALUE ('" +
                     carId + "', '" +
-                    garageID + "', '" +
-                    timeConvert + "', '" +
+                    garageID + "', '"  +
+                    " NOW(), '" +
                     1 + "')";
 
                 client.query(sql, function (err, result) {
@@ -543,7 +543,7 @@ exports.CarOut = function (id, callback) {
                         [d.getHours().padLeft(),
                             d.getMinutes().padLeft(),
                             d.getSeconds().padLeft()].join(':');
-                sql = "UPDATE " + table_name + " SET timeGoOut = '" + timeConvert + "' , parkingStatus = " + 2 + " WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET timeGoOut = NOW() , parkingStatus = " + 2 + " WHERE id = " + id;
                 client.query(sql, function (err, result) {
                     if (err) return db_error.errorSQL(sql, callback, err);
                     console.log("ID: " + id + " timeGoOut:" + timeConvert);
