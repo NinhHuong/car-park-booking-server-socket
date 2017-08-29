@@ -92,7 +92,7 @@ exports.AddByUser = function (carID, garageID, timeBooked, notifyToken, callback
                         }
                     }
                     sql = "INSERT INTO " + table_name + " (carID, garageID, timeBooked, parkingStatus)" +
-                        " VALUES ('" + carID + "', '" + garageID + "', '" + timeBooked + "', " + 0 + ");";
+                        " VALUES ('" + carID + "', '" + garageID + "', NOW(), " + 0 + ");";
                     client.query(sql, function (err) {
                         if (err) {
                             console.error('error running query 2:' + table_name, err);
