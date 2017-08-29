@@ -46,7 +46,7 @@ exports.Add = function (carID, garageID, timeBooked, callback) {
                         }
                     }
                     sql = "INSERT INTO " + table_name + " (carID, garageID, timeBooked, parkingStatus)" +
-                        " VALUES ('" + carID + "', '" + garageID + "', '" + timeBooked + "', " + 0 + ");";
+                        " VALUES ('" + carID + "', '" + garageID + "', NOW(), " + 0 + ");";
                     client.query(sql, function (err) {
                         if (err) {
                             console.error('error running query 2:' + table_name, err);
@@ -453,7 +453,7 @@ exports.CarInId = function (id, callback) {
                         [d.getHours().padLeft(),
                             d.getMinutes().padLeft(),
                             d.getSeconds().padLeft()].join(':');
-                sql = "UPDATE " + table_name + " SET timeGoIn = '" + timeConvert + "' , parkingStatus = " + 1 + " WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET timeGoIn = NOW() , parkingStatus = " + 1 + " WHERE id = " + id;
                 client.query(sql, function (err, result) {
                     if (err) return db_error.errorSQL(sql, callback, err);
                     console.log("ID: " + id + " time go in:" + timeConvert);
@@ -483,8 +483,8 @@ exports.CarInVehicleNumber = function (vehicleNumber,securityID, garageID, callb
 
                             sql = "INSERT INTO " + table_name + " (carId, garageID, timeGoIn, parkingStatus) VALUE ('" +
                                 carId + "', '" +
-                                garageID + "', '" +
-                                timeConvert + "', '" +
+                                garageID + "'," +
+                                " NOW(), '" +
                                 1 + "')";
 
                             client.query(sql, function (err, result) {
@@ -505,8 +505,8 @@ exports.CarInVehicleNumber = function (vehicleNumber,securityID, garageID, callb
 
                 sql = "INSERT INTO " + table_name + " (carId, garageID, timeGoIn, parkingStatus) VALUE ('" +
                     carId + "', '" +
-                    garageID + "', '" +
-                    timeConvert + "', '" +
+                    garageID + "', '"  +
+                    " NOW(), '" +
                     1 + "')";
 
                 client.query(sql, function (err, result) {
@@ -543,7 +543,7 @@ exports.CarOut = function (id, callback) {
                         [d.getHours().padLeft(),
                             d.getMinutes().padLeft(),
                             d.getSeconds().padLeft()].join(':');
-                sql = "UPDATE " + table_name + " SET timeGoOut = '" + timeConvert + "' , parkingStatus = " + 2 + " WHERE id = " + id;
+                sql = "UPDATE " + table_name + " SET timeGoOut = NOW() , parkingStatus = " + 2 + " WHERE id = " + id;
                 client.query(sql, function (err, result) {
                     if (err) return db_error.errorSQL(sql, callback, err);
                     console.log("ID: " + id + " timeGoOut:" + timeConvert);
