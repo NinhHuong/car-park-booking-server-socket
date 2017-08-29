@@ -6,6 +6,9 @@ exports.pi = '3.14';
 exports.CONST = {
 
     //region OTHERS
+    REQUEST_CANCEL_NOTIFICATION:'request_cancel_notification',
+    RESPONSE_CANCEL_NOTIFICATION:'response_cancel_notification',
+
     REQUEST_NOTI_TIME_OUT: 'request_notification_time_out',
     REQUEST_TOKEN_REGISTRATION: 'request_token_registration',
 

@@ -13,7 +13,6 @@ var timerBookingCancelNotify;
 
 exports.StartBookingTimeout = function (notifyTimeout, cancelTimeout, notifyToken) {
     console.log("Set booking time out: " + notifyTimeout);
-    console.log("")
     if (timerBookingNotify !== null) {
         clearTimeout(timerBookingNotify);
     }
@@ -27,13 +26,13 @@ exports.StartBookingTimeout = function (notifyTimeout, cancelTimeout, notifyToke
     timerBookingCancelNotify = setTimeout(function () {
         exports.NotifyBookingCanceledTimeout(notifyToken);
     }, cancelTimeout);
-}
+};
 
 exports.StopBookingTimeout = function () {
     clearTimeout(timerBookingNotify);
     clearTimeout(timerBookingCancelNotify);
     console.log("StopBookingTimeout success")
-}
+};
 
 exports.NotifyBookingTimeout = function (notifyToken) {
     console.log("RegistrationToken: " + notifyToken);
@@ -56,7 +55,7 @@ exports.NotifyBookingTimeout = function (notifyToken) {
         .catch(function (error) {
             console.log("Error sending message:", error);
         });
-}
+};
 
 exports.NotifyBookingCanceledTimeout = function (notifyToken) {
     console.log("RegistrationToken: " + notifyToken);
@@ -79,4 +78,4 @@ exports.NotifyBookingCanceledTimeout = function (notifyToken) {
         .catch(function (error) {
             console.log("Error sending message:", error);
         });
-}
+};

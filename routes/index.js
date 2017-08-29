@@ -57,6 +57,14 @@ io.sockets.on('connection', function (socket) {
     socket.on(constant.CONST.REQUEST_TOKEN_REGISTRATION, function (token) {
         notify.NotifyTest(token);
     });
+
+    socket.on(constant.CONST.REQUEST_CANCEL_NOTIFICATION, function () {
+        console.log('Client request cancel booking notification');
+        if(cancelTimeout!== null){
+            clearTimeout(cancelTimeout);
+        }
+        notify.StopBookingTimeout();
+    });
     //endregion
 
     //region ACCOUNT
@@ -527,7 +535,6 @@ io.sockets.on('connection', function (socket) {
                     if(getAccountRes.result){
                         var accId = getAccountRes.id;
                         console.log("> send message to account ID "+accId+" with id of socket "+dict[accId]);
-
                         io.sockets.to(dict[accId]).emit(constant.CONST.RESPONSE_BOOKING_CANCELED,
                             {"result": true, "data": "", "mess": "checked_in"});
                     }
