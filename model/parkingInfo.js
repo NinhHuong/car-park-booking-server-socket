@@ -39,7 +39,7 @@ exports.Add = function (carID, garageID, timeBooked, callback) {
                     }
                     if (result.length > 0) {
                         for (var i = 0; i < result.length; i++) {
-                            if (result[i].parkingStatus === 0 || result[i].parkingStatus === 1) {
+                            if (result[i].parkingStatus === 0) {
                                 return callback({'result': false, 'data': '', 'mess': "car_busy"});
 
                             }
@@ -85,7 +85,7 @@ exports.AddByUser = function (carID, garageID, timeBooked, notifyToken, callback
                     }
                     if (result.length > 0) {
                         for (var i = 0; i < result.length; i++) {
-                            if (result[i].parkingStatus === 0 || result[i].parkingStatus === 1) {
+                            if (result[i].parkingStatus === 0) {
                                 return callback({'result': false, 'data': '', 'mess': "car_busy"});
 
                             }
