@@ -304,7 +304,7 @@ exports.Login = function (email, password, callback) {
                         "token": "",
                         "role": "",
                         "res": false,
-                        "is_verify": "1",
+                        "is_verify": 1,
                         "isLogin": 0
                     });
                 }
